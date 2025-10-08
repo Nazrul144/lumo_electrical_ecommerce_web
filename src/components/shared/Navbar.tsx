@@ -5,43 +5,50 @@ import { FaCircleUser } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Playfair_Display } from "next/font/google";
+
+ const playfair = Playfair_Display({
+    subsets: ["latin"],
+    weight: ["400", "700"], // choose the weights you want
+    display: "swap",
+  });
+
 
 const Navbar = () => {
-
   const pathName = usePathname();
-  console.log(pathName)
+  console.log(pathName);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const navLinks = [
-      {
-        title: "Home",
-        path: "/"
-      },
-      {
-        title: "Products",
-        path: "/products"
-      },
-      {
-        title: "Categories",
-        path: "/categories"
-      },
-      {
-        title: "Contact Us",
-        path: "/contact"
-      }
-    ]
+  const navLinks = [
+    {
+      title: "Home",
+      path: "/",
+    },
+    {
+      title: "Products",
+      path: "/products",
+    },
+    {
+      title: "Categories",
+      path: "/categories",
+    },
+    {
+      title: "Contact Us",
+      path: "/contact",
+    },
+  ];
 
-    useEffect(() => {
-        if (isMenuOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
-        }
-        return () => {
-            document.body.style.overflow = "auto";
-        };
-    }, [isMenuOpen]);
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isMenuOpen]);
 
   return (
     <div>
@@ -52,31 +59,35 @@ const Navbar = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo Section */}
-            <div>
+            <div >
               <div className="flex-shrink-0">
-              <a href="#">
-                <Image
-                  src="/logo/logo.png"
-                  alt="logo"
-                  height={100}
-                  width={100}
-                />
-              </a>
-            </div>
-             
+                <Link className="hidden lg:block" href="/">
+                  <Image
+                    src="/logo/logo.png"
+                    alt="logo"
+                    height={100}
+                    width={100}
+                  />
+                </Link>
+              </div>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              {
-                navLinks?.map((navLink)=>(
-                  <Link className={` ${pathName === navLink.path ? "text-[#C6E824] underline" : ""} font-bold text-[#088347]   
-                        dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-300`} href={navLink.path} key={navLink.path}>{navLink.title}</Link>
-                ))
-              }
+              {navLinks?.map((navLink) => (
+                <Link
+                  className={` ${
+                    pathName === navLink.path ? "text-[#C6E824] underline playfair.className" : ""
+                  } ${playfair.className} font-bold text-[#088347] text-xl 
+                        dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-300`}
+                  href={navLink.path}
+                  key={navLink.path}
+                >
+                  {navLink.title}
+                </Link>
+              ))}
             </nav>
 
-        
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-5">
               <button className="p-2 rounded-full text-green-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -151,11 +162,18 @@ const Navbar = () => {
           {/* Mobile Navigation Links */}
           <nav className="flex-grow p-4">
             <div className="flex flex-col space-y-2">
-               {
-                navLinks?.map((navLink)=>(
-                  <Link className={` ${pathName === navLink.path ? "text-[#C6E824] underline" : ""} px-3 py-2 text-base font-medium text-[#088347] dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`} href={navLink.path} key={navLink.path}>{navLink.title}</Link>
-                ))
-              }
+              {navLinks?.map((navLink) => (
+                <Link
+                  className={` ${
+                    pathName === navLink.path ? "text-[#C6E824] underline" : ""
+                  } px-3 py-2 text-base font-medium text-[#088347] dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
+                  href={navLink.path}
+                  key={navLink.path}
+                   onClick={()=>setIsMenuOpen(false)}
+                >
+                  {navLink.title}
+                </Link>
+              ))}
             </div>
           </nav>
 
@@ -167,7 +185,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
