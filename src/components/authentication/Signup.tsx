@@ -15,7 +15,6 @@ import { useForm } from 'react-hook-form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Checkbox } from 'antd';
 import { Label } from '@radix-ui/react-label';
 
 // Zod validation schema
