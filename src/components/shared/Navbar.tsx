@@ -53,8 +53,8 @@ const Navbar = () => {
   return (
     <div>
       <header
-        className="top-0 right-2 left-2 w-full bg-white dark:bg-gray-900/80 backdrop-blur-md border-b 
-        border-gray-200 dark:border-gray-800 rounded-full fixed z-50"
+        className="top-0 right-2 left-2 bg-white dark:bg-gray-900/80 backdrop-blur-md border-b 
+        border-gray-200 dark:border-gray-800 rounded-full fixed z-50 mt-6 shadow-xl" 
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
