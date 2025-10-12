@@ -1,7 +1,7 @@
+import { Checkbox } from "antd"
 import { useId } from "react"
+import { Label } from "./ui/label"
 
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
 
 export default function Component() {
   const id = useId()
