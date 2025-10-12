@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -8,18 +8,46 @@ import { Button } from "../ui/button";
 import { Navigation, Scrollbar } from "swiper/modules";
 import BestSellersCard from "./BestSellersCard";
 import Link from "next/link";
-
-
+import { motion } from "framer-motion";
 
 const bestSellers: BestSellerItem[] = [
-  { id: 1, imageName: "1", title: "Armchair", description: "Light single chair", price: "$145" },
-  { id: 2, imageName: "2", title: "Premium Sofa", description: "Comfortable seating", price: "$245" },
-  { id: 3, imageName: "3", title: "Minimal Sofa", description: "Modern design", price: "$345" },
-  { id: 4, imageName: "4", title: "Dining Chair", description: "Elegant chair", price: "$125" },
-  { id: 5, imageName: "3", title: "Office Chair", description: "Ergonomic design", price: "$199" },
+  {
+    id: 1,
+    imageName: "1",
+    title: "Armchair",
+    description: "Light single chair",
+    price: "$145",
+  },
+  {
+    id: 2,
+    imageName: "2",
+    title: "Premium Sofa",
+    description: "Comfortable seating",
+    price: "$245",
+  },
+  {
+    id: 3,
+    imageName: "3",
+    title: "Minimal Sofa",
+    description: "Modern design",
+    price: "$345",
+  },
+  {
+    id: 4,
+    imageName: "4",
+    title: "Dining Chair",
+    description: "Elegant chair",
+    price: "$125",
+  },
+  {
+    id: 5,
+    imageName: "3",
+    title: "Office Chair",
+    description: "Ergonomic design",
+    price: "$199",
+  },
   // ... rest of items
 ];
-
 
 // types.ts
 export interface BestSellerItem {
@@ -30,11 +58,19 @@ export interface BestSellerItem {
   price: string;
 }
 
-
-
 const Carousel: React.FC = () => {
   return (
-    <div className="mt-18">
+    <motion.div
+      initial={{ y: 300, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{
+        delay: 0.3,
+        type: "keyframes",
+        stiffness: 60,
+        duration: 2,
+      }}
+      className="mt-18"
+    >
       <h1 className="text-center text-[#07484A] text-5xl font-playFairDisplay font-semibold">
         Best Sellers
       </h1>
@@ -57,7 +93,10 @@ const Carousel: React.FC = () => {
           scrollbar={{ draggable: true }}
         >
           {bestSellers.map((item) => (
-            <SwiperSlide key={item.id} className="pb-9 !flex !items-center !justify-center">
+            <SwiperSlide
+              key={item.id}
+              className="pb-9 !flex !items-center !justify-center"
+            >
               <BestSellersCard
                 imageName={item.imageName}
                 title={item.title}
@@ -80,16 +119,14 @@ const Carousel: React.FC = () => {
         <div className="mt-8 flex items-center justify-center">
           <Button
             type="button"
-            className="text-[#FDFBF8] text-xl bg-linear-to-r from-[#088347] to-[#C6E824] font-openSans rounded-md flex gap-2 mb-8 "
+            className="text-[#FDFBF8] text-xl bg-linear-to-r from-[#088347] to-[#C6E824] font-openSans rounded-md flex gap-2 mb-12 "
           >
-            <Link href={'/products'}>
-                Explore all items
-            </Link>
+            <Link href={"/products"}>Explore all items</Link>
             <FaArrowRight />
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

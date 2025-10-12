@@ -7,6 +7,7 @@ import { useState, useRef } from "react";
 import React from "react";
 import { HiMenu } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -71,15 +72,18 @@ const productsData: Record<string, { name: string; image: string }[]> = {
   "Switches & Sockets": [
     {
       name: "Modern Wall Socket",
-      image: "https://image.made-in-china.com/202f0j00oedquznRwAks/T3-Wholesale-New-Design-PC-Ultra-Thin-Wall-Switch-Socket-Modern-Luxury-Wall-Switch-Switches-and-Socket.webp",
+      image:
+        "https://image.made-in-china.com/202f0j00oedquznRwAks/T3-Wholesale-New-Design-PC-Ultra-Thin-Wall-Switch-Socket-Modern-Luxury-Wall-Switch-Switches-and-Socket.webp",
     },
     {
       name: "Smart Switch Board",
-      image: "https://5.imimg.com/data5/HO/SJ/PD/SELLER-67963114/smart-switch-boards.jpg",
+      image:
+        "https://5.imimg.com/data5/HO/SJ/PD/SELLER-67963114/smart-switch-boards.jpg",
     },
     {
       name: "Universal Plug",
-      image: "https://gadgetbreeze.com.bd/wp-content/uploads/2025/05/Mcdodo-CP-614-100W-GaN-Universal-Travel-Adapter-with-100w-C-to-C-Cable-430x430.jpg",
+      image:
+        "https://gadgetbreeze.com.bd/wp-content/uploads/2025/05/Mcdodo-CP-614-100W-GaN-Universal-Travel-Adapter-with-100w-C-to-C-Cable-430x430.jpg",
     },
   ],
 
@@ -90,30 +94,36 @@ const productsData: Record<string, { name: string; image: string }[]> = {
     },
     {
       name: "Power Wire Bundle",
-      image: "https://m.media-amazon.com/images/I/41QqyMrjZlS._UF1000,1000_QL80_.jpg",
+      image:
+        "https://m.media-amazon.com/images/I/41QqyMrjZlS._UF1000,1000_QL80_.jpg",
     },
     {
       name: "Armored Cable",
-      image: "https://5.imimg.com/data5/SELLER/Default/2022/11/AU/UJ/WJ/3446694/polycab-armored-cable.jpg",
+      image:
+        "https://5.imimg.com/data5/SELLER/Default/2022/11/AU/UJ/WJ/3446694/polycab-armored-cable.jpg",
     },
     {
       name: "Coaxial Cable",
-      image: "https://milcom.edu.au/wp-content/uploads/2019/10/coaxial-cable-1280x720.png",
+      image:
+        "https://milcom.edu.au/wp-content/uploads/2019/10/coaxial-cable-1280x720.png",
     },
   ],
 
   "Distribution Boards": [
     {
       name: "Electrical Panel Board",
-      image: "https://www.brilltech.co.in/images/products/img-control-panel-boards.jpg",
+      image:
+        "https://www.brilltech.co.in/images/products/img-control-panel-boards.jpg",
     },
     {
       name: "Fuse Box",
-      image: "https://img.drz.lazcdn.com/static/bd/p/933ab82f179745c166ceafb62efece28.png_720x720q80.png",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/933ab82f179745c166ceafb62efece28.png_720x720q80.png",
     },
     {
       name: "Load Center Pane",
-      image: "https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-controls-systems/load-centers/panelboard-loadcenter.jpg",
+      image:
+        "https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-controls-systems/load-centers/panelboard-loadcenter.jpg",
     },
     {
       name: "Meter Distribution Box",
@@ -121,18 +131,21 @@ const productsData: Record<string, { name: string; image: string }[]> = {
     },
     {
       name: "Electrical Panel Board",
-      image: "https://www.brilltech.co.in/images/products/img-control-panel-boards.jpg",
+      image:
+        "https://www.brilltech.co.in/images/products/img-control-panel-boards.jpg",
     },
     {
       name: "Fuse Box",
-      image: "https://img.drz.lazcdn.com/static/bd/p/933ab82f179745c166ceafb62efece28.png_720x720q80.png",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/933ab82f179745c166ceafb62efece28.png_720x720q80.png",
     },
   ],
 
   "Smart Devices": [
     {
       name: "Smart Home Hub",
-      image: "https://blog-cdn.athom.com/uploads/2019/08/Homey-Pro-1-2000x1125.png",
+      image:
+        "https://blog-cdn.athom.com/uploads/2019/08/Homey-Pro-1-2000x1125.png",
     },
     {
       name: "Smart Light Controller",
@@ -140,100 +153,119 @@ const productsData: Record<string, { name: string; image: string }[]> = {
     },
     {
       name: "Smart Thermostat",
-      image: "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/HQ2E2_AV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=NThVdWM2Yk9SajVpMGpSRWgxREZOVlZya2lKWlJmUEwrYndWOTJiVWJWQUYwVmtIbGRkS25RMVpBRlo0bk5DUTdyVWdQQklJZHo5NGFYZnc1NlNLN1E",
+      image:
+        "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/HQ2E2_AV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=NThVdWM2Yk9SajVpMGpSRWgxREZOVlZya2lKWlJmUEwrYndWOTJiVWJWQUYwVmtIbGRkS25RMVpBRlo0bk5DUTdyVWdQQklJZHo5NGFYZnc1NlNLN1E",
     },
   ],
 
   "Power Tools": [
     {
       name: "Electric Drill",
-      image: "https://img.drz.lazcdn.com/static/bd/p/b8541eec74b99941faf71a25548de3e8.jpg_960x960q80.jpg_.webp",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/b8541eec74b99941faf71a25548de3e8.jpg_960x960q80.jpg_.webp",
     },
     {
       name: "Cordless Screwdriver",
-      image: "https://admin.techshopbd.com/uploads/product/Cordless-Screwdriver-Set.jpg",
+      image:
+        "https://admin.techshopbd.com/uploads/product/Cordless-Screwdriver-Set.jpg",
     },
     {
       name: "Angle Grinder",
-      image: "https://www.eastmanshop.com/cdn/shop/files/EDG-100Nc_5b32af9f-3ecc-4c95-aabe-07d47286deca_700x700.jpg?v=1755949250",
+      image:
+        "https://www.eastmanshop.com/cdn/shop/files/EDG-100Nc_5b32af9f-3ecc-4c95-aabe-07d47286deca_700x700.jpg?v=1755949250",
     },
   ],
 
   "LED Lights": [
     {
       name: "LED Bulb",
-      image: "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
     },
     {
       name: "LED Strip Light",
-      image: "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
+      image:
+        "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
     },
     {
       name: "LED Bulb",
-      image: "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
     },
     {
       name: "LED Strip Light",
-      image: "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
+      image:
+        "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
     },
     {
       name: "LED Bulb",
-      image: "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/f810b0275a2e3f46cbb903cf974f369b.jpg_720x720q80.jpg_.webp",
     },
     {
       name: "LED Strip Light",
-      image: "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
+      image:
+        "https://static-01.daraz.com.bd/p/a5b9b83cb0042b3e0ce6c8e99ce24eb4.jpg",
     },
   ],
 
   "Outdoor Lighting": [
     {
       name: "Garden Light",
-      image: "https://img.drz.lazcdn.com/static/bd/p/dbba71738d214438f137c654c42e58a7.jpg_720x720q80.jpg",
+      image:
+        "https://img.drz.lazcdn.com/static/bd/p/dbba71738d214438f137c654c42e58a7.jpg_720x720q80.jpg",
     },
     {
       name: "Street Lamp",
-      image: "https://thumbs.dreamstime.com/b/victorian-style-street-lamp-night-modern-electric-build-deep-yellow-light-produced-to-illuminate-streets-198835173.jpg",
+      image:
+        "https://thumbs.dreamstime.com/b/victorian-style-street-lamp-night-modern-electric-build-deep-yellow-light-produced-to-illuminate-streets-198835173.jpg",
     },
   ],
 
   "Energy Meters": [
     {
       name: "Smart Energy Meter",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRolFwN0O4dYHeUCpHjPMkh3nElb1LokVUz4A&s",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRolFwN0O4dYHeUCpHjPMkh3nElb1LokVUz4A&s",
     },
     {
       name: "Digital Meter Display",
-      image: "https://cdn.roboticsbd.com/11381-home_default/dc-0-100v-10a-voltage-and-current-dual-led-display-panel-meter-robotics-bangladesh.jpg",
+      image:
+        "https://cdn.roboticsbd.com/11381-home_default/dc-0-100v-10a-voltage-and-current-dual-led-display-panel-meter-robotics-bangladesh.jpg",
     },
   ],
 
   Generators: [
     {
       name: "Portable Generator",
-      image: "https://static.thcdn.com/images/large/original//productimg/1600/1600/11655251-4715186688260835.jpg",
+      image:
+        "https://static.thcdn.com/images/large/original//productimg/1600/1600/11655251-4715186688260835.jpg",
     },
     {
       name: "Diesel Generator",
-      image: "https://media.sakurapower.com/pub/media/catalog/product/cache/144bfaf5ae6c8001de0bfb251a4f8b1e/3/3/33_kva_diesel_generator_4.jpg",
+      image:
+        "https://media.sakurapower.com/pub/media/catalog/product/cache/144bfaf5ae6c8001de0bfb251a4f8b1e/3/3/33_kva_diesel_generator_4.jpg",
     },
   ],
 
   Transformers: [
     {
       name: "Power Transformer",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9ci769LbwmtOWSCVurka5LqdXdOtgwR2CcQ&s",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9ci769LbwmtOWSCVurka5LqdXdOtgwR2CcQ&s",
     },
     {
       name: "Distribution Transformer",
-      image: "https://www.bowerselec.co.uk/app/uploads/2022/10/Fedral-stock-1500kVA-853x1024.jpg",
+      image:
+        "https://www.bowerselec.co.uk/app/uploads/2022/10/Fedral-stock-1500kVA-853x1024.jpg",
     },
   ],
 
   "Cable Management": [
     {
       name: "Cable Tray",
-      image: "https://www.independenttechbd.com/wp-content/uploads/2024/06/cable-tray-1-500x500-1.jpg",
+      image:
+        "https://www.independenttechbd.com/wp-content/uploads/2024/06/cable-tray-1-500x500-1.jpg",
     },
     {
       name: "Cable Clips",
@@ -244,33 +276,39 @@ const productsData: Record<string, { name: string; image: string }[]> = {
   "Indoor Fittings": [
     {
       name: "Ceiling Light",
-      image: "https://images-cdn.ubuy.co.in/666f1d2788caec18320c4a76-caneoe-modern-led-ceiling-light-6000k.jpg",
+      image:
+        "https://images-cdn.ubuy.co.in/666f1d2788caec18320c4a76-caneoe-modern-led-ceiling-light-6000k.jpg",
     },
     {
       name: "Wall Lamp",
-      image: "https://www.akway.in/cdn/shop/products/61rhOE5zxdL.jpg?v=1697352251&width=1445",
+      image:
+        "https://www.akway.in/cdn/shop/products/61rhOE5zxdL.jpg?v=1697352251&width=1445",
     },
   ],
 
   "Extension Cords": [
     {
       name: "Multi Plug Extension",
-      image: "https://static-01.daraz.com.bd/p/f7f3a8b26a3f3368418881eb42c6208b.jpg",
+      image:
+        "https://static-01.daraz.com.bd/p/f7f3a8b26a3f3368418881eb42c6208b.jpg",
     },
     {
       name: "Heavy Duty Extension Reel",
-      image: "https://www.tronic.co.tz/cdn/shop/products/ER6527_c417e016-6c57-4bbc-8882-3f5363d071c4.jpg?v=1757514186",
+      image:
+        "https://www.tronic.co.tz/cdn/shop/products/ER6527_c417e016-6c57-4bbc-8882-3f5363d071c4.jpg?v=1757514186",
     },
   ],
 
   "Surge Protection": [
     {
       name: "Surge Protector Power Strip",
-      image: "https://djuly1j3idynn.cloudfront.net/userfiles/images/inriver/preview/74685_ig112663blk10.jpg",
+      image:
+        "https://djuly1j3idynn.cloudfront.net/userfiles/images/inriver/preview/74685_ig112663blk10.jpg",
     },
     {
       name: "Surge Protector Power Strip",
-      image: "https://delta.com.bd/wp-content/uploads/2021/06/Sako-120-kVA-Voltage-Stabilizer-price-Bangladesh.jpg",
+      image:
+        "https://delta.com.bd/wp-content/uploads/2021/06/Sako-120-kVA-Voltage-Stabilizer-price-Bangladesh.jpg",
     },
     {
       name: "Surge Suppressor",
@@ -278,7 +316,8 @@ const productsData: Record<string, { name: string; image: string }[]> = {
     },
     {
       name: "Voltage Stabilizer",
-      image: "https://delta.com.bd/wp-content/uploads/2021/06/Sako-120-kVA-Voltage-Stabilizer-price-Bangladesh.jpg",
+      image:
+        "https://delta.com.bd/wp-content/uploads/2021/06/Sako-120-kVA-Voltage-Stabilizer-price-Bangladesh.jpg",
     },
   ],
 };
@@ -319,7 +358,17 @@ const Categories = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 lg:px-14">
+    <motion.div
+      initial={{ y: 200, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{
+        delay: 0.3,
+        type: "keyframes",
+        stiffness: 60,
+        duration: 2,
+      }}
+      className="flex h-screen bg-gray-50 lg:px-14"
+    >
       {/* Sidebar */}
       <div className="hidden lg:flex relative w-64 bg-white flex flex-col lg:mt-20">
         <div
@@ -454,7 +503,7 @@ const Categories = () => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

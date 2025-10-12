@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
 
 const FacebookIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -54,18 +55,21 @@ const TwitterIcon = ({ size = 24, className = "" }) => (
 
 export default function Footer() {
   return (
-    <footer
+    <motion.footer
+      initial={{ y: 300, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{
+        delay: 0.3,
+        type: "keyframes",
+        stiffness: 60,
+        duration: 2,
+      }}
       className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30 dark:from-gray-900 dark:to-black text-gray-900
      dark:text-white py-12 px-4"
     >
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mt-10">
         <div className="lg:col-span-5">
-          <Image
-            src="/logo/logo.png"
-            alt="logo"
-            height={100}
-            width={100}
-          />
+          <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
         </div>
         <div className="flex flex-col space-x-5 pt-2">
           <div className="flex space-x-5">
@@ -257,6 +261,6 @@ export default function Footer() {
           Reserved
         </p>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
