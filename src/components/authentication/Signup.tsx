@@ -218,8 +218,8 @@ const Signup = () => {
                         </div>
 
                         <div className="flex items-center gap-2 font-poppins mt-8">
-                            <Checkbox id={termsOfServiceId} checked={agreeToTerms}
-                                onCheckedChange={(checked: boolean | "indeterminate") => setValue("agreeToTerms", Boolean(checked))} />
+                            {/* <Checkbox id={termsOfServiceId} checked={agreeToTerms}
+                                onCheckedChange={(checked: boolean | "indeterminate") => setValue("agreeToTerms", Boolean(checked))} /> */}
                             <Label htmlFor={termsOfServiceId}>
                                 I agree to all the{" "}
                                 <Link className="text-[#FF8682]" href="" target="_blank">
