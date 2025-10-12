@@ -7,12 +7,12 @@ import { SiLinkedin } from "react-icons/si";
 import { FiYoutube } from "react-icons/fi";
 import { useId } from "react";
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { HiOutlineArrowRight } from "react-icons/hi2";
 
 import { Textarea } from "../ui/textarea";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { Label } from "@radix-ui/react-label";
 
 
 // // Zod validation schema
