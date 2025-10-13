@@ -1,14 +1,13 @@
-"use client";
-
-import { Card } from "antd";
-import { Playfair_Display } from "next/font/google";
 import Image from "next/image";
-import { useState, useRef } from "react";
-import React from "react";
-import { HiMenu } from "react-icons/hi";
-import { IoClose } from "react-icons/io5";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import React from "react";
+import { FaFacebook, FaStar } from "react-icons/fa6";
+import { ImWhatsapp } from "react-icons/im";
+import { CiTwitter } from "react-icons/ci";
+import { LuShare2 } from "react-icons/lu";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { Playfair_Display } from "next/font/google";
+
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -16,26 +15,134 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-// Sidebar menu
-const menuItems = [
-  "Circuit Breakers",
-  "Switches & Sockets",
-  "Wire & Cables",
-  "Distribution Boards",
-  "Smart Devices",
-  "Power Tools",
-  "LED Lights",
-  "Outdoor Lighting",
-  "Energy Meters",
-  "Generators",
-  "Transformers",
-  "Cable Management",
-  "Indoor Fittings",
-  "Extension Cords",
-  "Surge Protection",
-];
 
-// Product data based on menu item
+
+
+
+const ProductDetails = ({ params }) => {
+  const { id } = params;
+
+  const product = Object.values(productsData)
+    .flat() // সব array একত্র করি
+    .find((p) => p.id === Number(params.id)); // id number হিসেবে compare
+
+  // Current category বের করা
+  const currentCategory = Object.keys(productsData).find((category) =>
+    productsData[category].some((p) => p.id === Number(id))
+  );
+
+  console.log(currentCategory);
+
+  // Related products get করা (current product বাদ দিয়ে)
+  const relatedProducts = currentCategory
+    ? productsData[currentCategory].filter((p) => p.id !== Number(id))
+    : [];
+
+  return (
+    <div className="mt-28 lg:px-20">
+      <section>
+        <div className="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row  lg:gap-28">
+          <div className="flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 ">
+            <Image
+              src={product?.image}
+              alt={product?.name}
+              width={500}
+              height={500}
+              className="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
+            />
+          </div>
+          <div className="text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left ">
+            <h1 className="text-xl font-bold leading-none sm:text-4xl">
+              {product?.name}
+            </h1>
+            <div className="mt-4 text-3xl text-orange-400 flex gap-2">
+              <FaStar />
+              <FaStar />
+              <FaStar />
+              <FaStar />
+              <FaStar />
+              <span className="text-gray-700">4.5 {"(212 reviews)"}</span>
+            </div>
+            <p className="mt-2 mb-8 text-lg sm:mb-12 text-justify">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
+              autem delectus vero, perferendis distinctio voluptas veniam, quis
+              neque earum dolores architecto quam magnam inventore harum a rerum
+              officia? Ullam, expedita.
+            </p>
+            <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
+              <Link
+                rel="noopener noreferrer"
+                href="#"
+                className="px-8 py-3 text-lg font-semibold rounded text-white flex items-center gap-2
+             bg-gradient-to-r from-[#088347] to-[#C6E824]
+             transition-all duration-300 hover:scale-105
+             shadow-lg hover:shadow-green-500/70 cursor-pointer"
+              >
+                <ImWhatsapp className="text-3xl text-white" />
+                Contact via Whatsapp
+              </Link>
+            </div>
+            <div className="flex items-center text-4xl mt-8 gap-4">
+              <span className="text-2xl">Share</span>
+              <a href="#">
+                <FaFacebook />
+              </a>
+              <a href="#">
+                <CiTwitter />
+              </a>
+              <a href="#">
+                <LuShare2 />
+              </a>
+            </div>
+            <Link href={"/categories"}>
+              <button
+                className="mt-8 px-6 py-2 relative rounded-lg font-semibold text-white flex items-center gap-2
+             bg-gradient-to-r from-[#088347] to-[#C6E824]
+             transition-all duration-300 hover:scale-105
+             shadow-lg hover:shadow-green-500/70 cursor-pointer"
+              >
+                <MdKeyboardDoubleArrowLeft />
+                Back to Categories
+                {/* Neon green glow */}
+                <span
+                  className="absolute inset-0 rounded-lg pointer-events-none
+                   bg-green-400 opacity-0 hover:opacity-50
+                   blur-2xl mix-blend-lighten transition-all duration-300 "
+                ></span>
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Products Section */}
+      {relatedProducts.length > 0 && (
+        <section className="mt-20">
+          <h2 className={`${playfair.className} text-3xl text-center mb-6 text-green-900 font-bold`}>Related Products</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedProducts.map((p) => (
+              <Link key={p.id} href={`/product/${p.id}`}>
+                <div className="border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer">
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    width={300}
+                    height={300}
+                    className="object-contain h-48 w-full mb-4"
+                  />
+                  <h3 className="font-semibold text-lg">{p.name}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default ProductDetails;
+
 const productsData: Record<
   string,
   { id: number; name: string; image: string }[]
@@ -374,192 +481,3 @@ const productsData: Record<
     },
   ],
 };
-
-const Categories = () => {
-  const [active, setActive] = useState("Circuit Breakers");
-  const [filter, setFilter] = useState("All");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const desktopRef = useRef<HTMLDivElement>(null);
-  const mobileRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "up" | "down", type: "desktop" | "mobile") => {
-    const ref = type === "desktop" ? desktopRef.current : mobileRef.current;
-    if (ref) {
-      const scrollAmount = 100;
-      ref.scrollBy({
-        top: direction === "down" ? scrollAmount : -scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  // current products
-  const currentProducts = productsData[active] || [];
-
-  // --- ADDING FILTER LOGIC ---
-  let displayedProducts = currentProducts;
-
-  if (filter !== "All") {
-    displayedProducts = currentProducts.filter((product) => {
-      if (filter === "Indoor") return product.name.includes("Indoor");
-      if (filter === "Outdoor") return product.name.includes("Outdoor");
-      if (filter === "Electrical") return product.name.includes("Electric");
-      if (filter === "Smart Devices") return product.name.includes("Smart");
-      return true;
-    });
-  }
-
-  return (
-    <motion.div
-      initial={{ y: 200, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: 0.3,
-        type: "keyframes",
-        stiffness: 60,
-        duration: 2,
-      }}
-      className="flex h-screen bg-gray-50 lg:px-14"
-    >
-      {/* Sidebar */}
-      <div className="hidden lg:flex relative w-64 bg-white flex flex-col lg:mt-20">
-        <div
-          ref={desktopRef}
-          className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-        >
-          <ul className="space-y-2 p-4">
-            {menuItems.map((item) => (
-              <li
-                key={item}
-                onClick={() => setActive(item)}
-                className={`cursor-pointer rounded-md px-3 py-4 text-sm font-medium flex items-center ${
-                  active === item
-                    ? "bg-gradient-to-r from-[#088347] to-[#b1ce23] text-white "
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Scroll buttons */}
-        <div className="flex justify-between p-2 border-t">
-          <button
-            onClick={() => scroll("up", "desktop")}
-            className="w-10 h-10 rounded-full bg-[#C6E824] hover:bg-gray-200 flex items-center justify-center cursor-pointer"
-          >
-            ↑
-          </button>
-          <button
-            onClick={() => scroll("down", "desktop")}
-            className="w-10 h-10 rounded-full bg-[#088347] hover:bg-gray-200 flex items-center justify-center cursor-pointer"
-          >
-            ↓
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Sidebar */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 lg:hidden ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex justify-end p-4 border-b">
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="text-gray-600 hover:text-gray-800 text-2xl"
-          >
-            <IoClose />
-          </button>
-        </div>
-
-        <div
-          ref={mobileRef}
-          className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-        >
-          <ul className="space-y-2 p-4">
-            {menuItems.map((item) => (
-              <li
-                key={item}
-                onClick={() => {
-                  setActive(item);
-                  setSidebarOpen(false);
-                }}
-                className={`cursor-pointer rounded-md px-3 py-4 text-sm font-medium ${
-                  active === item
-                    ? "bg-gradient-to-r from-[#088347] to-[#b1ce23] text-white lg:text-xl"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Hamburger Button */}
-      <button
-        onClick={() => setSidebarOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-md"
-      >
-        <HiMenu className="w-6 h-6 text-gray-700" />
-      </button>
-
-      {/* Main Display */}
-      <div className="flex-1 p-6 overflow-y-auto w-6xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 w-full">
-          <input
-            type="text"
-            placeholder="Search"
-            className="flex-1 min-w-[250px] sm:max-w-[120px] rounded-md border px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-          />
-          <div className="flex justify-center flex-1 lg:mr-20">
-            <h1 className={`${playfair.className} text-xl text-[#07484A]`}>
-              {active}
-            </h1>
-          </div>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="flex-1 sm:max-w-[140px] rounded-md border px-3 py-3 focus:outline-none focus:ring-2 focus:ring-gray-300 text-xl"
-          >
-            <option value="All">Sort by</option>
-            <option value="Indoor">Indoor</option>
-            <option value="Outdoor">Outdoor</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Smart Devices">Smart Devices</option>
-          </select>
-        </div>
-
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {displayedProducts.map((product) => (
-            <Link href={`/categories/${product.id}`} key={product.id}>
-              <div className="rounded-lg">
-                <Card style={{ width: 400, height: 500 }}>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    quality={100} // keeps high resolution
-                  />
-                </Card>
-                <p className="mt-2 text-center text-xl font-semibold">
-                  {product.name}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-export default Categories;
