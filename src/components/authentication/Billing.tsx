@@ -9,7 +9,7 @@ import { FiEye } from "react-icons/fi";
 import Link from "next/link";
 import { z } from "zod";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -55,7 +55,7 @@ const signUpSchema = z
   });
 
 const Billing = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  // const [currentStep, setCurrentStep] = useState(1);
 
   const firstNameId = useId();
   const lastNameId = useId();
@@ -97,6 +97,17 @@ const Billing = () => {
     }
   };
 
+  const pathName = usePathname()
+
+  const getCurrentPath = ()=>{
+    if(pathName.includes("signup/verify")) return 5
+    if(pathName.includes("signup/trade-only")) return 4;
+    if(pathName.includes("signup/delevery")) return 3;
+    if(pathName.includes("signup/billing")) return 2;
+    return 1;
+  }
+
+
   //Top Progress Bar:
   const steps = [
     { id: 1, label: "Registration" },
@@ -106,17 +117,10 @@ const Billing = () => {
     { id: 4, label: "Verify" },
   ];
 
-  const handleNext = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
+  const currentPath = getCurrentPath()
 
-  const handlePrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+
+ 
 
   return (
     <div>
@@ -144,8 +148,8 @@ const Billing = () => {
               {/*Progress Bar top*/}
               <div className="flex items-center justify-center gap-6 mt-6">
                 {steps.map((step, index) => {
-                  const isCompleted = currentStep > step.id;
-                  const isActive = currentStep === step.id;
+                  const isCompleted = currentPath > step.id;
+                  const isActive = currentPath === step.id;
 
                   return (
                     <div key={step.id} className="flex items-center">
@@ -184,7 +188,7 @@ const Billing = () => {
                         {index < steps.length - 1 && (
                           <div
                             className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
-                              currentStep > step.id
+                              currentPath > step.id
                                 ? "bg-green-500"
                                 : "bg-gray-300"
                             }`}
@@ -380,7 +384,6 @@ const Billing = () => {
                 <div className="w-full mt-4">
                   <Link href="/signup/billing/delivery">
                     <Button
-                      onClick={handleNext}
                       type="submit"
                       className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"

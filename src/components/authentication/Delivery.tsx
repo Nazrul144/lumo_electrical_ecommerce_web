@@ -9,7 +9,7 @@ import { FiEye } from "react-icons/fi";
 import Link from "next/link";
 import { z } from "zod";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -99,26 +99,32 @@ const Delivery = () => {
     }
   };
 
-  //Top Progress Bar:
-  const steps = [
-    { id: 1, label: "Registration" },
-    { id: 2, label: "Billing" },
-    { id: 3, label: "Delivery" },
-    { id: 3, label: "Trade Only" },
-    { id: 4, label: "Verify" },
-  ];
 
-  const handleNext = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
 
-  const handlePrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+  const pathName = usePathname()
+ 
+   const getCurrentPath = ()=>{
+     if(pathName.includes("signup/verify")) return 5
+     if(pathName.includes("signup/trade-only")) return 4;
+     if(pathName.includes("signup/billing/delivery")) return 3;
+     if(pathName.includes("signup/billing")) return 2;
+     return 1;
+   }
+ 
+ 
+   //Top Progress Bar:
+   const steps = [
+     { id: 1, label: "Registration" },
+     { id: 2, label: "Billing" },
+     { id: 3, label: "Delivery" },
+     { id: 4, label: "Trade Only" },
+     { id: 5, label: "Verify" },
+   ];
+ 
+   const currentPath = getCurrentPath()
+ 
+   console.log(currentPath)
+
 
   return (
     <div>
@@ -146,8 +152,8 @@ const Delivery = () => {
               {/*Progress Bar top*/}
               <div className="flex items-center justify-center gap-6 mt-6">
                 {steps.map((step, index) => {
-                  const isCompleted = currentStep > step.id;
-                  const isActive = currentStep === step.id;
+                  const isCompleted = currentPath > step.id;
+                  const isActive = currentPath === step.id;
 
                   return (
                     <div key={step.id} className="flex items-center">
@@ -405,7 +411,6 @@ const Delivery = () => {
                 <div className="w-full mt-4">
                   <Link href="/signup/billing/delivery/trade">
                     <Button
-                      onClick={handleNext}
                       type="submit"
                       className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"

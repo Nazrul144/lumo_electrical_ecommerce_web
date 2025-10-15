@@ -63,7 +63,6 @@ const Signup = () => {
   const phoneNumberId = useId();
   const passwordId = useId();
   const confirmPasswordId = useId();
-  const termsOfServiceId = useId();
   const id = useId();
 
   const [showPassword1, setShowPassword1] = useState(false);
@@ -109,8 +108,8 @@ const Signup = () => {
     { id: 1, label: "Registration" },
     { id: 2, label: "Billing" },
     { id: 3, label: "Delivery" },
-    { id: 3, label: "Trade Only" },
-    { id: 4, label: "Verify" },
+    { id: 4, label: "Trade Only" },
+    { id: 5, label: "Verify" },
   ];
 
   const handleNext = () => {
