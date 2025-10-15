@@ -204,7 +204,7 @@ const Signup = () => {
                 Sign up
               </h1>
               <p className="text-[#313131] font-poppins mt-5">
-                Let's get you all set up so you can access your personal
+                {"Let's "}get you all set up so you can access your personal
                 account.
               </p>
 
