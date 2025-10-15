@@ -244,7 +244,7 @@ const Verify = () => {
 
               <div className="mt-3">
                 <span>
-                  Didn't Recieve the code?{" "}
+                  <p>Didn&apos;t receive a code?</p>
                   <button className="text-red-500">Resend</button>
                 </span>
               </div>
