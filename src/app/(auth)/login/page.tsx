@@ -1,8 +1,9 @@
+import Login from "@/components/authentication/Login/Login"
 
 const LoginPage = () => {
   return (
     <div>
-      <h1>Login Route</h1>
+      <Login/>
     </div>
   )
 }

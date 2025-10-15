@@ -99,32 +99,28 @@ const Delivery = () => {
     }
   };
 
+  const pathName = usePathname();
 
+  const getCurrentPath = () => {
+    if (pathName.includes("signup/verify")) return 5;
+    if (pathName.includes("signup/trade-only")) return 4;
+    if (pathName.includes("signup/billing/delivery")) return 3;
+    if (pathName.includes("signup/billing")) return 2;
+    return 1;
+  };
 
-  const pathName = usePathname()
- 
-   const getCurrentPath = ()=>{
-     if(pathName.includes("signup/verify")) return 5
-     if(pathName.includes("signup/trade-only")) return 4;
-     if(pathName.includes("signup/billing/delivery")) return 3;
-     if(pathName.includes("signup/billing")) return 2;
-     return 1;
-   }
- 
- 
-   //Top Progress Bar:
-   const steps = [
-     { id: 1, label: "Registration" },
-     { id: 2, label: "Billing" },
-     { id: 3, label: "Delivery" },
-     { id: 4, label: "Trade Only" },
-     { id: 5, label: "Verify" },
-   ];
- 
-   const currentPath = getCurrentPath()
- 
-   console.log(currentPath)
+  //Top Progress Bar:
+  const steps = [
+    { id: 1, label: "Registration" },
+    { id: 2, label: "Billing" },
+    { id: 3, label: "Delivery" },
+    { id: 4, label: "Trade Only" },
+    { id: 5, label: "Verify" },
+  ];
 
+  const currentPath = getCurrentPath();
+
+  console.log(currentPath);
 
   return (
     <div>
@@ -168,7 +164,7 @@ const Delivery = () => {
                               ? "bg-green-500 border-green-500 text-white"
                               : isActive
                               ? "border-green-500 text-green-600"
-                              : "border-gray-300 text-gray-400"
+                              : "border-green-500 text-gray-400"
                           }`}
                         >
                           {isCompleted ? (
@@ -194,7 +190,7 @@ const Delivery = () => {
                             className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
                               currentStep > step.id
                                 ? "bg-green-500"
-                                : "bg-gray-300"
+                                : "bg-green-500"
                             }`}
                           ></div>
                         )}

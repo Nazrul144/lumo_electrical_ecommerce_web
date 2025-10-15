@@ -65,11 +65,7 @@ const Billing = () => {
 
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-  } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     resolver: zodResolver(signUpSchema),
     mode: "onChange", // Add this for immediate validation
     defaultValues: {
@@ -97,16 +93,15 @@ const Billing = () => {
     }
   };
 
-  const pathName = usePathname()
+  const pathName = usePathname();
 
-  const getCurrentPath = ()=>{
-    if(pathName.includes("signup/verify")) return 5
-    if(pathName.includes("signup/trade-only")) return 4;
-    if(pathName.includes("signup/delevery")) return 3;
-    if(pathName.includes("signup/billing")) return 2;
+  const getCurrentPath = () => {
+    if (pathName.includes("signup/verify")) return 5;
+    if (pathName.includes("signup/trade-only")) return 4;
+    if (pathName.includes("signup/delevery")) return 3;
+    if (pathName.includes("signup/billing")) return 2;
     return 1;
-  }
-
+  };
 
   //Top Progress Bar:
   const steps = [
@@ -117,10 +112,7 @@ const Billing = () => {
     { id: 4, label: "Verify" },
   ];
 
-  const currentPath = getCurrentPath()
-
-
- 
+  const currentPath = getCurrentPath();
 
   return (
     <div>
@@ -164,7 +156,7 @@ const Billing = () => {
                               ? "bg-green-500 border-green-500 text-white"
                               : isActive
                               ? "border-green-500 text-green-600"
-                              : "border-gray-300 text-gray-400"
+                              : "border-green-500 text-gray-400"
                           }`}
                         >
                           {isCompleted ? (
@@ -190,7 +182,7 @@ const Billing = () => {
                             className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
                               currentPath > step.id
                                 ? "bg-green-500"
-                                : "bg-gray-300"
+                                : "bg-green-500"
                             }`}
                           ></div>
                         )}
@@ -242,7 +234,6 @@ const Billing = () => {
                       type="text"
                       {...register("firstName")}
                     />
-                   
                   </div>
 
                   <div className="group relative mt-8 w-full">
@@ -260,7 +251,6 @@ const Billing = () => {
                       type="text"
                       {...register("lastName")}
                     />
-                 
                   </div>
                 </div>
 
@@ -297,7 +287,6 @@ const Billing = () => {
                       type="text"
                       {...register("email")}
                     />
-                   
                   </div>
 
                   <div className="flex flex-col lg:flex-row gap-4 w-full">
@@ -315,7 +304,6 @@ const Billing = () => {
                         type="text"
                         {...register("email")}
                       />
-                     
                     </div>
                   </div>
                 </div>

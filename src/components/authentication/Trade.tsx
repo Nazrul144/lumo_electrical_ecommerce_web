@@ -119,7 +119,7 @@ const Trade = () => {
    const pathName = usePathname()
    
      const getCurrentPath = ()=>{
-       if(pathName.includes("signup/verify")) return 5
+       if(pathName.includes("signup/billing/delivery/trade/verify")) return 5
        if(pathName.includes("signup/billing/delivery/trade")) return 4;
        if(pathName.includes("signup/billing/delivery")) return 3;
        if(pathName.includes("signup/billing")) return 2;
@@ -176,7 +176,7 @@ const Trade = () => {
                             ? "bg-green-500 border-green-500 text-white"
                             : isActive
                             ? "border-green-500 text-green-600"
-                            : "border-gray-300 text-gray-400"
+                            : "border-green-500 text-gray-400"
                         }`}
                       >
                         {isCompleted ? (
@@ -202,7 +202,7 @@ const Trade = () => {
                           className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
                             currentStep > step.id
                               ? "bg-green-500"
-                              : "bg-gray-300"
+                              : "bg-green-500"
                           }`}
                         ></div>
                       )}

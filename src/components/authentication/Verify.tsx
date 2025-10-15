@@ -58,7 +58,6 @@ const Verify = () => {
 
   const confirmPasswordId = useId();
 
-
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
@@ -97,29 +96,26 @@ const Verify = () => {
     }
   };
 
-   const pathName = usePathname()
-   
-     const getCurrentPath = ()=>{
-       if(pathName.includes("signup/billing/delivery/trade/verify")) return 5
-       if(pathName.includes("signup/billing/delivery/trade")) return 4;
-       if(pathName.includes("signup/billing/delivery")) return 3;
-       if(pathName.includes("signup/billing")) return 2;
-       return 1;
-     }
-   
-   
-     //Top Progress Bar:
-     const steps = [
-       { id: 1, label: "Registration" },
-       { id: 2, label: "Billing" },
-       { id: 3, label: "Delivery" },
-       { id: 4, label: "Trade Only" },
-       { id: 5, label: "Verify" },
-     ];
-   
-     const currentPath = getCurrentPath()
-   
+  const pathName = usePathname();
 
+  const getCurrentPath = () => {
+    if (pathName.includes("signup/billing/delivery/trade/verify")) return 5;
+    if (pathName.includes("signup/billing/delivery/trade")) return 4;
+    if (pathName.includes("signup/billing/delivery")) return 3;
+    if (pathName.includes("signup/billing")) return 2;
+    return 1;
+  };
+
+  //Top Progress Bar:
+  const steps = [
+    { id: 1, label: "Registration" },
+    { id: 2, label: "Billing" },
+    { id: 3, label: "Delivery" },
+    { id: 4, label: "Trade Only" },
+    { id: 5, label: "Verify" },
+  ];
+
+  const currentPath = getCurrentPath();
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -134,21 +130,20 @@ const Verify = () => {
             />
           </div>
 
-          
           <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
             <div className="w-full  flex justify-between lg:pr-16">
-                <div className="flex items-center ml-6 font-semibold">
+              <div className="flex items-center ml-6 font-semibold">
                 <IoChevronBackOutline />
-                <Link href={'/login'}>Back to login</Link>
-            </div>
+                <Link href={"/login"}>Back to login</Link>
+              </div>
               <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
             </div>
             {/*Back to login*/}
-          
+
             {/*Progress Bar top*/}
-            <div className="flex items-center justify-center gap-6 mt-6">
+            <div className="flex items-center lg:justify-center lg:gap-6 mt-6">
               {steps.map((step, index) => {
-                const isCompleted = currentPath > step.id;
+                const isCompleted = currentPath >= step.id;
                 const isActive = currentPath === step.id;
 
                 return (
@@ -164,7 +159,7 @@ const Verify = () => {
                             ? "bg-green-500 border-green-500 text-white"
                             : isActive
                             ? "border-green-500 text-green-600"
-                            : "border-gray-300 text-gray-400"
+                            : "border-green-500 text-gray-400"
                         }`}
                       >
                         {isCompleted ? (
@@ -190,7 +185,7 @@ const Verify = () => {
                           className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
                             currentStep > step.id
                               ? "bg-green-500"
-                              : "bg-gray-300"
+                              : "bg-green-500"
                           }`}
                         ></div>
                       )}
@@ -248,10 +243,13 @@ const Verify = () => {
               </div>
 
               <div className="mt-3">
-                <span>Didn't Recieve the code? <button className="text-red-500">Resend</button></span>
+                <span>
+                  Didn't Recieve the code?{" "}
+                  <button className="text-red-500">Resend</button>
+                </span>
               </div>
               <div className="w-full mt-4">
-                <Link href='#'>
+                <Link href="#">
                   <Button
                     type="submit"
                     className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
@@ -277,4 +275,3 @@ const Verify = () => {
 };
 
 export default Verify;
-

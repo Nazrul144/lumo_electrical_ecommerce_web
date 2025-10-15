@@ -160,7 +160,7 @@ const Signup = () => {
                             ? "bg-green-500 border-green-500 text-white"
                             : isActive
                             ? "border-green-500 text-green-600"
-                            : "border-gray-300 text-gray-400"
+                            : "border-green-500 text-gray-400"
                         }`}
                       >
                         {isCompleted ? (
@@ -186,7 +186,7 @@ const Signup = () => {
                           className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
                             currentStep > step.id
                               ? "bg-green-500"
-                              : "bg-gray-300"
+                              : "bg-green-500"
                           }`}
                         ></div>
                       )}
@@ -223,9 +223,7 @@ const Signup = () => {
                   >
                     <option value="">Select type</option>
                     <option value="retail">Retail</option>
-                    <option value="customer">Vendor</option>
-                    <option value="option1">Wholesale Buyer</option>
-                    <option value="option2">Distributor</option>
+                    <option value="customer">Trade</option>
                   </select>
                 </div>
               </div>
@@ -246,7 +244,7 @@ const Signup = () => {
                     {...register("firstName")}
                   />
                   {errors.firstName && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs mt-1">    
                       {errors.firstName.message}
                     </p>
                   )}
@@ -465,7 +463,7 @@ const Signup = () => {
               )}
 
               <div className="w-full mt-4">
-                <Link href='signup/billing'>
+                <Link href="signup/billing">
                   <Button
                     onClick={handleNext}
                     type="submit"
