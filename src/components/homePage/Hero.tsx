@@ -16,7 +16,7 @@ const Hero = () => {
             duration: 2,
           }}
           className="relative w-full h-[750px] bg-[url(/home/hero.png)]
-                    bg-cover bg-center rounded-b-[100px]"
+                    bg-cover bg-center rounded-b-[100px] z-30"
         >
           <div className="absolute w-full h-full z-10 bg-gray-900/50 rounded-b-[100px]" />{" "}
           {/*Overlay*/}
@@ -43,7 +43,7 @@ const Hero = () => {
               <div className="mt-8">
                 <button
                   className="h-10 text-white font-bold text-xl bg-linear-to-r px-3 from-[#088347]
-                            to-[#C6E824] cursor-pointer font-openSans rounded-lg"
+                            to-[#C6E824] cursor-pointer font-openSans rounded-lg "
                 >
                   Shop Now
                 </button>

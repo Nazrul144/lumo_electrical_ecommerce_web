@@ -2,14 +2,24 @@
 import React from "react";
 import { Card } from "antd";
 import Image from "next/image";
-import { User } from "@/app/(commonLayout)/products/page";
 import { motion } from "framer-motion";
 
-interface ProductCardProps {
-  user: User;
+interface ProductProps {
+  id?: number;
+  title?: string;
+  short_description?: string;
+  category_name?: string;
+    category_slug?: string,
+    availability?: true,
+    popularity?: 1,
+    primary_image?: string
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ user }) => {
+interface ProductCardProps {
+  product: ProductProps;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <motion.div
       initial={{ y: 300, opacity: 0 }}
@@ -23,12 +33,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ user }) => {
     >
       <Card className="z-0">
         <Image
-          src={"/placeholder.jpg"}
+          src={product.primary_image || "/placeholder.jpg"}
           width={300}
           height={500}
-          alt={user.name}
+          alt={product.title || 'Product image'}
         />
-        <h1 className="text-xl font-bold mt-2 text-center">{user.name}</h1>
+        <h1 className="text-xl font-bold mt-2 text-center">{product.title}</h1>
         {/* other user info */}
       </Card>
     </motion.div>
