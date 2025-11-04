@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebook, FaStar } from "react-icons/fa6";
 import { ImWhatsapp } from "react-icons/im";
 import { CiTwitter } from "react-icons/ci";
@@ -9,6 +9,7 @@ import { LuShare2 } from "react-icons/lu";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Playfair_Display } from "next/font/google";
 import api from "@/lib/api";
+import { useParams } from "next/navigation";
 
 
 const playfair = Playfair_Display({
@@ -18,13 +19,6 @@ const playfair = Playfair_Display({
 });
 
 
-type SearchParams = {
-  id: string;
-};
-
-type PageProps = {
-  params: SearchParams;
-};
 
 interface ProductProps {
   id: number;
@@ -46,8 +40,8 @@ interface ProductProps {
   }[];
 }
 
-const ProductDetails = ({ params }: PageProps) => {
-  // We can directly access params in client components now
+const ProductDetails = () => {
+  const params = useParams();
   const { id } = params;
   const [productDetails, setProductDetails] = useState<ProductProps | null>(
     null

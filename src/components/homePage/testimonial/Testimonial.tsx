@@ -18,7 +18,7 @@ const Testimonial = () => {
             <div>
                 <h1 className="text-[#07484A] text-4xl text-center font-playFairDisplay font-bold pt-14">Testimonials</h1>
                 <p className="text-[#07484A] text-xl text-center font-roboto mt-4">Over 15,000 happy customers.</p>
-                <div className="w-full mt-12 px-8 md:px-16 lg:px-24 2xl:px-32 flex items-center justify-center gap-4">
+                <div className="w-full mt-12 px-8 md:px-16 lg:px-24 2xl:px-32 flex flex-col items-center justify-center md:flex-row  gap-4">
                     <Swiper
                         modules={[Navigation, Scrollbar]}
                         spaceBetween={1}

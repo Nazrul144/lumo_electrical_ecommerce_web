@@ -16,7 +16,6 @@ import { Playfair_Display } from "next/font/google";
 
 const Navbar = () => {
   const pathName = usePathname();
-  console.log(pathName);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -65,8 +64,8 @@ const Navbar = () => {
                   <Image
                     src="/logo/logo.png"
                     alt="logo"
-                    height={100}
-                    width={100}
+                    height={60}
+                    width={80}
                   />
                 </Link>
               </div>

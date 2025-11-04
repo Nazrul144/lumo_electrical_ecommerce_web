@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { BsFilterLeft } from "react-icons/bs";
 import api from "@/lib/api";
+import { CiSearch } from "react-icons/ci";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ interface Category {
   id: number;
   name: string;
   slug: string;
+  image_url: string;
 }
 
 const Categories = () => {
@@ -48,9 +50,9 @@ const Categories = () => {
     if (active.length > 0) {
       const response = await api.get(`/products/categories/${active}/`);
       setFilteredData(response?.data?.data.products);
-    }else{
+    } else {
       const response = await api.get(`/products/list/`);
-      console.log("product list...",response?.data.data.results);
+      console.log("product list...", response?.data.data.results);
       setFilteredData(response?.data.data.results);
     }
   };
@@ -73,6 +75,14 @@ const Categories = () => {
     >
       {/* setting option in Sidebar */}
       <div className="hidden lg:flex relative w-64 bg-white flex flex-col lg:mt-20">
+        {/* <span className="flex justify-between items-center bg-[#F0F0F0]">
+          <CiSearch  className="text-xl"/>
+          <input
+            type="text"
+            placeholder="Search"
+            className="  px-3 py-3 text-sm focus:outline-none"
+          />
+        </span> */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           <ul className="space-y-2 p-4">
             {categories?.map((item: any) => (
@@ -130,21 +140,17 @@ const Categories = () => {
       </div>
 
       {/* Hamburger Button */}
-      <button
+      {/* <button
         onClick={() => setSidebarOpen(true)}
         className="lg:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-md"
       >
         <HiMenu className="w-6 h-6 text-gray-700" />
-      </button>
+      </button> */}
 
       {/* Main Display */}
       <div className="flex-1 p-6 overflow-y-auto w-6xl mx-auto">
+        {/* filter options  */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 w-full ">
-          <input
-            type="text"
-            placeholder="Search"
-            className="flex-1 min-w-[250px] sm:max-w-[120px] rounded-md border px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 sticky"
-          />
           <div className="flex justify-center flex-1 lg:mr-20">
             <h1 className={`${playfair.className} text-xl text-[#07484A]`}>
               {active}
@@ -171,26 +177,52 @@ const Categories = () => {
           </div>
         </div>
 
-        {/* Products Grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredData?.map((product) => (
-            <Link href={`/categories/${product?.id}`} key={product?.id}>
-              <div className="rounded-lg">
-                <Card style={{ width: 400, height: 500 }}>
+          {/* showing product card when selected any category  */}
+          {active.length > 0
+            ? filteredData?.map((product) => (
+                <Link href={`/categories/${product?.id}`} key={product?.id}>
+                  <div className="rounded-lg">
+                    <Card style={{ width: 400, height: 500 }}>
+                      <Image
+                        src={product?.primary_image}
+                        alt={product?.category_name}
+                        fill
+                        className="object-cover"
+                        quality={100}
+                      />
+                    </Card>
+                    <p className="mt-2 text-center text-xl font-semibold">
+                      {product?.category_name}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            : // showing category card
+              categories?.map((category) => (
+                <div
+                  key={category?.id}
+                  onClick={() => setActive(category.slug)}
+                  className="group relative w-[400px] h-[500px] rounded-lg cursor-pointer overflow-hidden"
+                >
+                  {/* Image */}
                   <Image
-                    src={product?.primary_image}
-                    alt={product?.category_name}
+                    src={category?.image_url}
+                    alt={category?.name}
                     fill
-                    className="object-cover"
-                    quality={100} // keeps high resolution
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    quality={100}
                   />
-                </Card>
-                <p className="mt-2 text-center text-xl font-semibold">
-                  {product?.category_name}
-                </p>
-              </div>
-            </Link>
-          ))}
+
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p className="text-white text-xl font-semibold">
+                      {category?.name}
+                    </p>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
     </motion.div>
