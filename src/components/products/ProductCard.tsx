@@ -20,6 +20,9 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+
+  console.log("product card showing", product);
+
   return (
     <motion.div
       initial={{ y: 300, opacity: 0 }}
