@@ -1,50 +1,47 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-import { useId } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { useId } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 // Zod validation schema
 const forgotPasswordSchema = z.object({
-    email: z.string()
-        .email("Invalid email address"),
+  email: z.string().email("Invalid email address"),
 });
 
-
 const ForgotPassword = () => {
+  const emailId = useId();
+  const router = useRouter();
 
-        const emailId = useId();
-    const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+    mode: "onChange", // Add this for immediate validation
+    defaultValues: {
+      email: "",
+    },
+  });
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting }
-    } = useForm({
-        resolver: zodResolver(forgotPasswordSchema),
-        mode: "onChange", // Add this for immediate validation
-        defaultValues: {
-            email: "",
-        }
-    });
-
-    const onSubmit = async (data) => {
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log("Form submitted:", data);
-            router.push("/verifycode");
-            // Handle successful submission here
-        } catch (error) {
-            console.error("Submission error:", error);
-        }
-    };
+  const onSubmit = async (data) => {
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("Form submitted:", data);
+      router.push("/verifycode");
+      // Handle successful submission here
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
+  };
 
   return (
     <div>
@@ -52,12 +49,14 @@ const ForgotPassword = () => {
         <div className="lg:flex gap-20">
           <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
             <div className="w-full max-w-[512px]">
-              <Image
-                src="/logo/logo.png"
-                alt="logo"
-                height={50}
-                width={100}
-              />
+              <Link href={"/"}>
+                <Image
+                  src="/logo/logo.png"
+                  alt="logo"
+                  height={100}
+                  width={100}
+                />
+              </Link>
             </div>
             <form
               className="w-full max-w-[512px] mt-24"
@@ -106,9 +105,6 @@ const ForgotPassword = () => {
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
               </div>
-
-             
-
             </form>
           </div>
 

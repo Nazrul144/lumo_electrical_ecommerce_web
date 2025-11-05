@@ -6,18 +6,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
+import BtnLink from "./BtnLink";
 
- const playfair = Playfair_Display({
-    subsets: ["latin"],
-    weight: ["400", "700"], // choose the weights you want
-    display: "swap",
-  });
-
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"], // choose the weights you want
+  display: "swap",
+});
 
 const Navbar = () => {
   const pathName = usePathname();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   const navLinks = [
     {
@@ -53,12 +53,12 @@ const Navbar = () => {
     <div>
       <header
         className="top-0 right-2 left-2 bg-white dark:bg-gray-900/80 backdrop-blur-md border-b
-        border-gray-200 dark:border-gray-800 rounded-full fixed z-50 mt-6 shadow-xl " 
+        border-gray-200 dark:border-gray-800 rounded-full fixed z-50 mt-6 shadow-xl "
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo Section */}
-            <div >
+            <div>
               <div className="flex-shrink-0">
                 <Link className="hidden lg:block" href="/">
                   <Image
@@ -70,13 +70,14 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
-
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {navLinks?.map((navLink) => (
                 <Link
                   className={` ${
-                    pathName === navLink.path ? "text-[#C6E824] underline playfair.className" : ""
+                    pathName === navLink.path
+                      ? "text-[#C6E824] underline playfair.className"
+                      : ""
                   } ${playfair.className} font-bold text-[#088347] text-xl 
                         dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-300`}
                   href={navLink.path}
@@ -89,15 +90,28 @@ const Navbar = () => {
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-5">
-              <button className="p-2 rounded-full text-green-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                <Search className="h-6 w-6" />
-              </button>
-              <a href="#" className="rounded-full shadow-sm text-green-600">
-                <FaCircleUser className="h-7 w-7" />
-              </a>
+              {user ? (
+                <div>
+                  <button className="p-2 rounded-full text-green-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <Search className="h-6 w-6" />
+                  </button>
+                  <a href="#" className="rounded-full shadow-sm text-green-600">
+                    <FaCircleUser className="h-7 w-7" />
+                  </a>
+                </div>
+              ) : (
+                <div className="flex gap-5">
+                  <BtnLink
+                    text="Sign Up"
+                    className="border-[2px] border-solid [border-image-source:linear-gradient(90deg,#088347_0%,#C6E824_100%)] [border-image-slice:1] bg-[linear-gradient(90deg,#088347_0%,#C6E824_100%)] bg-clip-text text-transparent rounded-md"
+                    link="/signup"
+                  />
+                  <BtnLink text="Log in" link="/login" />
+                </div>
+              )}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* -------------------------------------------------Mobile Menu Button -----------------------------*/}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -168,7 +182,7 @@ const Navbar = () => {
                   } px-3 py-2 text-base font-medium text-[#088347] dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
                   href={navLink.path}
                   key={navLink.path}
-                   onClick={()=>setIsMenuOpen(false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {navLink.title}
                 </Link>

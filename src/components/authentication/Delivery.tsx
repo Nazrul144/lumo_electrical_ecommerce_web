@@ -138,12 +138,14 @@ const Delivery = () => {
 
             <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
               <div className="w-full  flex justify-end lg:pr-16">
-                <Image
-                  src="/logo/logo.png"
-                  alt="logo"
-                  height={100}
-                  width={100}
-                />
+                <Link href={"/"}>
+                  <Image
+                    src="/logo/logo.png"
+                    alt="logo"
+                    height={100}
+                    width={100}
+                  />
+                </Link>
               </div>
               {/*Progress Bar top*/}
               <div className="flex items-center justify-center gap-6 mt-6">

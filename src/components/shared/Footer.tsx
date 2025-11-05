@@ -69,7 +69,9 @@ export default function Footer() {
     >
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mt-10">
         <div className="lg:col-span-5">
-          <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+          <Link href={"/"}>
+            <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+          </Link>
         </div>
         <div className="flex flex-col space-x-5 pt-2">
           <div className="flex space-x-5">

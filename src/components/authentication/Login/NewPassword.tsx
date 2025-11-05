@@ -9,6 +9,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Zod validation schema
 const changePasswordSchema = z.object({
@@ -64,12 +65,14 @@ const NewPassword = () => {
         <div className="lg:flex gap-20">
           <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
             <div className="w-full max-w-[512px]">
-              <Image
-                src="/logo/logo.png"
-                alt="logo"
-                height={50}
-                width={100}
-              />
+              <Link href={"/"}>
+                <Image
+                  src="/logo/logo.png"
+                  alt="logo"
+                  height={100}
+                  width={100}
+                />
+              </Link>
             </div>
             <form
               className="w-full max-w-[512px] mt-24"

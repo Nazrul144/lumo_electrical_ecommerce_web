@@ -136,7 +136,14 @@ const Verify = () => {
                 <IoChevronBackOutline />
                 <Link href={"/login"}>Back to login</Link>
               </div>
-              <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+              <Link href={"/"}>
+                <Image
+                  src="/logo/logo.png"
+                  alt="logo"
+                  height={100}
+                  width={100}
+                />
+              </Link>
             </div>
             {/*Back to login*/}
 

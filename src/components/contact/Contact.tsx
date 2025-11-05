@@ -13,6 +13,7 @@ import { HiOutlineArrowRight } from "react-icons/hi2";
 import { Textarea } from "../ui/textarea";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { Label } from "@radix-ui/react-label";
+import Link from "next/link";
 
 const Contact = () => {
   const nameId = useId();
@@ -31,7 +32,9 @@ const Contact = () => {
             className="absolute top-50 left-4 sm:left-32 max-w-[300px] w-full h-[400px] z-10 flex flex-col items-center 
                 justify-center gap-6 bg-linear-to-b from-[#F8F8F8] to-[#088347] rounded-lg"
           >
-            <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+            <Link href={"/"}>
+              <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+            </Link>
             <h1 className="text-[#FFFDFB] font-garamond text-2xl">
               CONTACT US
             </h1>

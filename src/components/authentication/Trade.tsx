@@ -104,8 +104,6 @@ const Trade = () => {
     }
   };
 
-
-
   //File Upload:
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
     useFileUpload({
@@ -115,30 +113,26 @@ const Trade = () => {
   const previewUrl = files[0]?.preview || null;
   const fileName = files[0]?.file.name || null;
 
-  
-   const pathName = usePathname()
-   
-     const getCurrentPath = ()=>{
-       if(pathName.includes("signup/billing/delivery/trade/verify")) return 5
-       if(pathName.includes("signup/billing/delivery/trade")) return 4;
-       if(pathName.includes("signup/billing/delivery")) return 3;
-       if(pathName.includes("signup/billing")) return 2;
-       return 1;
-     }
-   
-   
-     //Top Progress Bar:
-     const steps = [
-       { id: 1, label: "Registration" },
-       { id: 2, label: "Billing" },
-       { id: 3, label: "Delivery" },
-       { id: 4, label: "Trade Only" },
-       { id: 5, label: "Verify" },
-     ];
-   
-     const currentPath = getCurrentPath()
-   
+  const pathName = usePathname();
 
+  const getCurrentPath = () => {
+    if (pathName.includes("signup/billing/delivery/trade/verify")) return 5;
+    if (pathName.includes("signup/billing/delivery/trade")) return 4;
+    if (pathName.includes("signup/billing/delivery")) return 3;
+    if (pathName.includes("signup/billing")) return 2;
+    return 1;
+  };
+
+  //Top Progress Bar:
+  const steps = [
+    { id: 1, label: "Registration" },
+    { id: 2, label: "Billing" },
+    { id: 3, label: "Delivery" },
+    { id: 4, label: "Trade Only" },
+    { id: 5, label: "Verify" },
+  ];
+
+  const currentPath = getCurrentPath();
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -155,7 +149,14 @@ const Trade = () => {
 
           <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
             <div className="w-full  flex justify-end lg:pr-16">
-              <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
+              <Link href={"/"}>
+                <Image
+                  src="/logo/logo.png"
+                  alt="logo"
+                  height={100}
+                  width={100}
+                />
+              </Link>
             </div>
             {/*Progress Bar top*/}
             <div className="flex items-center justify-center gap-6 mt-6">
@@ -340,19 +341,19 @@ const Trade = () => {
                     role="region"
                     className="mt-2 text-xs text-muted-foreground"
                   >
-
-
                     {/*Checkmark*/}
                     <div className="flex items-center gap-2 font-poppins">
                       <div className="flex items-center gap-2 text-lg">
                         <Checkbox id={id} />
                         <Label htmlFor={id}>
-                          Apply for <span className="text-red-600 font-semibold">Credit</span> Terms?
+                          Apply for{" "}
+                          <span className="text-red-600 font-semibold">
+                            Credit
+                          </span>{" "}
+                          Terms?
                         </Label>
                       </div>
                     </div>
-
-
                   </p>
                 </div>
               </div>

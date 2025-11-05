@@ -74,12 +74,7 @@ const Login = () => {
         <div className="lg:flex gap-20">
           <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
             <div className="w-full max-w-[512px]">
-              <Image
-                src="/logo/logo.png"
-                alt="logo"
-                height={100}
-                width={100}
-              />
+              <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
             </div>
             <form
               className="w-full max-w-[512px] mt-16"
@@ -200,11 +195,10 @@ const Login = () => {
               </div>
 
               <div className="border-1 border-gray-500 rounded-sm">
-                    <Button variant={"ghost"} className="w-full cursor-pointer">
-                      <FcGoogle /> Login with Google
-                    </Button>
-              </div>      
-              
+                <Button variant={"ghost"} className="w-full cursor-pointer">
+                  <FcGoogle /> Login with Google
+                </Button>
+              </div>
             </form>
           </div>
 
