@@ -2,10 +2,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useId, useState } from "react";
-
-import { FiEyeOff } from "react-icons/fi";
-import { FiEye } from "react-icons/fi";
+import { useId } from "react";
 import Link from "next/link";
 import { z } from "zod";
 
@@ -14,79 +11,49 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "antd";
 import { CheckCircle2 } from "lucide-react";
 
 // Zod validation schema
-const signUpSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First Name must be at least 2 characters")
-      .max(50, "First Name must be less than 50 characters"),
-    lastName: z
-      .string()
-      .min(2, "Last Name must be at least 2 characters")
-      .max(50, "Last Name must be less than 50 characters"),
-    email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(4, "Phone number must be at least 4 digits"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter"
-      )
-      .regex(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter"
-      )
-      .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    confirmPassword: z.string(),
-    agreeToTerms: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms and policy"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+const BillingSchema = z.object({
+  companyName: z
+    .string(),
+  vatNumber: z.number(),
+  registration: z
+    .number(),
+  poNumber: z.number(),
+  billingAddressLine1: z
+    .string(),
+  billingAddressLine2: z
+    .string(),
+  city: z
+    .string(),
+  province: z.string(),
+});
 
 const Billing = () => {
-  // const [currentStep, setCurrentStep] = useState(1);
-
-  const firstNameId = useId();
-  const lastNameId = useId();
-  const emailId = useId();
-  const passwordId = useId();
-  const id = useId();
+  const companyNameId = useId();
+  const vatNumberId = useId();
+  const registrationId = useId();
+  const poNumberId = useId();
+  const billingAddressLine1Id = useId();
+  const billingAddressLine2Id = useId();
+  const cityId = useId();
+  const postalCodeId = useId();
+  const provinceId = useId();
 
   const router = useRouter();
 
-  const { register, handleSubmit, watch } = useForm({
-    resolver: zodResolver(signUpSchema),
-    mode: "onChange", // Add this for immediate validation
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      confirmPassword: "",
-      agreeToTerms: false,
-    },
+  const { register, handleSubmit } = useForm({
+    resolver: zodResolver(BillingSchema),
+    mode: "onChange",
   });
-
-  const agreeToTerms = watch("agreeToTerms");
 
   const onSubmit = async (data: any) => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Form submitted:", data);
-      router.push("/sign-in");
+      router.push("/signup/billing/delivery");
       // Handle successful submission here
     } catch (error) {
       console.error("Submission error:", error);
@@ -108,8 +75,8 @@ const Billing = () => {
     { id: 1, label: "Registration" },
     { id: 2, label: "Billing" },
     { id: 3, label: "Delivery" },
-    { id: 3, label: "Trade Only" },
-    { id: 4, label: "Verify" },
+    { id: 4, label: "Trade Only" },
+    { id: 5, label: "Verify" },
   ];
 
   const currentPath = getCurrentPath();
@@ -205,18 +172,19 @@ const Billing = () => {
                 <div className="flex flex-col w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor="customerType"
+                      htmlFor={companyNameId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Company Name
                     </label>
                     <Input
-                      id={firstNameId}
+                      id={companyNameId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example"
                       type="text"
-                      {...register("firstName")}
+                      {...register("companyName")}
+                      required={true}
                     />
                   </div>
                 </div>
@@ -224,87 +192,92 @@ const Billing = () => {
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={firstNameId}
+                      htmlFor={vatNumberId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       VAT Number
                     </label>
                     <Input
-                      id={firstNameId}
+                      id={vatNumberId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 00000"
                       type="text"
-                      {...register("firstName")}
+                      {...register("vatNumber")}
+                      required={true}
                     />
                   </div>
 
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={lastNameId}
+                      htmlFor={registrationId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Company Registration (CIPC){" "}
                       <span className="text-red-500 ">*</span>
                     </label>
                     <Input
-                      id={lastNameId}
+                      id={registrationId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 0000"
                       type="text"
-                      {...register("lastName")}
+                      {...register("registration")}
+                      required={true}
                     />
                   </div>
                 </div>
 
                 <div className="group relative mt-8 w-full">
                   <label
-                    htmlFor="customerType"
+                    htmlFor={poNumberId}
                     className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                   >
                     PO Number
                   </label>
                   <Input
-                    id={firstNameId}
+                    id={poNumberId}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="000 0000 0000"
                     type="text"
-                    {...register("firstName")}
+                    {...register("poNumber")}
+                    required={true}
                   />
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={emailId}
+                      htmlFor={billingAddressLine1Id}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Billing Address Line 1{" "}
                       <span className="text-red-500 ">*</span>
                     </label>
                     <Input
-                      id={emailId}
+                      id={billingAddressLine1Id}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example: 123/A, Green Stree"
                       type="text"
-                      {...register("email")}
+                      {...register("billingAddressLine1")}
+                      required={true}
                     />
                   </div>
 
                   <div className="flex flex-col lg:flex-row gap-4 w-full">
                     <div className="group relative mt-8 w-full">
                       <label
-                        htmlFor={emailId}
+                        htmlFor={billingAddressLine2Id}
                         className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                       >
                         Billing Address Line 2
                       </label>
                       <Input
-                        id={emailId}
+                        id={billingAddressLine2Id}
                         className="h-10 text-[#1C1B1F] font-poppins"
                         placeholder="example: 123/A, Green Stree"
                         type="text"
-                        {...register("email")}
+                        {...register("billingAddressLine2")}
+                        required={true}
                       />
                     </div>
                   </div>
@@ -313,17 +286,19 @@ const Billing = () => {
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={passwordId}
+                      htmlFor={cityId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       City/Suburb <span className="text-red-500 ">*</span>
                     </label>
                     <div className="relative w-full">
                       <Input
-                        id={passwordId}
+                        id={cityId}
                         className="h-10 text-[#1C1B1F] font-poppins"
                         placeholder="New York"
                         type="text"
+                        {...register("city")}
+                        required={true}
                       />
                       <Button
                         type="button"
@@ -335,16 +310,18 @@ const Billing = () => {
                   </div>
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={emailId}
+                      htmlFor={postalCodeId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Postal Code
                     </label>
                     <Input
-                      id={emailId}
+                      id={postalCodeId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="0000"
                       type="text"
+                      required={true}
+                      {...register("postalCode")}
                     />
                   </div>
                 </div>
@@ -352,14 +329,14 @@ const Billing = () => {
                 <div className="flex flex-col w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor="customerType"
+                      htmlFor={provinceId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Province <span className="text-red-500 ">*</span>
                     </label>
                     <select
-                      id="customerType"
+                      id={provinceId}
                       className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                     >
                       <option value="">Select type</option>
@@ -372,7 +349,6 @@ const Billing = () => {
                 </div>
 
                 <div className="w-full mt-4">
-                  <Link href="/signup/billing/delivery">
                     <Button
                       type="submit"
                       className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
@@ -380,7 +356,6 @@ const Billing = () => {
                     >
                       Next
                     </Button>
-                  </Link>
                 </div>
               </form>
             </div>

@@ -16,7 +16,6 @@ import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "antd";
 import { CheckCircle2 } from "lucide-react";
 
 // Zod validation schema
@@ -31,7 +30,10 @@ const signUpSchema = z
       .min(2, "Last Name must be at least 2 characters")
       .max(50, "Last Name must be less than 50 characters"),
     email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(4, "Phone number must be at least 4 digits"),
+    phoneNumber: z
+          .string()
+          .min(4, "Phone number must be at least 4 digits")
+          .regex(/^\d+$/, "Phone number can only contain digits"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -63,8 +65,7 @@ const Signup = () => {
   const phoneNumberId = useId();
   const passwordId = useId();
   const confirmPasswordId = useId();
-  const id = useId();
-
+  const agreeToTermsId = useId();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
@@ -77,7 +78,7 @@ const Signup = () => {
     watch,
   } = useForm({
     resolver: zodResolver(signUpSchema),
-    mode: "onChange", // Add this for immediate validation
+    mode: "onChange",
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -96,7 +97,8 @@ const Signup = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Form submitted:", data);
-      router.push("/sign-in");
+      handleNext();
+      router.push("/signup/billing");
       // Handle successful submission here
     } catch (error) {
       console.error("Submission error:", error);
@@ -118,11 +120,6 @@ const Signup = () => {
     }
   };
 
-  const handlePrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -176,7 +173,6 @@ const Signup = () => {
                           <span>{step.id}</span>
                         )}
                       </div>
-
                       <div
                         className={`mt-2 px-3 py-1 rounded-full text-sm font-medium ${
                           isCompleted || isActive
@@ -186,7 +182,6 @@ const Signup = () => {
                       >
                         {step.label}
                       </div>
-
                       {/* connector line */}
                       {index < steps.length - 1 && (
                         <div
@@ -248,6 +243,7 @@ const Signup = () => {
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="john"
                     type="text"
+                    required={true}
                     {...register("firstName")}
                   />
                   {errors.firstName && (
@@ -269,6 +265,7 @@ const Signup = () => {
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="doe"
                     type="text"
+                    required={true}
                     {...register("lastName")}
                   />
                   {errors.lastName && (
@@ -292,6 +289,7 @@ const Signup = () => {
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="john.doe@gmail.com"
                     type="email"
+                    required={true}
                     {...register("email")}
                   />
                   {errors.email && (
@@ -311,7 +309,8 @@ const Signup = () => {
                     id={phoneNumberId}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder=""
-                    type="number"
+                    type="text"
+                    required={true}
                     {...register("phoneNumber")}
                   />
                   {errors.phoneNumber && (
@@ -333,8 +332,9 @@ const Signup = () => {
                   <Input
                     id={passwordId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="..............."
+                    placeholder="password"
                     type={showPassword1 ? "text" : "password"}
+                    required={true}
                     {...register("password")}
                   />
                   <Button
@@ -369,8 +369,9 @@ const Signup = () => {
                   <Input
                     id={confirmPasswordId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="..............."
+                    placeholder="confirm password"
                     type={showPassword2 ? "text" : "password"}
+                    required={true}
                     {...register("confirmPassword")}
                   />
                   <Button
@@ -393,64 +394,16 @@ const Signup = () => {
                   </p>
                 )}
               </div>
-
-              {/*Prograss bar:*/}
-              <div className="mt-4">
-                <Progress percent={100} />
-              </div>
-
-              {/* Password validation UI */}
-              {/* <div className="mt-3 text-sm space-y-1">
-                <p className="flex items-center gap-2">
-                  {/[A-Z]/.test(password) ? (
-                    <FiCheckCircle className="text-green-500 w-4 h-4" />
-                  ) : (
-                    <FiXCircle className="text-red-500 w-4 h-4" />
-                  )}
-                  <span>Need uppercase letter</span>
-                </p>
-
-                <p className="flex items-center gap-2">
-                  {/[a-z]/.test(password) ? (
-                    <FiCheckCircle className="text-green-500 w-4 h-4" />
-                  ) : (
-                    <FiXCircle className="text-red-500 w-4 h-4" />
-                  )}
-                  <span>Need lowercase letter</span>
-                </p>
-
-                <p className="flex items-center gap-2">
-                  {/\d/.test(password) ? (
-                    <FiCheckCircle className="text-green-500 w-4 h-4" />
-                  ) : (
-                    <FiXCircle className="text-red-500 w-4 h-4" />
-                  )}
-                  <span>Need number</span>
-                </p>
-
-                <p className="flex items-center gap-2">
-                  {/[^A-Za-z0-9]/.test(password) ? (
-                    <FiCheckCircle className="text-green-500 w-4 h-4" />
-                  ) : (
-                    <FiXCircle className="text-red-500 w-4 h-4" />
-                  )}
-                  <span>Need special character</span>
-                </p>
-
-                <p className="flex items-center gap-2">
-                  {password.length >= 8 ? (
-                    <FiCheckCircle className="text-green-500 w-4 h-4" />
-                  ) : (
-                    <FiXCircle className="text-red-500 w-4 h-4" />
-                  )}
-                  <span>Password should be at least 8 characters</span>
-                </p>
-              </div> */}
-
               <div className="flex items-center gap-2 font-poppins mt-8">
                 <div className="flex items-center gap-2">
-                  <Checkbox id={id} />
-                  <Label htmlFor={id}>
+                  <Checkbox 
+                    id={agreeToTermsId}
+                    checked={agreeToTerms}
+                    onCheckedChange={(checked) => {
+                      setValue("agreeToTerms", checked as boolean);
+                    }}
+                  />
+                  <Label htmlFor={agreeToTermsId}>
                     I agree to all the{" "}
                     <Link className="text-[#FF8682]" href="" target="_blank">
                       Terms{" "}
@@ -470,16 +423,13 @@ const Signup = () => {
               )}
 
               <div className="w-full mt-4">
-                <Link href="signup/billing">
-                  <Button
-                    onClick={handleNext}
-                    type="submit"
-                    className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
+                <Button
+                  type="submit"
+                  className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
-                  >
-                    Next
-                  </Button>
-                </Link>
+                >
+                  Next
+                </Button>
               </div>
 
               <p className="mt-4 text-center font-poppins">
