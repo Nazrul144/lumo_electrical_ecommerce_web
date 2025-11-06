@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import api from "@/lib/api";
 import { Headline } from "../shared/Headline";
 import BtnLink from "../shared/BtnLink";
+import Pagination from "../shared/Pagination";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -21,20 +22,26 @@ interface Category {
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-
-  const fatchingProduct = async () => {
-    try {
-      const response = await api.get("/products/categories?page=1");
-      setCategories(response?.data?.results?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   useEffect(() => {
-    fatchingProduct()
-  }, []);
+    const fatchingProduct = async () => {
+      try {
+        const response = await api.get(`/products/categories?page=${page}`);
+        setTotalPages(response?.data?.count);
+        setCategories(response?.data?.results?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fatchingProduct();
+  }, [page]);
+
+  const handlePageChange = (selectedPage: number) => {
+    setPage(selectedPage);
+  };
 
   return (
     <motion.div
@@ -49,7 +56,7 @@ const Categories = () => {
       className="lg:px-14"
     >
       {/*------------------ head line-------------   */}
-      <Headline text="Explore by Category"/>
+      <Headline text="Explore by Category" />
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -78,6 +85,8 @@ const Categories = () => {
             </div>
           ))}
         </div>
+        {/* Pagination */}
+        <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>
     </motion.div>
   );
