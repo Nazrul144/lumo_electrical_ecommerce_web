@@ -215,7 +215,7 @@ const Signup = () => {
                   <label
                     htmlFor="customerType"
                     className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                   >
                     Customer Type <span className="text-red-500 ">*</span>
                   </label>

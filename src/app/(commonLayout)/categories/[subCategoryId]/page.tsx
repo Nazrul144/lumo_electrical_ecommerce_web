@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import api from "@/lib/api";
-import { Headline } from "../shared/Headline";
-import BtnLink from "../shared/BtnLink";
+import { Headline } from "@/components/shared/Headline";
+import BtnLink from "@/components/shared/BtnLink";
+import { useParams } from "next/navigation";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -13,28 +14,34 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-interface Category {
+interface SubCategory {
   id: number;
   name: string;
   image: string;
 }
 
-const Categories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+const SubCategories = () => {
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const {subCategoryId} = useParams();
 
-  const fatchingProduct = async () => {
-    try {
-      const response = await api.get("/products/categories?page=1");
-      setCategories(response?.data?.results?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
 
   useEffect(() => {
-    fatchingProduct()
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get(`/products/categories/${subCategoryId}/subcategories/`);
+        setSubCategories(response.data.results.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProducts();
+  }, [subCategoryId]);
+
+  if(subCategories.length === 0){
+    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Subcategory found</div>
+  }
 
   return (
     <motion.div
@@ -49,20 +56,19 @@ const Categories = () => {
       className="lg:px-14"
     >
       {/*------------------ head line-------------   */}
-      <Headline text="Explore by Category"/>
+      <Headline text="Explore by Sub category"/>
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* showing product card when selected any category  */}
-          {categories?.map((category) => (
-            <div
-              key={category?.id}
+          {subCategories?.map((subCategory) => (<div
+              key={subCategory?.id}
               className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
             >
               {/* Image */}
               <Image
-                src={category?.image}
-                alt={category?.name}
+                src={subCategory?.image}
+                alt={subCategory?.name}
                 fill
                 className="object-contain transition-transform duration-300 group-hover:scale-105"
                 quality={100}
@@ -71,9 +77,9 @@ const Categories = () => {
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
                 <p className={`text-white text-6xl ${playfair.className}}`}>
-                  {category?.name}
+                  {subCategory?.name}
                 </p>
-                <BtnLink text="Explore" link={`/categories/${category?.id}`} />
+                <BtnLink text="Explore" link={`/categories/${subCategory?.id}`} />
               </div>
             </div>
           ))}
@@ -83,4 +89,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default SubCategories;

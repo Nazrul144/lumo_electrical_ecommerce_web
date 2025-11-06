@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+
 import { motion } from "framer-motion";
 
 const Hero = () => {
@@ -52,19 +53,6 @@ const Hero = () => {
           </div>
         </motion.div>
       </div>
-      <motion.h1
-        initial={{ y: 200, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{
-          delay: 0.3,
-          type: "keyframes",
-          stiffness: 60,
-          duration: 2,
-        }}
-        className="font-playFairDisplay font-semibold text-center text-5xl text-[#07484A] mb-24"
-      >
-        Explore by Category
-      </motion.h1>
     </div>
   );
 };

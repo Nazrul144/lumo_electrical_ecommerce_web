@@ -26,7 +26,7 @@ interface ProductProps {
   full_description: string;
   short_description: string;
   category: {
-    image_url: string;
+    image: string;
     name: string;
     slug: string;
     id: number;
@@ -42,25 +42,26 @@ interface ProductProps {
 
 const ProductDetails = () => {
   const params = useParams();
-  const { id } = params;
+  const { subCategoryId } = params;
   const [productDetails, setProductDetails] = useState<ProductProps | null>(
     null
   );
 
   const fetchProductDetails = React.useCallback(async () => {
     try {
-      const res = await api.get(`/products/detail/${id}/`);
+      const res = await api.get(`/products/categories/${subCategoryId}/subcategories/`);
+      console.log("checking subcategories..",res);
       setProductDetails(res.data.data);
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
-  }, [id]);
+  }, [subCategoryId]);
 
   useEffect(() => {
-    if (id) {
+    if (subCategoryId) {
       fetchProductDetails();
     }
-  }, [id, fetchProductDetails]);
+  }, [subCategoryId, fetchProductDetails]);
 
   if (!productDetails) {
     return <div>Loading...</div>;
@@ -72,7 +73,7 @@ const ProductDetails = () => {
         <div className="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row  lg:gap-28">
           <div className="flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 ">
             <Image
-              src={productDetails.category.image_url}
+              src={productDetails.image}
               alt={productDetails?.name || "Product Image"}
               width={500}
               height={500}

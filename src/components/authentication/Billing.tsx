@@ -17,15 +17,17 @@ import { CheckCircle2 } from "lucide-react";
 const BillingSchema = z.object({
   companyName: z
     .string(),
-  vatNumber: z.number(),
+  vatNumber: z.string(),
   registration: z
-    .number(),
-  poNumber: z.number(),
+    .string(),
+  poNumber: z.string(),
   billingAddressLine1: z
     .string(),
   billingAddressLine2: z
     .string(),
   city: z
+    .string(),
+  postalCode: z
     .string(),
   province: z.string(),
 });
@@ -43,10 +45,16 @@ const Billing = () => {
 
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm({
+  const { 
+    register,
+    formState: { errors, isSubmitting },
+    handleSubmit 
+    } = useForm({
     resolver: zodResolver(BillingSchema),
     mode: "onChange",
   });
+
+  console.log("Error from zod validation",errors);
 
   const onSubmit = async (data: any) => {
     try {
@@ -337,13 +345,19 @@ const Billing = () => {
                     </label>
                     <select
                       id={provinceId}
+                      {...register("province")}
                       className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                     >
-                      <option value="">Select type</option>
-                      <option value="retail">Retail</option>
-                      <option value="customer">Vendor</option>
-                      <option value="option1">Wholesale Buyer</option>
-                      <option value="option2">Distributor</option>
+                      <option disabled value="">Select province</option>
+                      <option value="eastern_cape">Eastern Cape</option>
+                      <option value="free_state">Free State</option>
+                      <option value="gauteng">Gauteng</option>
+                      <option value="kwazulu_natal">KwaZulu-Natal</option>
+                      <option value="limpopo">Limpopo</option>
+                      <option value="mpumalanga">Mpumalanga</option>
+                      <option value="northern_cape">Northern Cape</option>
+                      <option value="north_west">North West</option>
+                      <option value="western_cape">Western Cape</option>
                     </select>
                   </div>
                 </div>
