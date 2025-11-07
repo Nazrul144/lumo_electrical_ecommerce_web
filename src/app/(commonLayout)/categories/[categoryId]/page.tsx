@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import api from "@/lib/api";
-import { Headline } from "../shared/Headline";
-import BtnLink from "../shared/BtnLink";
-import Pagination from "../shared/Pagination";
-import { usePathname } from "next/navigation";
+import { Headline } from "@/components/shared/Headline";
+import BtnLink from "@/components/shared/BtnLink";
+import { useParams } from "next/navigation";
+import Pagination from "@/components/shared/Pagination";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -15,35 +15,42 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-interface Category {
+interface SubCategory {
   id: number;
   name: string;
   image: string;
 }
 
-const Categories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+const SubCategories = () => {
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1)
-  const pathName = usePathname();
+  const {categoryId} = useParams();
+
+
 
   useEffect(() => {
-    const fatchingProduct = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await api.get(`/products/categories?page=${page}`);
+        const response = await api.get(`/products/categories/${categoryId}/subcategories?page=${page}`);
         setTotalPages(response?.data?.count);
-        setCategories(response?.data?.results?.data);
+        setSubCategories(response.data.results.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fatchingProduct();
-  }, [page]);
+    fetchProducts();
+  }, [categoryId, page]);
+
 
   const handlePageChange = (selectedPage: number) => {
     setPage(selectedPage);
   };
+
+  if(subCategories.length === 0){
+    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Subcategory found</div>
+  }
 
   return (
     <motion.div
@@ -55,23 +62,22 @@ const Categories = () => {
         stiffness: 60,
         duration: 2,
       }}
-      className="lg:px-14"
+      className="lg:px-14 mt-32"
     >
       {/*------------------ head line-------------   */}
-      <Headline text="Explore by Category" />
+      <Headline text="Explore by Sub category"/>
       {/*------------- showing option card ----------------- */}
-      <div className="container mx-auto pt-10">
+      <div className="overflow-y-auto container mx-auto pt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* showing product card when selected any category  */}
-          {categories?.map((category) => (
-            <div
-              key={category?.id}
+          {subCategories?.map((subCategory) => (<div
+              key={subCategory?.id}
               className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
             >
               {/* Image */}
               <Image
-                src={category?.image}
-                alt={category?.name}
+                src={subCategory?.image}
+                alt={subCategory?.name}
                 fill
                 className="object-contain transition-transform duration-300 group-hover:scale-105"
                 quality={100}
@@ -80,18 +86,17 @@ const Categories = () => {
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
                 <p className={`text-white text-6xl text-center ${playfair.className}}`}>
-                  {category?.name}
+                  {subCategory?.name}
                 </p>
-                <BtnLink text="Explore" link={`/categories/${category?.id}`} />
+                <BtnLink text="Explore" link={`/categories/${categoryId}/${subCategory?.id}`} />
               </div>
             </div>
           ))}
         </div>
-        {/* Pagination */}
-        {pathName === "/categories" ?<Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} /> : <div className="flex justify-center items-center mt-10"><BtnLink text="Explore All Categories" isIcone={true} link="/categories"/></div>}
+        <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>
     </motion.div>
   );
 };
 
-export default Categories;
+export default SubCategories;

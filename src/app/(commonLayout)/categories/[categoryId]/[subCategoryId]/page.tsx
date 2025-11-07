@@ -7,6 +7,7 @@ import api from "@/lib/api";
 import { Headline } from "@/components/shared/Headline";
 import BtnLink from "@/components/shared/BtnLink";
 import { useParams } from "next/navigation";
+import Pagination from "@/components/shared/Pagination";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -14,33 +15,53 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-interface SubCategory {
-  id: number;
-  name: string;
-  image: string;
+interface primary_image {
+  id:number,
+  alt_text?:string,
+  image:string
 }
 
-const SubCategories = () => {
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-  const {subCategoryId} = useParams();
+interface Products {
+  id: number;
+  name: string;
+  brand: string;
+  availability: string;
+  code: string;
+  primary_image: primary_image;
+}
+
+const Products = () => {
+  const [products, setProducts] = useState<Products[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const {categoryId,subCategoryId} = useParams();
+
 
 
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get(`/products/categories/${subCategoryId}/subcategories/`);
-        setSubCategories(response.data.results.data);
+        const response = await api.get(`/products/categories/${categoryId}/subcategories/${subCategoryId}/products/`);
+        console.log("checking respose...", response?.data?.results.data);
+
+        setTotalPages(response?.data?.count);
+        setProducts(response.data.results.data);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchProducts();
-  }, [subCategoryId]);
+  }, [categoryId,subCategoryId, page]);
 
-  if(subCategories.length === 0){
-    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Subcategory found</div>
+
+  const handlePageChange = (selectedPage: number) => {
+    setPage(selectedPage);
+  };
+
+  if(products.length === 0){
+    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Products found</div>
   }
 
   return (
@@ -53,22 +74,22 @@ const SubCategories = () => {
         stiffness: 60,
         duration: 2,
       }}
-      className="lg:px-14"
+      className="lg:px-14 mt-32"
     >
       {/*------------------ head line-------------   */}
-      <Headline text="Explore by Sub category"/>
+      <Headline text="Explore Products"/>
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* showing product card when selected any category  */}
-          {subCategories?.map((subCategory) => (<div
-              key={subCategory?.id}
+          {products?.map((product) => (<div
+              key={product?.id}
               className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
             >
               {/* Image */}
               <Image
-                src={subCategory?.image}
-                alt={subCategory?.name}
+                src={product?.primary_image?.image}
+                alt={product?.name}
                 fill
                 className="object-contain transition-transform duration-300 group-hover:scale-105"
                 quality={100}
@@ -76,17 +97,18 @@ const SubCategories = () => {
 
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p className={`text-white text-6xl ${playfair.className}}`}>
-                  {subCategory?.name}
+                <p className={`text-white text-6xl text-center ${playfair.className}}`}>
+                  {product?.name}
                 </p>
-                <BtnLink text="Explore" link={`/categories/${subCategory?.id}`} />
+                <BtnLink text="Explore" link={`/categories/${subCategoryId}/${product?.id}`} />
               </div>
             </div>
           ))}
         </div>
+        <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>
     </motion.div>
   );
 };
 
-export default SubCategories;
+export default Products;

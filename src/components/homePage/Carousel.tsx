@@ -9,6 +9,7 @@ import { Navigation, Scrollbar } from "swiper/modules";
 import BestSellersCard from "./BestSellersCard";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import BtnLink from "../shared/BtnLink";
 
 const bestSellers: BestSellerItem[] = [
   {
@@ -117,13 +118,7 @@ const Carousel: React.FC = () => {
         </div>
 
         <div className="mt-8 flex items-center justify-center">
-          <Button
-            type="button"
-            className="text-[#FDFBF8] text-xl bg-linear-to-r from-[#088347] to-[#C6E824] font-openSans rounded-md flex gap-2 mb-12 "
-          >
-            <Link href={"/products"}>Explore all items</Link>
-            <FaArrowRight />
-          </Button>
+          <BtnLink text="Explore All Products" isIcone={true} link="/products"/>
         </div>
       </div>
     </motion.div>

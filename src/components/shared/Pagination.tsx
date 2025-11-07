@@ -42,7 +42,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange }) => 
   const visiblePages = getVisiblePages();
 
   return (
-    <div className="flex items-center justify-center space-x-2 mt-12">
+    <div className="flex items-center justify-center space-x-2 my-12">
       {/* Prev Button */}
       <button
         onClick={handlePrev}

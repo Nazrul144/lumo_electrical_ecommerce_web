@@ -42,26 +42,26 @@ interface ProductProps {
 
 const ProductDetails = () => {
   const params = useParams();
-  const { subCategoryId } = params;
+  const { productId } = params;
   const [productDetails, setProductDetails] = useState<ProductProps | null>(
     null
   );
 
   const fetchProductDetails = React.useCallback(async () => {
     try {
-      const res = await api.get(`/products/categories/${subCategoryId}/subcategories/`);
+      const res = await api.get(`/products/categories/${productId}/subcategories/`);
       console.log("checking subcategories..",res);
       setProductDetails(res.data.data);
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
-  }, [subCategoryId]);
+  }, [productId]);
 
   useEffect(() => {
-    if (subCategoryId) {
+    if (productId) {
       fetchProductDetails();
     }
-  }, [subCategoryId, fetchProductDetails]);
+  }, [productId, fetchProductDetails]);
 
   if (!productDetails) {
     return <div>Loading...</div>;
