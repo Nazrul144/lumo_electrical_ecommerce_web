@@ -56,6 +56,9 @@ const signUpSchema = z
     path: ["confirmPassword"],
   });
 
+
+
+  
 const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -73,7 +76,7 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setValue,
     watch,
   } = useForm({

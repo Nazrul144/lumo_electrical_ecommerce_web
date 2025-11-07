@@ -4,15 +4,23 @@ import { Card } from "antd";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+
+interface primary_image {
+  id: number;
+  alt_text?: string;
+  image: string;
+}
+
+
 interface ProductProps {
   id?: number;
   title?: string;
   short_description?: string;
   category_name?: string;
-    category_slug?: string,
-    availability?: true,
-    popularity?: 1,
-    primary_image?: string
+  category_slug?: string,
+  availability?: true,
+  popularity?: 1,
+  primary_image?: primary_image
 }
 
 interface ProductCardProps {
@@ -21,7 +29,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
-  console.log("product card showing", product);
+  console.log("checking.......", product);
 
   return (
     <motion.div
@@ -36,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <Card className="z-0">
         <Image
-          src={product.primary_image || "/placeholder.jpg"}
+          src={product?.primary_image?.image || "/placeholder.jpg"}
           width={300}
           height={500}
           alt={product.title || 'Product image'}

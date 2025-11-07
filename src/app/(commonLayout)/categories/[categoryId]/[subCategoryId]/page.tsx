@@ -100,7 +100,7 @@ const Products = () => {
                 <p className={`text-white text-6xl text-center ${playfair.className}}`}>
                   {product?.name}
                 </p>
-                <BtnLink text="Explore" link={`/categories/${subCategoryId}/${product?.id}`} />
+                <BtnLink text="Explore" link={`/categories/${categoryId}/${subCategoryId}/${product?.id}`} />
               </div>
             </div>
           ))}
