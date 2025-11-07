@@ -9,12 +9,23 @@ import { useId } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { HiOutlineArrowRight } from "react-icons/hi2";
-
 import { Textarea } from "../ui/textarea";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/lib/api";
+import Swal from "sweetalert2";
+
+const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(8, "Phone number must be at least 8 digits"),
+  company: z.string(),
+  message: z.string(),
+});
 
 const Contact = () => {
   const nameId = useId();
@@ -23,8 +34,29 @@ const Contact = () => {
   const companyId = useId();
   const messageId = useId();
 
-  const {} = useForm()
-  
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    resolver: zodResolver(contactSchema),
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: any) => {
+    const res = await api.post("/contact/", data);
+    if (res.status === 201) {
+      Swal.fire({
+        title: res?.data?.message,
+        icon: "success",
+      });
+    } else {
+      Swal.fire({
+        title: res?.data?.message,
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div>
@@ -91,14 +123,14 @@ const Contact = () => {
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
-                      stroke="currentColor"
+                    stroke="currentColor"
                     className="w-6 h-6"
                   >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                      />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                    />
                   </svg>
                 </span>
 
@@ -183,7 +215,10 @@ const Contact = () => {
         </section>
         <div className="flex flex-col lg:flex-row gap-6 mt-12">
           {/* Form */}
-          <div className="w-full lg:w-1/2 p-2 lg:p-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full lg:w-1/2 p-2 lg:p-6"
+          >
             <div className="flex flex-col sm:flex-row gap-8 w-full mt-8">
               <div className="group relative w-full">
                 <label
@@ -198,7 +233,13 @@ const Contact = () => {
                   className="h-10 text-[#1C1B1F] font-openSans"
                   placeholder="enter your name"
                   type="text"
+                  {...register("name")}
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div className="group relative w-full">
@@ -214,7 +255,13 @@ const Contact = () => {
                   className="h-10 text-[#1C1B1F] font-openSans"
                   placeholder="abc@gmail.com"
                   type="text"
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -232,7 +279,13 @@ const Contact = () => {
                   className="h-10 text-[#1C1B1F] font-openSans"
                   placeholder="+00 00 000 000"
                   type="text"
+                  {...register("phone")}
                 />
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.phone.message}
+                  </p>
+                )}
               </div>
 
               <div className="group relative w-full">
@@ -248,7 +301,13 @@ const Contact = () => {
                   className="h-10 text-[#1C1B1F] font-openSans"
                   placeholder="Company name"
                   type="text"
+                  {...register("company")}
                 />
+                {errors.company && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.company.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -264,7 +323,13 @@ const Contact = () => {
                 id={messageId}
                 className="font-openSans h-[150px]"
                 placeholder="Type message..."
+                {...register("message")}
               />
+              {errors.message && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.message.message}
+                  </p>
+                )}
             </div>
 
             <div className="w-full mt-8">
@@ -277,7 +342,7 @@ const Contact = () => {
                 <HiOutlineArrowRight />
               </Button>
             </div>
-          </div>
+          </form>
 
           {/* -----------Map------------------ */}
           <div className="w-full lg:w-1/2 p-2 h-[450px] lg:p-4">

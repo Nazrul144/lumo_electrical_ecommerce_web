@@ -8,6 +8,7 @@ import { Headline } from "@/components/shared/Headline";
 import BtnLink from "@/components/shared/BtnLink";
 import { useParams } from "next/navigation";
 import Pagination from "@/components/shared/Pagination";
+import { EmptyData } from "@/components/shared/EmptyData";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -61,7 +62,7 @@ const Products = () => {
   };
 
   if(products.length === 0){
-    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Products found</div>
+    return  <EmptyData/>
   }
 
   return (

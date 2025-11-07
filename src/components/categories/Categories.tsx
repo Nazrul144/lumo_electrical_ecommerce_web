@@ -8,6 +8,7 @@ import { Headline } from "../shared/Headline";
 import BtnLink from "../shared/BtnLink";
 import Pagination from "../shared/Pagination";
 import { usePathname } from "next/navigation";
+import { Loader } from "../shared/Loader";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -24,20 +25,23 @@ interface Category {
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const pathName = usePathname();
+  
 
   useEffect(() => {
     const fatchingProduct = async () => {
       try {
+        setIsLoading(true);
         const response = await api.get(`/products/categories?page=${page}`);
         setTotalPages(response?.data?.count);
         setCategories(response?.data?.results?.data);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
-
     fatchingProduct();
   }, [page]);
 
@@ -61,7 +65,7 @@ const Categories = () => {
       <Headline text="Explore by Category" />
       {/*------------- showing option card ----------------- */}
       <div className="container mx-auto pt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {isLoading ? <Loader/> : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* showing product card when selected any category  */}
           {categories?.map((category) => (
             <div
@@ -86,7 +90,7 @@ const Categories = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
         {/* Pagination */}
         {pathName === "/categories" ?<Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} /> : <div className="flex justify-center items-center mt-10"><BtnLink text="Explore All Categories" isIcone={true} link="/categories"/></div>}
       </div>
