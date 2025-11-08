@@ -9,6 +9,7 @@ import BtnLink from "@/components/shared/BtnLink";
 import { useParams } from "next/navigation";
 import Pagination from "@/components/shared/Pagination";
 import { EmptyData } from "@/components/shared/EmptyData";
+import LoadingPage from "@/app/(commonLayout)/products/loading";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -36,6 +37,8 @@ const Products = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1)
   const {categoryId,subCategoryId} = useParams();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
 
 
 
@@ -43,18 +46,19 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const response = await api.get(`/products/categories/${categoryId}/subcategories/${subCategoryId}/products/`);
-        console.log("checking respose...", response?.data?.results.data);
-
         setTotalPages(response?.data?.count);
         setProducts(response.data.results.data);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+      }finally{
+        setIsLoading(false);
       }
     };
-
     fetchProducts();
-  }, [categoryId,subCategoryId, page]);
+  }, [categoryId,subCategoryId, page, setIsLoading]);
 
 
   const handlePageChange = (selectedPage: number) => {
@@ -62,7 +66,13 @@ const Products = () => {
   };
 
   if(products.length === 0){
-    return  <EmptyData/>
+      return  <EmptyData/>
+    }
+
+  if(isLoading){
+    return (<div className="flex justify-center items-center h-screen">
+      <LoadingPage/>
+    </div>);
   }
 
   return (

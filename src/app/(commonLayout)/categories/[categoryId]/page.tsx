@@ -8,6 +8,8 @@ import { Headline } from "@/components/shared/Headline";
 import BtnLink from "@/components/shared/BtnLink";
 import { useParams } from "next/navigation";
 import Pagination from "@/components/shared/Pagination";
+import { EmptyData } from "@/components/shared/EmptyData";
+import LoadingPage from "../../products/loading";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -24,7 +26,8 @@ interface SubCategory {
 const SubCategories = () => {
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {categoryId} = useParams();
 
 
@@ -32,11 +35,16 @@ const SubCategories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const response = await api.get(`/products/categories/${categoryId}/subcategories?page=${page}`);
         setTotalPages(response?.data?.count);
         setSubCategories(response.data.results.data);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+      }
+      finally{
+        setIsLoading(false);
       }
     };
 
@@ -49,7 +57,13 @@ const SubCategories = () => {
   };
 
   if(subCategories.length === 0){
-    return  <div className="flex justify-center items-center h-screen text-3xl text-red-700"> No Subcategory found</div>
+      return  <EmptyData/>
+    }
+
+  if(isLoading){
+    return (<div className="flex justify-center items-center h-screen">
+      <LoadingPage/>
+    </div>);
   }
 
   return (

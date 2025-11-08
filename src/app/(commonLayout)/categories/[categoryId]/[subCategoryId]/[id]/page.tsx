@@ -11,6 +11,8 @@ import { Playfair_Display } from "next/font/google";
 import api from "@/lib/api";
 import { useParams } from "next/navigation";
 import BtnLink from "@/components/shared/BtnLink";
+import { EmptyData } from "@/components/shared/EmptyData";
+import LoadingPage from "@/app/(commonLayout)/products/loading";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -64,6 +66,7 @@ const ProductDetails = () => {
   const [imageId, setImageId] = useState<number>(0);
   const { categoryId, subCategoryId, id } = params;
   const [relatedProducts, setRelatedProducts] = useState<RelatedProducts[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [productDetails, setProductDetails] = useState<ProductProps | null>(
     null
   );
@@ -78,6 +81,8 @@ const ProductDetails = () => {
         setRelatedProducts(response.data.results.data);
       } catch (error) {
         console.log(error);
+      }finally{
+        setIsLoading(false);
       }
     };
 
@@ -87,8 +92,8 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
+        setIsLoading(true);
         const res = await api.get(`/products/${id}/`);
-        console.log("checking subcategories..", res.data.data);
         setProductDetails(res.data.data);
       } catch (error) {
         console.error("Failed to fetch product details:", error);
@@ -97,9 +102,13 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-  if (!productDetails) {
-    return <div>Loading...</div>;
+ 
+  if(isLoading){
+    return (<div className="flex justify-center items-center h-screen">
+      <LoadingPage/>
+    </div>);
   }
+
 
   return (
     <div className="my-12 lg:px-20">

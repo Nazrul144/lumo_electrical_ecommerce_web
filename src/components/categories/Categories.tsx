@@ -9,6 +9,7 @@ import BtnLink from "../shared/BtnLink";
 import Pagination from "../shared/Pagination";
 import { usePathname } from "next/navigation";
 import { Loader } from "../shared/Loader";
+import { EmptyData } from "../shared/EmptyData";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -40,6 +41,8 @@ const Categories = () => {
         setIsLoading(false);
       } catch (error) {
         console.log(error);
+      }finally{
+        setIsLoading(false);
       }
     };
     fatchingProduct();
@@ -48,6 +51,11 @@ const Categories = () => {
   const handlePageChange = (selectedPage: number) => {
     setPage(selectedPage);
   };
+
+  if(categories.length === 0){
+    return  <EmptyData/>
+  }
+
 
   return (
     <motion.div

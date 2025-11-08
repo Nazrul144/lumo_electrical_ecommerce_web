@@ -1,5 +1,22 @@
-import React from "react";
+import { LoaderIcon } from "lucide-react"
 
-export const Loader = () => {
-  return <span className="loading loading-bars loading-xl"></span>;
-};
+import { cn } from "@/lib/utils"
+
+function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <LoaderIcon
+      role="status"
+      aria-label="Loading"
+      className={cn("size-10 animate-spin", className)}
+      {...props}
+    />
+  )
+}
+
+export function Loader() {
+  return (
+    <div className="flex  justify-center items-center h-screen text-4xl">
+      <Spinner />
+    </div>
+  )
+}
