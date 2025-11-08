@@ -25,11 +25,12 @@ interface ProductProps {
 
 interface ProductCardProps {
   product: ProductProps;
+  selectedFilter?: string | null;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, selectedFilter = null }) => {
 
-  console.log("checking.......", product);
+
 
   return (
     <motion.div
@@ -42,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         duration: 2,
       }}
     >
-      <Card className="z-0">
+  <Card className="z-0" data-filter={selectedFilter ?? ""}>
         <Image
           src={product?.primary_image?.image || "/placeholder.jpg"}
           width={300}
