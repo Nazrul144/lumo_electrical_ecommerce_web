@@ -9,16 +9,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { BsFilterLeft } from "react-icons/bs";
+import { EmptyData } from "@/components/shared/EmptyData";
+import { Loader } from "@/components/shared/Loader";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -56,11 +51,9 @@ const ProductsPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategory, setSubCategory] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(
-    null
-  );
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
   // memoized sorted products based on selectedFilter (A2Z or Z2A)
@@ -80,11 +73,26 @@ const ProductsPage = () => {
   // fatching products
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await api.get("/products/");
-      setProducts(response?.data?.results?.data);
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        
+        // Join multiple values with commas instead of creating multiple parameters
+        if (selectedBrands.length) params.append('brand', selectedBrands.join(','));
+        if (selectedCategories.length) params.append('category', selectedCategories.join(','));
+        if (selectedSubCategories.length) params.append('subcategory', selectedSubCategories.join(','));
+        
+        const queryString = params.toString() ? `/products/?${params.toString()}` : '/products/';
+        const response = await api.get(queryString);
+        setProducts(response?.data?.results?.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchProducts();
-  }, []);
+  }, [selectedBrands, selectedCategories, selectedSubCategories]);
 
   // faching brands
   useEffect(() => {
@@ -125,11 +133,17 @@ const ProductsPage = () => {
     const fatchingCategories = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get(
-          `/products/categories/${selectedCategory}/subcategories`
-        );
-        console.log("checking subcategories...", response);
-        setSubCategory(response?.data?.results?.data);
+        // Only fetch subcategories for the last selected category
+        const lastSelectedCategory = selectedCategories[selectedCategories.length - 1];
+        if (lastSelectedCategory) {
+          const response = await api.get(
+            `/products/categories/${lastSelectedCategory}/subcategories`
+          );
+          console.log("checking subcategories...", response);
+          setSubCategory(response?.data?.results?.data);
+        } else {
+          setSubCategory([]);
+        }
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -138,7 +152,17 @@ const ProductsPage = () => {
       }
     };
     fatchingCategories();
-  }, [selectedCategory]);
+  }, [selectedCategories]);
+
+
+  if(isLoading){
+    return <Loader/>
+  }
+
+
+  if(sortedProducts?.length === 0){
+    return <EmptyData/>
+  }
 
 
   return (
@@ -160,10 +184,17 @@ const ProductsPage = () => {
                 {brands?.map((brand, idx) => (
                   <div
                     key={idx}
-                    onClick={() => setSelectedBrand(brand)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedBrands(prev => 
+                        prev.includes(brand) 
+                          ? prev.filter(b => b !== brand)
+                          : [...prev, brand]
+                      );
+                    }}
                     className="flex items-center gap-3"
                   >
-                    <Checkbox id={brand} />
+                    <Checkbox id={brand} checked={selectedBrands.includes(brand)} />
                     <Label htmlFor={brand}>{brand}</Label>
                   </div>
                 ))}
@@ -180,10 +211,17 @@ const ProductsPage = () => {
                 {categories?.map((category) => (
                   <div
                     key={category.id}
-                    onClick={() => setSelectedCategory(category?.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedCategories(prev => 
+                        prev.includes(category.id)
+                          ? prev.filter(id => id !== category.id)
+                          : [...prev, category.id]
+                      );
+                    }}
                     className="flex items-center gap-3"
                   >
-                    <Checkbox id={category.name} />
+                    <Checkbox id={category.name} checked={selectedCategories.includes(category.id)} />
                     <Label htmlFor={category.name}>{category.name}</Label>
                   </div>
                 ))}
@@ -201,12 +239,17 @@ const ProductsPage = () => {
                   {subCategory?.map((monoSubCategory) => (
                     <div
                       key={monoSubCategory.id}
-                      onClick={() =>
-                        setSelectedSubCategory(monoSubCategory?.id)
-                      }
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setSelectedSubCategories(prev => 
+                          prev.includes(monoSubCategory.id)
+                            ? prev.filter(id => id !== monoSubCategory.id)
+                            : [...prev, monoSubCategory.id]
+                        );
+                      }}
                       className="flex items-center gap-3"
                     >
-                      <Checkbox id={monoSubCategory.name} />
+                      <Checkbox id={monoSubCategory.name} checked={selectedSubCategories.includes(monoSubCategory.id)} />
                       <Label htmlFor={monoSubCategory.name}>
                         {monoSubCategory.name}
                       </Label>

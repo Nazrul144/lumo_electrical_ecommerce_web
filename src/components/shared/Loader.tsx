@@ -15,7 +15,7 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
 
 export function Loader() {
   return (
-    <div className="flex  justify-center items-center h-screen text-4xl">
+    <div className="flex justify-center items-center h-screen text-4xl">
       <Spinner />
     </div>
   )
