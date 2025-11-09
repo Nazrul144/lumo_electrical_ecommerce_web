@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
 import BtnLink from "./BtnLink";
+import SearchPopup from "./SearchPopUp";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -17,7 +18,8 @@ const playfair = Playfair_Display({
 const Navbar = () => {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     {
@@ -91,13 +93,13 @@ const Navbar = () => {
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-5">
               {user ? (
-                <div>
-                  <button className="p-2 rounded-full text-green-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <div className="flex items-center space-x-5">
+                  <button onClick={() => setIsOpen(true)} className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <Search className="h-6 w-6" />
                   </button>
-                  <a href="#" className="rounded-full shadow-sm text-green-600">
+                  <Link href="/profile" className="rounded-full cursor-pointer shadow-sm text-green-600">
                     <FaCircleUser className="h-7 w-7" />
-                  </a>
+                  </Link>
                 </div>
               ) : (
                 <div className="flex gap-5">
@@ -133,7 +135,7 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-
+      
       {/* Mobile Overlay */}
       <div
         className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity md:hidden ${
@@ -198,6 +200,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <SearchPopup isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
