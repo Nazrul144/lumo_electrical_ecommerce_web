@@ -97,13 +97,15 @@ const ProductDetails = ({id}:{id:number}) => {
                 />
               ))}
             </div>
-            <Image
-              src={productDetails?.images[imageId]?.image}
-              alt={productDetails?.images[imageId]?.alt_text || "Product Image"}
-              width={500}
-              height={500}
-              className="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
-            />
+            {productDetails?.images && productDetails.images.length > 0 && (
+              <Image
+                src={productDetails.images[imageId]?.image || ""}
+                alt={productDetails.images[imageId]?.alt_text || "Product Image"}
+                width={500}
+                height={500}
+                className="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
+              />
+            )}
           </div>
           <div className="text-center px-3 rounded-sm lg:max-w-md xl:max-w-lg lg:text-left flex flex-col gap-4 max-h-[450px] overflow-y-auto">
             <h1

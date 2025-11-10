@@ -3,7 +3,7 @@ import React from "react";
 import { Card } from "antd";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
+import Link from "next/link";
 
 interface primary_image {
   id: number;
@@ -11,16 +11,15 @@ interface primary_image {
   image: string;
 }
 
-
 interface ProductProps {
   id?: number;
   title?: string;
   short_description?: string;
   category_name?: string;
-  category_slug?: string,
-  availability?: true,
-  popularity?: 1,
-  primary_image?: primary_image
+  category_slug?: string;
+  availability?: true;
+  popularity?: 1;
+  primary_image?: primary_image;
 }
 
 interface ProductCardProps {
@@ -28,32 +27,24 @@ interface ProductCardProps {
   selectedFilter?: string | null;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, selectedFilter = null }) => {
-
-
-
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  selectedFilter = null,
+}) => {
   return (
-    <motion.div
-      initial={{ y: 300, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: 0.3,
-        type: "keyframes",
-        stiffness: 60,
-        duration: 2,
-      }}
-    >
-  <Card className="z-0" data-filter={selectedFilter ?? ""}>
+    <Link href={`/products/${product.id}`} className="cursor-pointer">
+      <Card className="z-0" data-filter={selectedFilter ?? ""}>
         <Image
           src={product?.primary_image?.image || "/placeholder.jpg"}
           width={300}
           height={500}
-          alt={product.title || 'Product image'}
+          alt={product.title || "Product image"}
+          className="h-[350px] w-[250px] object-contain"
         />
         <h1 className="text-xl font-bold mt-2 text-center">{product.title}</h1>
         {/* other user info */}
       </Card>
-    </motion.div>
+    </Link>
   );
 };
 

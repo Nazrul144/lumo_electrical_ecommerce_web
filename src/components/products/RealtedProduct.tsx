@@ -1,3 +1,6 @@
+
+"use client"
+
 import api from "@/lib/api";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -72,13 +75,13 @@ export const RealtedProduct: React.FC<RealtedProductProps> = ({ categoryId, subC
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
               <p
-                className={`text-white text-6xl text-center ${playfair.className}`}
+                className={`text-white text-xl text-center ${playfair.className}`}
               >
                 {product?.name}
               </p>
               <BtnLink
                 text="Explore"
-                link={`/categories/${categoryId}/${subCategoryId}/${product?.id}`}
+                link={`/products/${product?.id}`}
               />
             </div>
           </div>

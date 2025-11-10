@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import Pagination from "@/components/shared/Pagination";
 import { EmptyData } from "@/components/shared/EmptyData";
 import LoadingPage from "@/app/(commonLayout)/products/loading";
+import ProductCard from "@/components/products/ProductCard";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -23,21 +24,26 @@ interface primary_image {
   image:string
 }
 
-interface Products {
-  id: number;
-  name: string;
-  brand: string;
-  availability: string;
-  code: string;
-  primary_image: primary_image;
+interface ProductProps {
+  id?: number;
+  name?: string;
+  short_description?: string;
+  category_name?: string;
+  category_slug?: string;
+  availability?: true;
+  code?: string;
+  popularity?: 1;
+  primary_image?: primary_image;
 }
 
+
 const Products = () => {
-  const [products, setProducts] = useState<Products[]>([]);
+  const [products, setProducts] = useState<ProductProps[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1)
   const {categoryId,subCategoryId} = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
 
 
@@ -93,28 +99,7 @@ const Products = () => {
       <div className="overflow-y-auto container mx-auto pt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* showing product card when selected any category  */}
-          {products?.map((product) => (<div
-              key={product?.id}
-              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
-            >
-              {/* Image */}
-              <Image
-                src={product?.primary_image?.image}
-                alt={product?.name}
-                fill
-                className="object-contain transition-transform duration-300 group-hover:scale-105"
-                quality={100}
-              />
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p className={`text-white text-6xl text-center ${playfair.className}}`}>
-                  {product?.name}
-                </p>
-                <BtnLink text="Explore" link={`/categories/${categoryId}/${subCategoryId}/${product?.id}`} />
-              </div>
-            </div>
-          ))}
+          {products?.map((product) => (<ProductCard key={product.id} product={product} />))}
         </div>
         <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>

@@ -238,7 +238,7 @@ const ProductsPage = () => {
                 <AccordionContent className="flex flex-col gap-4 text-balance px-4 py-2 border rounded-md mt-2">
                   {subCategory?.map((monoSubCategory) => (
                     <div
-                      key={monoSubCategory.id}
+                      key={monoSubCategory?.id}
                       onClick={(e) => {
                         e.preventDefault();
                         setSelectedSubCategories(prev => 
