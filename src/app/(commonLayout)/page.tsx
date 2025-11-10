@@ -2,6 +2,7 @@ import Categories from '@/components/categories/Categories'
 import Benifits from '@/components/homePage/Benifits'
 import Carousel from '@/components/homePage/Carousel'
 import Hero from '@/components/homePage/Hero'
+import ProductsHome from '@/components/homePage/Products'
 import Testimonial from '@/components/homePage/testimonial/Testimonial'
 import React from 'react'
 
@@ -15,6 +16,7 @@ const Home = () => {
     <div >
       <Hero/>
       <Categories/>
+      <ProductsHome/>
       <Carousel/>
       <Benifits/>
       <Testimonial/>

@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   selectedFilter = null,
 }) => {
   return (
-    <Link href={`/products/${product.id}`} className="cursor-pointer">
+    <Link href={`/products/${product.id}`} className="cursor-pointer mx-auto rounded-lg shadow-xl  hover:scale-105  transition-all duration-300">
       <Card className="z-0" data-filter={selectedFilter ?? ""}>
         <Image
           src={product?.primary_image?.image || "/placeholder.jpg"}
