@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import api from "../../lib/api";
+import Link from "next/link";
 
 interface SearchPopupProps {
   isOpen: boolean;
@@ -15,7 +16,7 @@ interface PrimaryImage {
 
 interface Product {
   id?: number;
-  title?: string;
+  name?: string;
   short_description?: string;
   category_name?: string;
   category_slug?: string;
@@ -91,6 +92,8 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
     };
   }, [query]);
 
+  console.log("Checking result of search",results);
+
   if (!isOpen) return null;
 
 
@@ -143,21 +146,21 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
           {!loading && !error && (results.length > 0 ? (
             <ul className="space-y-3">
                   {results.map((p) => {
-                    const title = p.title || "Untitled";
+                    const name = p.name || "Untitled";
                     let imgSrc: string | undefined;
-                    let imgAlt = title;
+                    let imgAlt = name;
                     if (!p.primary_image) imgSrc = undefined;
                     else if (typeof p.primary_image === "string") imgSrc = p.primary_image;
                     else {
                       imgSrc = p.primary_image.image;
-                      imgAlt = p.primary_image.alt_text || title;
+                      imgAlt = p.primary_image.alt_text || name;
                     }
 
-                    const href = p.id ? `/products/${p.id}` : `#`;
+           
                     return (
-                      <li key={String(p.id ?? title)}>
-                        <a
-                          href={href}
+                      <li key={String(p.id ?? name)}>
+                        <Link
+                          href={`/products/${p.id}`}
                           className="flex items-center gap-3 p-2 rounded hover:bg-gray-100"
                           onClick={() => setIsOpen(false)}
                         >
@@ -170,20 +173,20 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-800">{title}</div>
-                            {p.short_description && (
-                              <div className="text-xs text-gray-500 line-clamp-2">{p.short_description}</div>
+                            <div className="text-sm font-medium text-gray-800">{name}</div>
+                            {p?.short_description && (
+                              <div className="text-xs text-gray-500 line-clamp-2">{p?.short_description}</div>
                             )}
                             <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
-                              {p.category_name && <span>{p.category_name}</span>}
-                              {p.availability !== undefined && (
+                              {p?.category_name && <span>{p?.category_name}</span>}
+                              {p?.availability !== undefined && (
                                 <span className={`px-2 py-0.5 rounded text-[11px] ${p.availability ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                   {p.availability ? 'In stock' : 'Out of stock'}
                                 </span>
                               )}
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </li>
                     );
                   })}

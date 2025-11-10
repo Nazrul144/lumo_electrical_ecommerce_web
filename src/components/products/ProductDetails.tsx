@@ -9,9 +9,6 @@ import { ImWhatsapp } from "react-icons/im";
 // import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Playfair_Display } from "next/font/google";
 import api from "@/lib/api";
-import { useParams } from "next/navigation";
-import BtnLink from "@/components/shared/BtnLink";
-import { EmptyData } from "@/components/shared/EmptyData";
 import LoadingPage from "@/app/(commonLayout)/products/loading";
 
 const playfair = Playfair_Display({
@@ -22,20 +19,6 @@ const playfair = Playfair_Display({
 
 // type declaration
 
-interface primary_image {
-  id: number;
-  alt_text?: string;
-  image: string;
-}
-
-interface RelatedProducts {
-  id: number;
-  name: string;
-  brand: string;
-  availability: string;
-  code: string;
-  primary_image: primary_image;
-}
 
 interface ProductProps {
   id: number;
@@ -61,42 +44,26 @@ interface ProductProps {
   }[];
 }
 
-const ProductDetails = () => {
-  const params = useParams();
+const ProductDetails = ({id}:{id:number}) => {
   const [imageId, setImageId] = useState<number>(0);
-  const { categoryId, subCategoryId, id } = params;
-  const [relatedProducts, setRelatedProducts] = useState<RelatedProducts[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [productDetails, setProductDetails] = useState<ProductProps | null>(
     null
   );
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get(
-          `/products/categories/${categoryId}/subcategories/${subCategoryId}/products/`
-        );
-        console.log("checking respose...", response?.data?.results.data);
-        setRelatedProducts(response.data.results.data);
-      } catch (error) {
-        console.log(error);
-      }finally{
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [categoryId, subCategoryId]);
+  
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         setIsLoading(true);
         const res = await api.get(`/products/${id}/`);
-        setProductDetails(res.data.data);
+        console.log("Checking product api", res.data.data);
+        setProductDetails(res?.data?.data);
       } catch (error) {
         console.error("Failed to fetch product details:", error);
+      }finally{
+        setIsLoading(false);
       }
     };
     fetchProductDetails();
@@ -131,7 +98,7 @@ const ProductDetails = () => {
               ))}
             </div>
             <Image
-              src={productDetails?.images[imageId].image}
+              src={productDetails?.images[imageId]?.image}
               alt={productDetails?.images[imageId]?.alt_text || "Product Image"}
               width={500}
               height={500}
@@ -181,40 +148,6 @@ const ProductDetails = () => {
           <div className=" text-justify text-[#686868]">
             {productDetails?.full_description}
           </div>
-        </div>
-      </section>
-      {/* related product section  */}
-      <section className="container mx-auto overflow-x-auto">
-        <h1 className="text-3xl my-10">Related Products</h1>
-        <div className="flex gap-5">
-          {relatedProducts?.map((product) => (
-            <div
-              key={product?.id}
-              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
-            >
-              {/* Image */}
-              <Image
-                src={product?.primary_image?.image}
-                alt={product?.name}
-                fill
-                className="object-contain transition-transform duration-300 group-hover:scale-105"
-                quality={100}
-              />
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p
-                  className={`text-white text-6xl text-center ${playfair.className}}`}
-                >
-                  {product?.name}
-                </p>
-                <BtnLink
-                  text="Explore"
-                  link={`/categories/${categoryId}/${subCategoryId}/${product?.id}`}
-                />
-              </div>
-            </div>
-          ))}
         </div>
       </section>
     </div>
