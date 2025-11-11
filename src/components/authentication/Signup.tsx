@@ -17,6 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2 } from "lucide-react";
+import api from "@/lib/api";
+import Swal from "sweetalert2";
+import { useAuth } from "@/context/AuthProviders";
 
 // Zod validation schema
 const signUpSchema = z
@@ -31,9 +34,9 @@ const signUpSchema = z
       .max(50, "Last Name must be less than 50 characters"),
     email: z.string().email("Invalid email address"),
     phoneNumber: z
-          .string()
-          .min(4, "Phone number must be at least 4 digits")
-          .regex(/^\d+$/, "Phone number can only contain digits"),
+      .string()
+      .min(4, "Phone number must be at least 4 digits")
+      .regex(/^\d+$/, "Phone number can only contain digits"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -46,19 +49,16 @@ const signUpSchema = z
         "Password must contain at least one uppercase letter"
       )
       .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    confirmPassword: z.string(),
+    confirm_password: z.string(),
     agreeToTerms: z
       .boolean()
       .refine((val) => val === true, "You must agree to the terms and policy"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
 
-
-
-  
 const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -67,11 +67,12 @@ const Signup = () => {
   const emailId = useId();
   const phoneNumberId = useId();
   const passwordId = useId();
-  const confirmPasswordId = useId();
+  const confirm_password = useId();
   const agreeToTermsId = useId();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
+  const {handleSignUp} = useAuth();
 
   const {
     register,
@@ -88,23 +89,31 @@ const Signup = () => {
       email: "",
       phoneNumber: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       agreeToTerms: false,
     },
   });
 
   const agreeToTerms = watch("agreeToTerms");
 
+  
+
   const onSubmit = async (data: any) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      handleNext();
+    const res = await handleSignUp(data);
+    if(res.status === 201){
+      Swal.fire({
+        title: "Successfully submited!",
+        icon: "success",
+        draggable: true,
+      });
       router.push("/signup/billing");
-      // Handle successful submission here
-    } catch (error) {
-      console.error("Submission error:", error);
+      handleNext();
+    }else{
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -122,7 +131,6 @@ const Signup = () => {
       setCurrentStep(currentStep + 1);
     }
   };
-
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -244,7 +252,7 @@ const Signup = () => {
                   <Input
                     id={firstNameId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="john"
+                    placeholder="first name"
                     type="text"
                     required={true}
                     {...register("firstName")}
@@ -266,7 +274,7 @@ const Signup = () => {
                   <Input
                     id={lastNameId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="doe"
+                    placeholder="last name"
                     type="text"
                     required={true}
                     {...register("lastName")}
@@ -290,7 +298,7 @@ const Signup = () => {
                   <Input
                     id={emailId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="john.doe@gmail.com"
+                    placeholder="abc@gmail.com"
                     type="email"
                     required={true}
                     {...register("email")}
@@ -312,7 +320,7 @@ const Signup = () => {
                     id={phoneNumberId}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder=""
-                    type="text"
+                    type="017......"
                     required={true}
                     {...register("phoneNumber")}
                   />
@@ -363,19 +371,19 @@ const Signup = () => {
 
               <div className="group relative mt-8 w-full">
                 <label
-                  htmlFor={confirmPasswordId}
+                  htmlFor={confirm_password}
                   className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                 >
                   Confirm Password <span className="text-red-500 ">*</span>
                 </label>
                 <div className="relative w-full">
                   <Input
-                    id={confirmPasswordId}
+                    id={confirm_password}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="confirm password"
                     type={showPassword2 ? "text" : "password"}
                     required={true}
-                    {...register("confirmPassword")}
+                    {...register("confirm_password")}
                   />
                   <Button
                     type="button"
@@ -399,7 +407,7 @@ const Signup = () => {
               </div>
               <div className="flex items-center gap-2 font-poppins mt-8">
                 <div className="flex items-center gap-2">
-                  <Checkbox 
+                  <Checkbox
                     id={agreeToTermsId}
                     checked={agreeToTerms}
                     onCheckedChange={(checked) => {

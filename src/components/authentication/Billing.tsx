@@ -12,6 +12,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
+import Swal from "sweetalert2";
+import api from "@/lib/api";
+import { useAuth } from "@/context/AuthProviders";
 
 // Zod validation schema
 const BillingSchema = z.object({
@@ -42,30 +45,35 @@ const Billing = () => {
   const cityId = useId();
   const postalCodeId = useId();
   const provinceId = useId();
-
   const router = useRouter();
+  const {handleBilling} = useAuth();
 
   const { 
     register,
-    formState: { errors, isSubmitting },
     handleSubmit 
     } = useForm({
     resolver: zodResolver(BillingSchema),
     mode: "onChange",
   });
 
-  console.log("Error from zod validation",errors);
 
   const onSubmit = async (data: any) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      router.push("/signup/billing/delivery");
-      // Handle successful submission here
-    } catch (error) {
-      console.error("Submission error:", error);
-    }
+    const response = await handleBilling(data);
+      console.log("API Response:", response);
+      if(response.status === 200){
+        Swal.fire({
+        title: "Successfully submited!",
+        icon: "success",
+        draggable: false,
+      });
+      router.push("/signup/trade-only");
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      }
   };
 
   const pathName = usePathname();
