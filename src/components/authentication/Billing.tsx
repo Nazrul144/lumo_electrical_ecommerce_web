@@ -4,36 +4,15 @@ import React from "react";
 import Image from "next/image";
 import { useId } from "react";
 import Link from "next/link";
-import { z } from "zod";
-
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
-import Swal from "sweetalert2";
-import api from "@/lib/api";
+import Swal from "sweetalert2";;
 import { useAuth } from "@/context/AuthProviders";
 
-// Zod validation schema
-const BillingSchema = z.object({
-  companyName: z
-    .string(),
-  vatNumber: z.string(),
-  registration: z
-    .string(),
-  poNumber: z.string(),
-  billingAddressLine1: z
-    .string(),
-  billingAddressLine2: z
-    .string(),
-  city: z
-    .string(),
-  postalCode: z
-    .string(),
-  province: z.string(),
-});
+
 
 const Billing = () => {
   const companyNameId = useId();
@@ -52,7 +31,6 @@ const Billing = () => {
     register,
     handleSubmit 
     } = useForm({
-    resolver: zodResolver(BillingSchema),
     mode: "onChange",
   });
 
@@ -60,7 +38,7 @@ const Billing = () => {
   const onSubmit = async (data: any) => {
     const response = await handleBilling(data);
       console.log("API Response:", response);
-      if(response.status === 200){
+      if(response.statusCode === 200){
         Swal.fire({
         title: "Successfully submited!",
         icon: "success",

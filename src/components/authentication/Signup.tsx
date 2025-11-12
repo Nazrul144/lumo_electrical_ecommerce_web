@@ -14,29 +14,28 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2 } from "lucide-react";
-import api from "@/lib/api";
 import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 
 // Zod validation schema
 const signUpSchema = z
   .object({
-    firstName: z
+    customer_type: z.string("Customer type is required"),
+    first_name: z
       .string()
       .min(2, "First Name must be at least 2 characters")
       .max(50, "First Name must be less than 50 characters"),
-    lastName: z
+    last_name: z
       .string()
       .min(2, "Last Name must be at least 2 characters")
       .max(50, "Last Name must be less than 50 characters"),
     email: z.string().email("Invalid email address"),
-    phoneNumber: z
+    phone_number: z
       .string()
-      .min(4, "Phone number must be at least 4 digits")
-      .regex(/^\d+$/, "Phone number can only contain digits"),
+      .min(4, "Phone number must be at least 9 characters")
+      .max(15, "Phone number must be less than 15 digits")
+      .regex(/^\+\d+$/, "Phone number should start with '+'"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -50,9 +49,6 @@ const signUpSchema = z
       )
       .regex(/(?=.*\d)/, "Password must contain at least one number"),
     confirm_password: z.string(),
-    agreeToTerms: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms and policy"),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: "Passwords don't match",
@@ -62,13 +58,13 @@ const signUpSchema = z
 const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
+  const customerTypeId = useId();
   const firstNameId = useId();
   const lastNameId = useId();
   const emailId = useId();
   const phoneNumberId = useId();
   const passwordId = useId();
   const confirm_password = useId();
-  const agreeToTermsId = useId();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
@@ -78,29 +74,17 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm({
     resolver: zodResolver(signUpSchema),
     mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      confirm_password: "",
-      agreeToTerms: false,
-    },
   });
 
-  const agreeToTerms = watch("agreeToTerms");
 
   
 
   const onSubmit = async (data: any) => {
     const res = await handleSignUp(data);
-    if(res.status === 201){
+    if(res.data?.statusCode  === 200){
       Swal.fire({
         title: "Successfully submited!",
         icon: "success",
@@ -145,7 +129,7 @@ const Signup = () => {
             />
           </div>
 
-          <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
+          <div className="flex flex-col items-center justify-center lg:w-[940px] border-1 h-[855px] border-gray-100 rounded-lg shadow-lg py-6">
             <div className="w-full  flex justify-end lg:pr-16">
               <Link href={"/"}>
                 <Image
@@ -225,18 +209,19 @@ const Signup = () => {
                 <div className="group relative mt-8 w-full">
                   <label
                     htmlFor="customerType"
-                    className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                    className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                   >
                     Customer Type <span className="text-red-500 ">*</span>
                   </label>
                   <select
-                    id="customerType"
+                    id={customerTypeId}
                     className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
+                    {...register("customer_type")}
+                    required={true}
                   >
-                    <option value="">Select type</option>
-                    <option value="retail">Retail</option>
-                    <option value="customer">Trade</option>
+                    <option disabled value="">Select type</option>
+                    <option defaultChecked value="Retail">Retail</option>
+                    <option value="Trade">Trade</option>
                   </select>
                 </div>
               </div>
@@ -255,11 +240,11 @@ const Signup = () => {
                     placeholder="first name"
                     type="text"
                     required={true}
-                    {...register("firstName")}
+                    {...register("first_name")}
                   />
-                  {errors.firstName && (
+                  {errors.first_name && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.firstName.message}
+                      {errors.first_name.message}
                     </p>
                   )}
                 </div>
@@ -277,11 +262,11 @@ const Signup = () => {
                     placeholder="last name"
                     type="text"
                     required={true}
-                    {...register("lastName")}
+                    {...register("last_name")}
                   />
-                  {errors.lastName && (
+                  {errors.last_name && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.lastName.message}
+                      {errors.last_name.message}
                     </p>
                   )}
                 </div>
@@ -322,11 +307,11 @@ const Signup = () => {
                     placeholder=""
                     type="017......"
                     required={true}
-                    {...register("phoneNumber")}
+                    {...register("phone_number")}
                   />
-                  {errors.phoneNumber && (
+                  {errors.phone_number && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.phoneNumber.message}
+                      {errors.phone_number.message}
                     </p>
                   )}
                 </div>
@@ -399,40 +384,12 @@ const Signup = () => {
                     )}
                   </Button>
                 </div>
-                {errors.confirmPassword && (
+                {errors.confirm_password && (
                   <p className="text-red-500 text-xs mt-1">
-                    {errors.confirmPassword.message}
+                    {errors.confirm_password.message}
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-2 font-poppins mt-8">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id={agreeToTermsId}
-                    checked={agreeToTerms}
-                    onCheckedChange={(checked) => {
-                      setValue("agreeToTerms", checked as boolean);
-                    }}
-                  />
-                  <Label htmlFor={agreeToTermsId}>
-                    I agree to all the{" "}
-                    <Link className="text-[#FF8682]" href="" target="_blank">
-                      Terms{" "}
-                    </Link>
-                    and{" "}
-                    <Link className="text-[#FF8682]" href="" target="_blank">
-                      Privacy Policies
-                    </Link>
-                  </Label>
-                </div>
-              </div>
-
-              {errors.agreeToTerms && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.agreeToTerms.message}
-                </p>
-              )}
-
               <div className="w-full mt-4">
                 <Button
                   type="submit"

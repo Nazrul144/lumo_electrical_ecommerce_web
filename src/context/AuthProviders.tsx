@@ -1,24 +1,40 @@
 "use client";
 import api from "@/lib/api";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 
 const AuthContext = createContext<any>(null);
 
+
+type CustomerInfo = {
+  email: string;
+  customer_type: string;
+}
+
 export const AuthProviders = ({ children }: { children: React.ReactNode }) => {
-  const [email, setEmail] = useState("");
 
   //handeling all singup method
   const handleSignUp = async (data: any) => {
     try {
       // Simulate API call
+      console.log("checking handle",data);
       const res = await api.post("/accounts/register/", data);
+      if(res.data?.statusCode === 200){
+        const customerInfo:CustomerInfo = {
+          email: res?.data?.data?.email,
+          customer_type: res?.data?.data?.customer_type,
+        }
+        localStorage.setItem("customer_info", JSON.stringify(customerInfo));
+      }
       return res;
     } catch (error) {
+      console.log("checking error", error);
       return error;
     }
   };
 
   const handleBilling = async (data: any) => {
+    const {email} = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    console.log("checking email", email);
     if (email) {
         data.email = email;
       try {

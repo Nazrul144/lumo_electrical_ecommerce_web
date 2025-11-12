@@ -5,15 +5,13 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-// importing base url
-
 
 //declaration section
 let accessToken: string | null = null;
 let isRefreshing = false;
 let watingQueue: ((token: string) => void)[] = [];
 //declarating public routes
-const protectedEndPoint = ["/accounts/refresh/"];
+const protectedEndPoint = ["/accounts/register/billing-address/","/accounts/refresh/"];
 
 //creating axios instance
 const api: AxiosInstance = axios.create({

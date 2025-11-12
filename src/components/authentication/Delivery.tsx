@@ -3,56 +3,14 @@
 import React from "react";
 import Image from "next/image";
 import { useId, useState } from "react";
-
-import { FiEyeOff } from "react-icons/fi";
-import { FiEye } from "react-icons/fi";
 import Link from "next/link";
-import { z } from "zod";
-
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "antd";
 import { CheckCircle2 } from "lucide-react";
-
-// Zod validation schema
-const signUpSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First Name must be at least 2 characters")
-      .max(50, "First Name must be less than 50 characters"),
-    lastName: z
-      .string()
-      .min(2, "Last Name must be at least 2 characters")
-      .max(50, "Last Name must be less than 50 characters"),
-    email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(4, "Phone number must be at least 4 digits"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter"
-      )
-      .regex(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter"
-      )
-      .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    confirmPassword: z.string(),
-    agreeToTerms: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms and policy"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 const Delivery = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -68,24 +26,11 @@ const Delivery = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    setValue,
+    formState: { errors },
     watch,
   } = useForm({
-    resolver: zodResolver(signUpSchema),
-    mode: "onChange", // Add this for immediate validation
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      confirmPassword: "",
-      agreeToTerms: false,
-    },
+    mode: "onChange",
   });
-
-  const agreeToTerms = watch("agreeToTerms");
 
   const onSubmit = async (data: any) => {
     try {
@@ -206,10 +151,13 @@ const Delivery = () => {
                 className="w-full max-w-[612px] mt-16"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <p className="text-[#313131] text-2xl font-poppins mt-5">
+                <p className="text-[#313131] text-2xl font-poppins my-5">
                   Delivery Address
                 </p>
-                <h1>Same as Billing Address</h1>
+                <div className="flex items-center gap-3">
+                  <Checkbox id="terms" />
+                  <Label htmlFor="terms">Same as billing address</Label>
+                </div>
                 {/*Toggle*/}
                 <input
                   type="checkbox"
