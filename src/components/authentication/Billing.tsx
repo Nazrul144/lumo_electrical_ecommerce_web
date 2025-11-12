@@ -38,13 +38,13 @@ const Billing = () => {
   const onSubmit = async (data: any) => {
     const response = await handleBilling(data);
       console.log("API Response:", response);
-      if(response.statusCode === 200){
+      if(response.status === 201){
         Swal.fire({
         title: "Successfully submited!",
         icon: "success",
         draggable: false,
       });
-      router.push("/signup/trade-only");
+      router.push("/signup/billing/delivery");
       }else{
         Swal.fire({
           icon: "error",
@@ -177,7 +177,7 @@ const Billing = () => {
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example"
                       type="text"
-                      {...register("companyName")}
+                      {...register("company_name")}
                       required={true}
                     />
                   </div>
@@ -196,7 +196,7 @@ const Billing = () => {
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 00000"
                       type="text"
-                      {...register("vatNumber")}
+                      {...register("vat_number")}
                       required={true}
                     />
                   </div>
@@ -214,7 +214,7 @@ const Billing = () => {
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 0000"
                       type="text"
-                      {...register("registration")}
+                      {...register("company_registration")}
                       required={true}
                     />
                   </div>
@@ -233,7 +233,7 @@ const Billing = () => {
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="000 0000 0000"
                     type="text"
-                    {...register("poNumber")}
+                    {...register("po_number")}
                     required={true}
                   />
                 </div>
@@ -252,7 +252,7 @@ const Billing = () => {
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example: 123/A, Green Stree"
                       type="text"
-                      {...register("billingAddressLine1")}
+                      {...register("address_line_1")}
                       required={true}
                     />
                   </div>
@@ -270,7 +270,7 @@ const Billing = () => {
                         className="h-10 text-[#1C1B1F] font-poppins"
                         placeholder="example: 123/A, Green Stree"
                         type="text"
-                        {...register("billingAddressLine2")}
+                        {...register("address_line_2")}
                         required={true}
                       />
                     </div>
@@ -315,11 +315,10 @@ const Billing = () => {
                       placeholder="0000"
                       type="text"
                       required={true}
-                      {...register("postalCode")}
+                      {...register("postal_code")}
                     />
                   </div>
                 </div>
-
                 <div className="flex flex-col w-full">
                   <div className="group relative mt-8 w-full">
                     <label
@@ -335,15 +334,15 @@ const Billing = () => {
                       className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                     >
                       <option disabled value="">Select province</option>
-                      <option value="eastern_cape">Eastern Cape</option>
-                      <option value="free_state">Free State</option>
-                      <option value="gauteng">Gauteng</option>
-                      <option value="kwazulu_natal">KwaZulu-Natal</option>
-                      <option value="limpopo">Limpopo</option>
-                      <option value="mpumalanga">Mpumalanga</option>
-                      <option value="northern_cape">Northern Cape</option>
-                      <option value="north_west">North West</option>
-                      <option value="western_cape">Western Cape</option>
+                      <option value="Eastern Cape">Eastern Cape</option>
+                      <option value="Free State">Free State</option>
+                      <option value="Gauteng">Gauteng</option>
+                      <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                      <option value="Limpopo">Limpopo</option>
+                      <option value="Mpumalanga">Mpumalanga</option>
+                      <option value="Northern Cape">Northern Cape</option>
+                      <option value="North West">North West</option>
+                      <option value="Western Cape">Western Cape</option>
                     </select>
                   </div>
                 </div>

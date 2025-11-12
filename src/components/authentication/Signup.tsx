@@ -84,7 +84,7 @@ const Signup = () => {
 
   const onSubmit = async (data: any) => {
     const res = await handleSignUp(data);
-    if(res.data?.statusCode  === 200){
+    if(res?.status  === 201 || res?.status === 200){
       Swal.fire({
         title: "Successfully submited!",
         icon: "success",
@@ -96,7 +96,7 @@ const Signup = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong!",
+        text: res.response.data.data.email[0] || res.response.data.data.phone_number[0] || "Something went wrong!",
       });
     }
   };

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useId, useState } from "react";
 import Link from "next/link";
@@ -9,38 +9,72 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CheckCircle2 } from "lucide-react";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
+import Swal from "sweetalert2";
+import { useAuth } from "@/context/AuthProviders";
+import { Switch } from "@/components/ui/switch";
+import { Loader } from "../shared/Loader";
+
+type SaveData = {
+  company_name: string;
+  vat_number: string;
+  company_registration: string;
+  po_number: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  postal_code: string;
+  province: string;
+};
 
 const Delivery = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSameAs, setSameAs] = useState(false);
+  const [seveData, setSaveData] = useState<SaveData | null>();
 
-  const firstNameId = useId();
-  const lastNameId = useId();
-  const emailId = useId();
-  const passwordId = useId();
-  const id = useId();
-
+  const companyNameId = useId();
+  const vatNumberId = useId();
+  const registrationId = useId();
+  const poNumberId = useId();
+  const billingAddressLine1Id = useId();
+  const billingAddressLine2Id = useId();
+  const cityId = useId();
+  const postalCodeId = useId();
+  const provinceId = useId();
   const router = useRouter();
+  const { handleDelivery } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({
+  useEffect(() => {
+    const handleGetData = () => {
+      const dataJson = localStorage.getItem("billing address");
+      if (dataJson) {
+        const data = JSON.parse(dataJson);
+        setSaveData(data);
+        reset(data);
+      }
+    };
+    handleGetData();
+  }, []);
+
+  const { register, handleSubmit, reset } = useForm({
     mode: "onChange",
   });
 
   const onSubmit = async (data: any) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      router.push("/sign-in");
-      // Handle successful submission here
-    } catch (error) {
-      console.error("Submission error:", error);
+    const response = await handleDelivery(data);
+    console.log("API Response:", response);
+    if (response.status === 201 || response.status === 200) {
+      Swal.fire({
+        title: "Successfully submited!",
+        icon: "success",
+        draggable: false,
+      });
+      router.push("/signup/billing/delivery/trade");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -54,6 +88,47 @@ const Delivery = () => {
     return 1;
   };
 
+
+  //options
+  const options = [
+    {
+      title: "Eastern Cape",
+      value: "Eastern Cape"
+    },
+    {
+      title: "Free State",
+      value: "Free State"
+    },
+    {
+      title: "Gauteng",
+      value: "Gauteng"
+    },
+    {
+      title: "KwaZulu-Natal",
+      value: "KwaZulu-Natal"
+    },
+    {
+      title: "Limpopo",
+      value: "Limpopo"
+    },
+    {
+      title: "Mpumalanga",
+      value: "Mpumalanga"
+    },
+    {
+      title: "Northern Cape",
+      value: "Northern Cape"
+    },
+    {
+      title: "North West",
+      value: "North West"
+    },
+    {
+      title: "Western Cape",
+      value: "Western Cape"
+    }
+  ]
+
   //Top Progress Bar:
   const steps = [
     { id: 1, label: "Registration" },
@@ -65,7 +140,10 @@ const Delivery = () => {
 
   const currentPath = getCurrentPath();
 
-  console.log(currentPath);
+
+  if(seveData){
+    <Loader/>
+  }
 
   return (
     <div>
@@ -80,7 +158,6 @@ const Delivery = () => {
                 className="rounded-3xl object-cover"
               />
             </div>
-
             <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
               <div className="w-full  flex justify-end lg:pr-16">
                 <Link href={"/"}>
@@ -146,40 +223,39 @@ const Delivery = () => {
                   );
                 })}
               </div>
-
               <form
                 className="w-full max-w-[612px] mt-16"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <p className="text-[#313131] text-2xl font-poppins my-5">
-                  Delivery Address
-                </p>
-                <div className="flex items-center gap-3">
-                  <Checkbox id="terms" />
-                  <Label htmlFor="terms">Same as billing address</Label>
+                <div className="flex flex-col">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-[#313131]">Same as Billing Address</h1>
+                    <Switch
+                      id="airplane-mode"
+                      onCheckedChange={() => setSameAs(!isSameAs)}
+                      checked={isSameAs}
+                      className=""
+                    />
+                  </div>
                 </div>
-                {/*Toggle*/}
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="toggle toggle-md"
-                />
 
                 <div className="flex flex-col w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor="customerType"
+                      htmlFor={companyNameId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Company Name
                     </label>
                     <Input
-                      id={firstNameId}
+                      id={companyNameId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example"
+                      disabled={isSameAs}
                       type="text"
-                      {...register("firstName")}
+                      {...register("company_name")}
+                      required={true}
                     />
                   </div>
                 </div>
@@ -187,108 +263,98 @@ const Delivery = () => {
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={firstNameId}
+                      htmlFor={vatNumberId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       VAT Number
                     </label>
                     <Input
-                      id={firstNameId}
+                      id={vatNumberId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 00000"
+                      disabled={isSameAs}
                       type="text"
-                      {...register("firstName")}
+                      {...register("vat_number")}
+                      required={true}
                     />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.firstName.message}
-                      </p>
-                    )}
                   </div>
 
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={lastNameId}
+                      htmlFor={registrationId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Company Registration (CIPC){" "}
                       <span className="text-red-500 ">*</span>
                     </label>
                     <Input
-                      id={lastNameId}
+                      id={registrationId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 000 0000"
+                      disabled={isSameAs}
                       type="text"
-                      {...register("lastName")}
+                      {...register("company_registration")}
+                      required={true}
                     />
-                    {errors.lastName && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.lastName.message}
-                      </p>
-                    )}
                   </div>
                 </div>
 
                 <div className="group relative mt-8 w-full">
                   <label
-                    htmlFor="customerType"
+                    htmlFor={poNumberId}
                     className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                                  block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                   >
                     PO Number
                   </label>
                   <Input
-                    id={firstNameId}
+                    id={poNumberId}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="000 0000 0000"
+                    disabled={isSameAs}
                     type="text"
-                    {...register("firstName")}
+                    {...register("po_number")}
+                    required={true}
                   />
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={emailId}
+                      htmlFor={billingAddressLine1Id}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Billing Address Line 1{" "}
                       <span className="text-red-500 ">*</span>
                     </label>
                     <Input
-                      id={emailId}
+                      id={billingAddressLine1Id}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="example: 123/A, Green Stree"
+                      disabled={isSameAs}
                       type="text"
-                      {...register("email")}
+                      {...register("address_line_1")}
+                      required={true}
                     />
-                    {errors.email && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.email.message}
-                      </p>
-                    )}
                   </div>
 
                   <div className="flex flex-col lg:flex-row gap-4 w-full">
                     <div className="group relative mt-8 w-full">
                       <label
-                        htmlFor={emailId}
+                        htmlFor={billingAddressLine2Id}
                         className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                       >
                         Billing Address Line 2
                       </label>
                       <Input
-                        id={emailId}
+                        id={billingAddressLine2Id}
                         className="h-10 text-[#1C1B1F] font-poppins"
                         placeholder="example: 123/A, Green Stree"
+                        disabled={isSameAs}
                         type="text"
-                        {...register("email")}
+                        {...register("address_line_2")}
+                        required={true}
                       />
-                      {errors.email && (
-                        <p className="text-red-500 text-xs mt-1">
-                          {errors.email.message}
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -296,74 +362,78 @@ const Delivery = () => {
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={passwordId}
+                      htmlFor={cityId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       City/Suburb <span className="text-red-500 ">*</span>
                     </label>
                     <div className="relative w-full">
                       <Input
-                        id={passwordId}
+                        id={cityId}
                         className="h-10 text-[#1C1B1F] font-poppins"
                         placeholder="New York"
+                        disabled={isSameAs}
                         type="text"
+                        {...register("city")}
+                        required={true}
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         className="absolute right-1 top-1/2 
-                            -translate-y-1/2 cursor-pointer"
+                                          -translate-y-1/2 cursor-pointer"
                       ></Button>
                     </div>
                   </div>
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={emailId}
+                      htmlFor={postalCodeId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Postal Code
                     </label>
                     <Input
-                      id={emailId}
+                      id={postalCodeId}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="0000"
+                      disabled={isSameAs}
                       type="text"
+                      required={true}
+                      {...register("postal_code")}
                     />
                   </div>
                 </div>
-
                 <div className="flex flex-col w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor="customerType"
+                      htmlFor={provinceId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Province <span className="text-red-500 ">*</span>
                     </label>
                     <select
-                      id="customerType"
+                      id={provinceId}
+                      disabled={isSameAs}
+                      {...register("province")}
                       className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                     >
-                      <option value="">Select type</option>
-                      <option value="retail">Retail</option>
-                      <option value="customer">Vendor</option>
-                      <option value="option1">Wholesale Buyer</option>
-                      <option value="option2">Distributor</option>
+                      {options.map((option) => (
+                        <option key={option.value} value={option.value} defaultValue={seveData?.province}>
+                          {option.title}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
-
                 <div className="w-full mt-4">
-                  <Link href="/signup/billing/delivery/trade">
-                    <Button
-                      type="submit"
-                      className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
-                            to-[#C6E824] cursor-pointer font-poppins"
-                    >
-                      Next
-                    </Button>
-                  </Link>
+                  <Button
+                    type="submit"
+                    className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
+                                          to-[#C6E824] cursor-pointer font-poppins"
+                  >
+                    Next
+                  </Button>
                 </div>
               </form>
             </div>

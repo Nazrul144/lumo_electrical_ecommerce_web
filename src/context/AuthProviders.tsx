@@ -4,25 +4,22 @@ import React, { createContext, useContext } from "react";
 
 const AuthContext = createContext<any>(null);
 
-
 type CustomerInfo = {
   email: string;
   customer_type: string;
-}
+};
 
 export const AuthProviders = ({ children }: { children: React.ReactNode }) => {
-
   //handeling all singup method
   const handleSignUp = async (data: any) => {
     try {
       // Simulate API call
-      console.log("checking handle",data);
       const res = await api.post("/accounts/register/", data);
-      if(res.data?.statusCode === 200){
-        const customerInfo:CustomerInfo = {
+      if (res.status === 201) {
+        const customerInfo: CustomerInfo = {
           email: res?.data?.data?.email,
           customer_type: res?.data?.data?.customer_type,
-        }
+        };
         localStorage.setItem("customer_info", JSON.stringify(customerInfo));
       }
       return res;
@@ -33,28 +30,39 @@ export const AuthProviders = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleBilling = async (data: any) => {
-    const {email} = JSON.parse(localStorage.getItem("customer_info") || "{}");
-    console.log("checking email", email);
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
     if (email) {
-        data.email = email;
+      data.email = email;
       try {
         const res = await api.post("/accounts/register/billing-address/", data);
+        if (res.status === 201 || res.status === 200) {
+          localStorage.setItem(
+            "billing address",
+            JSON.stringify(res?.data?.data)
+          );
+        }
         return res;
       } catch (error) {
         return error;
       }
-    }else{
-        throw new Error("Email is required");
+    } else {
+      throw new Error("Email is required");
     }
   };
 
   const handleDelivery = async (data: any) => {
-    try {
-      // Simulate API call
-      const res = await api.post("/accounts/register/", data);
-      return res;
-    } catch (error) {
-      return error;
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    if (email) {
+      data.email = email;
+      try {
+        const res = await api.post("/accounts/register/delivery-address/", data);
+        console.log("checking response", res);
+        return res;
+      } catch (error) {
+        return error;
+      }
+    } else {
+      throw new Error("Email is required");
     }
   };
 
