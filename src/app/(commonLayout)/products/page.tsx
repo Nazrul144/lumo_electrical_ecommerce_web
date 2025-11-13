@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { BsFilterLeft } from "react-icons/bs";
 import { EmptyData } from "@/components/shared/EmptyData";
 import { Loader } from "@/components/shared/Loader";
+import { FaArrowRight } from "react-icons/fa";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -116,7 +117,7 @@ const ProductsPage = () => {
     const fatchingCategories = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get(`/products/categories`);
+        const response = await api.get(`/products/categories?page=1`);
         setCategories(response?.data?.results?.data);
         setIsLoading(false);
       } catch (error) {
@@ -127,6 +128,8 @@ const ProductsPage = () => {
     };
     fatchingCategories();
   }, []);
+
+  console.log("checking categoies", categories);
 
   // faching sub-categories
   useEffect(() => {
@@ -173,14 +176,14 @@ const ProductsPage = () => {
         All Products
       </h1>
       <div className="flex gap-5 justify-center z-0">
-        <div className="w-60 flex flex-col gap-5 mt-18">
+        <div className="w-60 hidden xl:flex flex-col gap-5 mt-18">
           {/* randering brands  */}
           <Accordion type="single" collapsible className="w-full  rounded-lg">
             <AccordionItem value="item-3">
               <AccordionTrigger className="bg-gray-300 px-4">
                 Brand
               </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance px-4 py-2 border rounded-md mt-2">
+              <AccordionContent className="flex flex-col gap-4 text-balance  py-2 mt-2 max-h-96 overflow-y-auto">
                 {brands?.map((brand, idx) => (
                   <div
                     key={idx}
@@ -192,10 +195,10 @@ const ProductsPage = () => {
                           : [...prev, brand]
                       );
                     }}
-                    className="flex items-center gap-3"
+                    className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
                   >
-                    <Checkbox id={brand} checked={selectedBrands.includes(brand)} />
-                    <Label htmlFor={brand}>{brand}</Label>
+                    <Label htmlFor={brand} className="text-white">{brand}</Label>
+                    <FaArrowRight className="text-white"/>
                   </div>
                 ))}
               </AccordionContent>
@@ -207,7 +210,7 @@ const ProductsPage = () => {
               <AccordionTrigger className="bg-gray-300 px-4">
                 Categories
               </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance px-4 py-2 border rounded-md mt-2">
+              <AccordionContent className="flex flex-col gap-4 text-balance py-2 mt-2 max-h-96 overflow-y-auto">
                 {categories?.map((category) => (
                   <div
                     key={category.id}
@@ -219,10 +222,10 @@ const ProductsPage = () => {
                           : [...prev, category.id]
                       );
                     }}
-                    className="flex items-center gap-3"
+                    className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
                   >
-                    <Checkbox id={category.name} checked={selectedCategories.includes(category.id)} />
-                    <Label htmlFor={category.name}>{category.name}</Label>
+                    <Label htmlFor={category.name} className="text-white">{category.name}</Label>
+                    <FaArrowRight className="text-white"/>
                   </div>
                 ))}
               </AccordionContent>
