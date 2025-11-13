@@ -41,6 +41,8 @@ type AuthContextType = {
   handleLogout: (data: any) => Promise<AxiosResponse<any>>;
   handleForgotPassword: (data: any) => Promise<AxiosResponse<any>>;
   handleChangePassword: (data: any) => Promise<AxiosResponse<any>>;
+  tradeOnly: boolean;
+  setTradeOnly: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -52,6 +54,12 @@ type CustomerInfo = {
 
 export const AuthProviders = ({ children }: { children: ReactNode }) => {
   //handeling all singup method
+  const [tradeOnly, setTradeOnly] = React.useState(false);
+
+  const handleToggle = () => {
+    setTradeOnly(!tradeOnly);
+  };
+
   const handleSignUp = async (data: SignUpData) => {
     try {
       // Simulate API call
@@ -187,7 +195,11 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     handleLogout,
     handleForgotPassword,
     handleChangePassword,
+    tradeOnly,
+    setTradeOnly,
   };
+
+  console.log("checking ", tradeOnly)
 
   return (
     <AuthContext.Provider value={methodObj}>{children}</AuthContext.Provider>

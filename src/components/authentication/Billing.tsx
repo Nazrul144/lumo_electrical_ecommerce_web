@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { CheckCircle2 } from "lucide-react";
 import Swal from "sweetalert2";;
 import { useAuth } from "@/context/AuthProviders";
+import Steps from "../shared/Steps";
 
 
 
@@ -102,59 +103,7 @@ const Billing = () => {
                 </Link>
               </div>
               {/*Progress Bar top*/}
-              <div className="flex items-center justify-center gap-6 mt-6">
-                {steps.map((step, index) => {
-                  const isCompleted = currentPath > step.id;
-                  const isActive = currentPath === step.id;
-
-                  return (
-                    <div key={step.id} className="flex items-center">
-                      <div
-                        className={`flex flex-col items-center relative ${
-                          index !== steps.length - 1 ? "mr-6" : ""
-                        }`}
-                      >
-                        <div
-                          className={`w-10 h-10 flex items-center justify-center rounded-full border-8 transition-all duration-300 ${
-                            isCompleted
-                              ? "bg-green-500 border-green-500 text-white"
-                              : isActive
-                              ? "border-green-500 text-green-600"
-                              : "border-green-500 text-gray-400"
-                          }`}
-                        >
-                          {isCompleted ? (
-                            <CheckCircle2 size={22} />
-                          ) : (
-                            <span>{step.id}</span>
-                          )}
-                        </div>
-
-                        <div
-                          className={`mt-2 px-3 py-1 rounded-full text-sm font-medium ${
-                            isCompleted || isActive
-                              ? "bg-gradient-to-r from-green-700 to-lime-400 text-white"
-                              : "bg-gray-200 text-gray-500"
-                          }`}
-                        >
-                          {step.label}
-                        </div>
-
-                        {/* connector line */}
-                        {index < steps.length - 1 && (
-                          <div
-                            className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
-                              currentPath > step.id
-                                ? "bg-green-500"
-                                : "bg-green-500"
-                            }`}
-                          ></div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Steps  setCurrentStep={2} />
 
               <form
                 className="w-full max-w-[612px] mt-16"
@@ -334,7 +283,9 @@ const Billing = () => {
                       {...register("province")}
                       className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                     >
-                      <option disabled value="">Select province</option>
+                      <option disabled value="">
+                        Select province
+                      </option>
                       <option value="Eastern Cape">Eastern Cape</option>
                       <option value="Free State">Free State</option>
                       <option value="Gauteng">Gauteng</option>
@@ -349,13 +300,13 @@ const Billing = () => {
                 </div>
 
                 <div className="w-full mt-4">
-                    <Button
-                      type="submit"
-                      className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
+                  <Button
+                    type="submit"
+                    className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
-                    >
-                      Next
-                    </Button>
+                  >
+                    Next
+                  </Button>
                 </div>
               </form>
             </div>

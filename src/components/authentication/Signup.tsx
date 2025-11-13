@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useId, useState } from "react";
 
@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
+import Steps from "../shared/Steps";
 
 // Zod validation schema
 const signUpSchema = z
@@ -68,7 +69,7 @@ const Signup = () => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
-  const { handleSignUp } = useAuth();
+  const { handleSignUp, setTradeOnly } = useAuth();
 
   const {
     register,
@@ -80,7 +81,10 @@ const Signup = () => {
   });
 
   const onSubmit = async (data: any) => {
+    console.log("clicked")
+    console.log("Form Data:", data);
     const res = await handleSignUp(data);
+    console.log("Signup Response:", res);
     if (res?.status === 201 || res?.status === 200) {
       Swal.fire({
         title: "Successfully submited!",
@@ -103,6 +107,18 @@ const Signup = () => {
     }
   };
 
+ const handleTypeToggle = (value: string) => {
+  console.log("Selected value:", value);
+    if (value === "Trade") {
+      setTradeOnly(true);
+      console.log("trade only set to true");
+    } else {
+      setTradeOnly(false);
+      console.log("trade only set to false");
+    }
+  };
+
+  
   //Top Progress Bar:
   const steps = [
     { id: 1, label: "Registration" },
@@ -143,57 +159,7 @@ const Signup = () => {
               </Link>
             </div>
             {/*Progress Bar top*/}
-            <div className="flex items-center justify-center gap-6 mt-6">
-              {steps.map((step, index) => {
-                const isCompleted = currentStep > step.id;
-                const isActive = currentStep === step.id;
-
-                return (
-                  <div key={step.id} className="flex items-center">
-                    <div
-                      className={`flex flex-col items-center relative ${
-                        index !== steps.length - 1 ? "mr-6" : ""
-                      }`}
-                    >
-                      <div
-                        className={`w-10 h-10 flex items-center justify-center rounded-full border-8 transition-all duration-300 ${
-                          isCompleted
-                            ? "bg-green-500 border-green-500 text-white"
-                            : isActive
-                            ? "border-green-500 text-green-600"
-                            : "border-green-500 text-gray-400"
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 size={22} />
-                        ) : (
-                          <span>{step.id}</span>
-                        )}
-                      </div>
-                      <div
-                        className={`mt-2 px-3 py-1 rounded-full text-sm font-medium ${
-                          isCompleted || isActive
-                            ? "bg-gradient-to-r from-green-700 to-lime-400 text-white"
-                            : "bg-gray-200 text-gray-500"
-                        }`}
-                      >
-                        {step.label}
-                      </div>
-                      {/* connector line */}
-                      {index < steps.length - 1 && (
-                        <div
-                          className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
-                            currentStep > step.id
-                              ? "bg-green-500"
-                              : "bg-green-500"
-                          }`}
-                        ></div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <Steps setCurrentStep={()=>setCurrentStep(1)} />
 
             <form
               className="w-full max-w-[612px] mt-16"
@@ -217,8 +183,15 @@ const Signup = () => {
                   </label>
                   <select
                     id={customerTypeId}
+                   
                     className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
-                    {...register("customer_type")}
+                    {...(register("customer_type"),
+                    {
+                      onChange: (e) => {
+                        const selectedValue = e.target.value;
+                        handleTypeToggle(selectedValue);
+                      },
+                    })}
                     required={true}
                   >
                     <option disabled value="">
@@ -397,13 +370,13 @@ const Signup = () => {
                 )}
               </div>
               <div className="w-full mt-4">
-                <Button
+                <button
                   type="submit"
                   className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
                 >
                   Next
-                </Button>
+                </button>
               </div>
 
               <p className="mt-4 text-center font-poppins">
