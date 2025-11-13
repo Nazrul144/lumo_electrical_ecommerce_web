@@ -1,12 +1,8 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { ImWhatsapp } from "react-icons/im";
-// import { CiTwitter } from "react-icons/ci";
-// import { LuShare2 } from "react-icons/lu";
-// import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Playfair_Display } from "next/font/google";
 import api from "@/lib/api";
 import LoadingPage from "@/app/(commonLayout)/products/loading";

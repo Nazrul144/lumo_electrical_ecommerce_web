@@ -94,8 +94,8 @@ const Signup = () => {
         icon: "error",
         title: "Oops...",
         text:
-          res.response.data.data.email[0] ||
-          res.response.data.data.phone_number[0] ||
+          res?.response.data.data.email[0] ||
+          res?.response.data.data.phone_number[0] ||
           "Something went wrong!",
         showConfirmButton: false,
         timer: 500,

@@ -6,6 +6,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import BtnLink from "../shared/BtnLink";
 import { Playfair } from "next/font/google";
+import { Loader } from "../shared/Loader";
+import { EmptyData } from "../shared/EmptyData";
 
 const playfair = Playfair({
   subsets: ["latin"],
@@ -53,6 +55,14 @@ export const RealtedProduct: React.FC<RealtedProductProps> = ({ categoryId, subC
 
     fetchProducts();
   }, [categoryId, subCategoryId]);
+
+  if(isLoading){
+    return <Loader/>
+  }
+
+  if(relatedProducts?.length === 0){
+    return <EmptyData/>
+  }
 
   return (
     <section className="container mx-auto overflow-x-auto">

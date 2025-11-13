@@ -1,22 +1,15 @@
 "use client";
-import { Playfair_Display } from "next/font/google";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import api from "@/lib/api";
 import { Headline } from "@/components/shared/Headline";
-import BtnLink from "@/components/shared/BtnLink";
 import { useParams } from "next/navigation";
 import Pagination from "@/components/shared/Pagination";
 import { EmptyData } from "@/components/shared/EmptyData";
 import LoadingPage from "@/app/(commonLayout)/products/loading";
 import ProductCard from "@/components/products/ProductCard";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
+
 
 interface primary_image {
   id:number,
