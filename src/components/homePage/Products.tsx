@@ -1,25 +1,12 @@
 "use client";
 import ProductCard from "@/components/products/ProductCard";
 import api from "@/lib/api";
-import React, { useEffect, useState, useMemo } from "react";
-import { Playfair_Display } from "next/font/google";
-import { BsFilterLeft } from "react-icons/bs";
-import { EmptyData } from "@/components/shared/EmptyData";
+import React, { useEffect, useState } from "react";
 import { Loader } from "@/components/shared/Loader";
 import { Headline } from "../shared/Headline";
 import BtnLink from "../shared/BtnLink";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
 
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
 
 interface primary_image {
   id: number;

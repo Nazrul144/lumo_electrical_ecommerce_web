@@ -1,88 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { useId, useState } from "react";
-
-import { FiEyeOff } from "react-icons/fi";
-import { FiEye } from "react-icons/fi";
+import { useId } from "react";
 import Link from "next/link";
-import { z } from "zod";
-
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { CheckCircle2 } from "lucide-react";
 import { IoChevronBackOutline } from "react-icons/io5";
 
-// Zod validation schema
-const signUpSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First Name must be at least 2 characters")
-      .max(50, "First Name must be less than 50 characters"),
-    lastName: z
-      .string()
-      .min(2, "Last Name must be at least 2 characters")
-      .max(50, "Last Name must be less than 50 characters"),
-    email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(4, "Phone number must be at least 4 digits"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter"
-      )
-      .regex(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter"
-      )
-      .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    confirmPassword: z.string(),
-    agreeToTerms: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms and policy"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
 const Verify = () => {
+  const confirmPasswordId = useId();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
 
-  const confirmPasswordId = useId();
-
-  const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-  const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setValue,
-    watch,
-  } = useForm({
-    resolver: zodResolver(signUpSchema),
+  const { register, handleSubmit } = useForm({
     mode: "onChange", // Add this for immediate validation
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
       password: "",
       confirmPassword: "",
       agreeToTerms: false,
     },
   });
-
-  const agreeToTerms = watch("agreeToTerms");
 
   const onSubmit = async (data: any) => {
     try {
@@ -150,11 +91,11 @@ const Verify = () => {
             {/*Progress Bar top*/}
             <div className="flex items-center lg:justify-center lg:gap-6 mt-6">
               {steps.map((step, index) => {
-                const isCompleted = currentPath >= step.id;
+                const isCompleted = currentPath > step.id;
                 const isActive = currentPath === step.id;
 
                 return (
-                  <div key={step.id} className="flex items-center">
+                  <div key={`step-${step.id}`} className="flex items-center">
                     <div
                       className={`flex flex-col items-center relative ${
                         index !== steps.length - 1 ? "mr-6" : ""
@@ -224,29 +165,11 @@ const Verify = () => {
                   <Input
                     id={confirmPasswordId}
                     className="h-10 text-[#1C1B1F] font-poppins"
-                    placeholder="..............."
-                    type={showPassword2 ? "text" : "password"}
+                    placeholder="000000"
+                    type="text"
                     {...register("confirmPassword")}
                   />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="absolute right-1 top-1/2 
-                            -translate-y-1/2 cursor-pointer"
-                    onClick={() => setShowPassword2(!showPassword2)}
-                  >
-                    {showPassword2 ? (
-                      <FiEyeOff className="h-6 w-6" />
-                    ) : (
-                      <FiEye className="h-6 w-6" />
-                    )}
-                  </Button>
                 </div>
-                {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
               </div>
 
               <div className="mt-3">
@@ -256,15 +179,13 @@ const Verify = () => {
                 </span>
               </div>
               <div className="w-full mt-4">
-                <Link href="#">
-                  <Button
-                    type="submit"
-                    className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
+                <Button
+                  type="submit"
+                  className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
-                  >
-                    Next
-                  </Button>
-                </Link>
+                >
+                  Next
+                </Button>
               </div>
 
               <p className="mt-4 text-center font-poppins">

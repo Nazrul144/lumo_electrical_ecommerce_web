@@ -3,115 +3,59 @@
 import React from "react";
 import Image from "next/image";
 import { useId, useState } from "react";
-
-import { FiEyeOff } from "react-icons/fi";
-import { FiEye } from "react-icons/fi";
 import Link from "next/link";
-import { z } from "zod";
-
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "antd";
 import { CheckCircle2, CircleUserRoundIcon } from "lucide-react";
-import { useFileUpload } from "@/hooks/use-file-upload";
-
-// Zod validation schema
-const signUpSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First Name must be at least 2 characters")
-      .max(50, "First Name must be less than 50 characters"),
-    lastName: z
-      .string()
-      .min(2, "Last Name must be at least 2 characters")
-      .max(50, "Last Name must be less than 50 characters"),
-    email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(4, "Phone number must be at least 4 digits"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /(?=.*[a-z])/,
-        "Password must contain at least one lowercase letter"
-      )
-      .regex(
-        /(?=.*[A-Z])/,
-        "Password must contain at least one uppercase letter"
-      )
-      .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    confirmPassword: z.string(),
-    agreeToTerms: z
-      .boolean()
-      .refine((val) => val === true, "You must agree to the terms and policy"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+import Swal from "sweetalert2";
+import { useAuth } from "@/context/AuthProviders";
 
 const Trade = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { handleTradeOnly } = useAuth();
 
-  const firstNameId = useId();
-  const lastNameId = useId();
-  const emailId = useId();
-  const phoneNumberId = useId();
-  const passwordId = useId();
-  const confirmPasswordId = useId();
-  const id = useId();
-
-  const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+  const bussinessTypeId = useId();
+  const monthyAttachmentPrefId = useId();
+  const procurContractId = useId();
+  const documentId = useId();
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setValue,
-    watch,
-  } = useForm({
-    resolver: zodResolver(signUpSchema),
-    mode: "onChange", // Add this for immediate validation
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      confirmPassword: "",
-      agreeToTerms: false,
-    },
+  const { handleSubmit, register, watch, setValue } = useForm({
+    mode: "onChange",
   });
 
-  const agreeToTerms = watch("agreeToTerms");
+  const documentFile = watch("documents");
+  const previewUrl = documentFile?.[0] ? URL.createObjectURL(documentFile[0]) : null;
+  const fileName = documentFile?.[0]?.name || null;
 
   const onSubmit = async (data: any) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      router.push("/sign-in");
-      // Handle successful submission here
-    } catch (error) {
-      console.error("Submission error:", error);
+    const formData = new FormData();
+    formData.append("business_type", data.business_type || "");
+    formData.append("monthly_statement", data.monthly_statement || "");
+    formData.append("procurement_no", data.procurement_no || "");
+    if (data.documents?.[0]) {
+      formData.append("documents", data.documents[0]);
+    }
+    console.log("checking form data....", Object.fromEntries(formData));
+    const response = await handleTradeOnly(formData);
+    console.log("API Response:", response);
+    if (response && (response.status === 201 || response.status === 200)) {
+      Swal.fire({
+        title: "Successfully submited!",
+        icon: "success",
+        draggable: false,
+      });
+      router.push("/signup/billing/delivery/trade/verify");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
-
-  //File Upload:
-  const [{ files }, { removeFile, openFileDialog, getInputProps }] =
-    useFileUpload({
-      accept: "image/*",
-    });
-
-  const previewUrl = files[0]?.preview || null;
-  const fileName = files[0]?.file.name || null;
 
   const pathName = usePathname();
 
@@ -146,7 +90,6 @@ const Trade = () => {
               className="rounded-3xl object-cover"
             />
           </div>
-
           <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
             <div className="w-full  flex justify-end lg:pr-16">
               <Link href={"/"}>
@@ -224,32 +167,38 @@ const Trade = () => {
               <div className="flex flex-col w-full">
                 <div className="group relative mt-8 w-full">
                   <label
-                    htmlFor="customerType"
+                    htmlFor="bussinessType"
                     className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F]
-      block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
+                    block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                   >
                     Business Type <span className="text-red-500 ">*</span>
                   </label>
                   <select
-                    id="customerType"
+                    id={bussinessTypeId}
+                    {...register("business_type")}
                     className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
                   >
-                    <option value="">Select type</option>
-                    <option value="retail">Electrician</option>
-                    <option value="customer">Vendor</option>
+                    <option value="" disabled>
+                      Select type
+                    </option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Contractor">Contractor</option>
+                    <option value="Reseller">Reseller</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={firstNameId}
+                      htmlFor={monthyAttachmentPrefId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Monthly Statement Preference
                     </label>
                     <Input
-                      id={firstNameId}
+                      id={monthyAttachmentPrefId}
+                      {...register("monthly_statement")}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="000 0000 0000"
                       type="text"
@@ -258,13 +207,14 @@ const Trade = () => {
 
                   <div className="group relative mt-8 w-full">
                     <label
-                      htmlFor={lastNameId}
+                      htmlFor={procurContractId}
                       className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                     >
                       Procurement Contact
                     </label>
                     <Input
-                      id={lastNameId}
+                      id={procurContractId}
+                      {...register("procurement_no")}
                       className="h-10 text-[#1C1B1F] font-poppins"
                       placeholder="doe@gmail.com"
                       type="text"
@@ -305,17 +255,20 @@ const Trade = () => {
                     <div className="relative inline-block">
                       <Button
                         variant={"secondary"}
-                        onClick={openFileDialog}
+                        type="button"
                         aria-haspopup="dialog"
                         className="cursor-pointer"
+                        onClick={() => document.getElementById('file-upload')?.click()}
                       >
-                        {fileName ? "Change image" : "Upload Trade Doces "}
+                        {fileName ? "Change image" : "Upload Trade Docs "}
                       </Button>
                       <input
-                        {...getInputProps()}
-                        className="sr-only"
+                        {...register("documents")}
+                        type="file"
+                        id="file-upload"
+                        accept="image/*"
                         aria-label="Upload Trade Docs"
-                        tabIndex={-1}
+                        className="hidden"
                       />
                     </div>
                   </div>
@@ -328,7 +281,9 @@ const Trade = () => {
                         {fileName}
                       </p>{" "}
                       <button
-                        onClick={() => removeFile(files[0]?.id)}
+                        onClick={() => {
+                          setValue("documents", null);
+                        }}
                         className="font-medium text-destructive hover:underline"
                         aria-label={`Remove ${fileName}`}
                       >
@@ -336,38 +291,17 @@ const Trade = () => {
                       </button>
                     </div>
                   )}
-                  <p
-                    aria-live="polite"
-                    role="region"
-                    className="mt-2 text-xs text-muted-foreground"
-                  >
-                    {/*Checkmark*/}
-                    <div className="flex items-center gap-2 font-poppins">
-                      <div className="flex items-center gap-2 text-lg">
-                        <Checkbox id={id} />
-                        <Label htmlFor={id}>
-                          Apply for{" "}
-                          <span className="text-red-600 font-semibold">
-                            Credit
-                          </span>{" "}
-                          Terms?
-                        </Label>
-                      </div>
-                    </div>
-                  </p>
                 </div>
               </div>
 
               <div className="w-full mt-4">
-                <Link href="/signup/billing/delivery/trade/verify">
-                  <Button
-                    type="submit"
-                    className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
+                <Button
+                  type="submit"
+                  className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
-                  >
-                    Next
-                  </Button>
-                </Link>
+                >
+                  Next
+                </Button>
               </div>
 
               <p className="mt-4 text-center font-poppins">

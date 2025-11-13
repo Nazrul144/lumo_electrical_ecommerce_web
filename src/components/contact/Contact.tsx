@@ -352,11 +352,9 @@ const Contact = () => {
               <Map
                 style={{ borderRadius: "20px" }}
                 defaultZoom={13}
-                // defaultCenter={markerLocation}
                 gestureHandling={"greedy"}
                 disableDefaultUI
               >
-                {/* <Marker position={markerLocation} /> */}
               </Map>
             </APIProvider>
           </div>

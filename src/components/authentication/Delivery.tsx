@@ -290,11 +290,12 @@ const Delivery = () => {
                     <Input
                       id={registrationId}
                       className="h-10 text-[#1C1B1F] font-poppins"
-                      placeholder="000 000 0000"
+                      placeholder="Select CIPC document"
                       disabled={isSameAs}
-                      type="text"
+                      type="file"
                       {...register("company_registration")}
                       required={true}
+                      accept=".pdf,.doc,.docx,.jpg,.png"
                     />
                   </div>
                 </div>
