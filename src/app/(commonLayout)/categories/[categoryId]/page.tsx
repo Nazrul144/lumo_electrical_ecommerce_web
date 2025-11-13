@@ -82,7 +82,7 @@ const SubCategories = () => {
       <Headline text="Explore by Sub category"/>
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-10 ">
           {/* showing product card when selected any category  */}
           {subCategories?.map((subCategory) => (<div
               key={subCategory?.id}

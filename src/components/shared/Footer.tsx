@@ -67,7 +67,7 @@ export default function Footer() {
       className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30 dark:from-gray-900 dark:to-black text-gray-900
      dark:text-white py-12 px-4"
     >
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mt-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center lg:grid-cols-5 gap-10 mt-10">
         <div className="lg:col-span-5">
           <Link href={"/"}>
             <Image src="/logo/logo.png" alt="logo" height={100} width={100} />

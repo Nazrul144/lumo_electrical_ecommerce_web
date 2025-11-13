@@ -281,7 +281,7 @@ const ProductsPage = () => {
             </div>
           </div>
           {/* randering products  */}
-          <div className=" lg:grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-6">
             {sortedProducts?.map((product) =>(
               <ProductCard key={product.id} product={product} selectedFilter={selectedFilter} />
             ))}

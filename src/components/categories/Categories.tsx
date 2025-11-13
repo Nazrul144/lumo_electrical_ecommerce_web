@@ -73,7 +73,7 @@ const Categories = () => {
       <Headline text="Explore by Category" />
       {/*------------- showing option card ----------------- */}
       <div className="container mx-auto pt-10">
-        {isLoading ? <Loader/> : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {isLoading ? <Loader/> : <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center ">
           {/* showing product card when selected any category  */}
           {categories?.map((category) => (
             <div

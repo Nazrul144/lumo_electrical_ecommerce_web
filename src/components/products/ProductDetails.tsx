@@ -127,9 +127,10 @@ const ProductDetails = ({id}:{id:number}) => {
               {productDetails?.short_description}
             </p>
             <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-              <Link
+              <a
                 rel="noopener noreferrer"
-                href="#"
+                href={`https://wa.me/27217153151?text=I'm%20interested%20in%20your%20product:%20${productDetails?.name}`}
+                target="_blank"
                 className="px-8 py-3 text-lg font-semibold rounded text-white flex items-center gap-2
              bg-gradient-to-r from-[#088347] to-[#C6E824]
              transition-all duration-300 hover:scale-105
@@ -137,7 +138,7 @@ const ProductDetails = ({id}:{id:number}) => {
               >
                 <ImWhatsapp className="text-3xl text-white" />
                 Contact via Whatsapp
-              </Link>
+              </a>
             </div>
           </div>
         </div>

@@ -97,7 +97,7 @@ const Products = () => {
       <Headline text="Explore Products"/>
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
           {/* showing product card when selected any category  */}
           {products?.map((product) => (<ProductCard key={product.id} product={product} />))}
         </div>
