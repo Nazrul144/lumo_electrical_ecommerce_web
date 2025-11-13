@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useEffect } from "react";
+import React, {  } from "react";
 import Image from "next/image";
 import { useId, useState } from "react";
-
 import { FiEyeOff } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import Link from "next/link";
 import { z } from "zod";
-
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 import Steps from "../shared/Steps";
@@ -81,10 +78,7 @@ const Signup = () => {
   });
 
   const onSubmit = async (data: any) => {
-    console.log("clicked")
-    console.log("Form Data:", data);
     const res = await handleSignUp(data);
-    console.log("Signup Response:", res);
     if (res?.status === 201 || res?.status === 200) {
       Swal.fire({
         title: "Successfully submited!",
@@ -159,7 +153,7 @@ const Signup = () => {
               </Link>
             </div>
             {/*Progress Bar top*/}
-            <Steps setCurrentStep={()=>setCurrentStep(1)} />
+            <Steps currentStep={1} />
 
             <form
               className="w-full max-w-[612px] mt-16"
@@ -185,13 +179,11 @@ const Signup = () => {
                     id={customerTypeId}
                    
                     className="h-10 w-full text-[#1C1B1F] font-poppins border border-gray-300 rounded-md px-3 focus:outline-none"
-                    {...(register("customer_type"),
-                    {
-                      onChange: (e) => {
-                        const selectedValue = e.target.value;
-                        handleTypeToggle(selectedValue);
-                      },
-                    })}
+                    {...register("customer_type")} 
+                    onChange={(e) => {
+                      const selectedValue = e.target.value;
+                      handleTypeToggle(selectedValue);
+                    }}
                     required={true}
                   >
                     <option disabled value="">

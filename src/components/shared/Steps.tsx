@@ -1,26 +1,15 @@
-import { usePathname } from "next/navigation";
 import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/context/AuthProviders";
 
 interface StepsProps {
-  setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
+  currentStep: number;  // Accepts current step directly as a prop
 }
 
-const Steps = ({ setCurrentStep:number }) => {
+const Steps = ({ currentStep }: StepsProps) => {
   const { tradeOnly } = useAuth();
-  const pathName = usePathname();
-  const getCurrentPath = () => {
-    if (pathName.includes("signup/verify")) return 5;
-    if (pathName.includes("signup/trade-only")) return 4;
-    if (pathName.includes("signup/billing/delivery")) return 3;
-    if (pathName.includes("signup/billing")) return 2;
-    return 1;
-  };
 
-  //Top Progress Bar:
-
-  // if trade only is true 
+  // Steps depending on tradeOnly value
   const steps = [
     { id: 1, label: "Registration" },
     { id: 2, label: "Billing" },
@@ -28,7 +17,7 @@ const Steps = ({ setCurrentStep:number }) => {
     { id: 4, label: "Trade Only" },
     { id: 5, label: "Verify" },
   ];
-  // if trade only is false
+  
   const steps2 = [
     { id: 1, label: "Registration" },
     { id: 2, label: "Billing" },
@@ -36,15 +25,14 @@ const Steps = ({ setCurrentStep:number }) => {
     { id: 4, label: "Verify" },
   ];
 
-  const currentPath = getCurrentPath();
   return (
     <div>
-      {/*Progress Bar top*/}
+      {/* Progress Bar */}
       <div className="flex items-center justify-center gap-6 mt-6">
         {tradeOnly
           ? steps.map((step, index) => {
-              const isCompleted = currentPath > step.id;
-              const isActive = currentPath === step.id;
+              const isCompleted = currentStep > step.id;
+              const isActive = currentStep === step.id;
 
               return (
                 <div key={step.id} className="flex items-center">
@@ -79,11 +67,11 @@ const Steps = ({ setCurrentStep:number }) => {
                       {step.label}
                     </div>
 
-                    {/* connector line */}
+                    {/* Connector line */}
                     {index < steps.length - 1 && (
                       <div
                         className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
-                          currentPath > step.id
+                          currentStep > step.id
                             ? "bg-green-500"
                             : "bg-green-500"
                         }`}
@@ -94,8 +82,8 @@ const Steps = ({ setCurrentStep:number }) => {
               );
             })
           : steps2.map((step, index) => {
-              const isCompleted = currentPath > step.id;
-              const isActive = currentPath === step.id;
+              const isCompleted = currentStep > step.id;
+              const isActive = currentStep === step.id;
 
               return (
                 <div key={step.id} className="flex items-center">
@@ -130,11 +118,11 @@ const Steps = ({ setCurrentStep:number }) => {
                       {step.label}
                     </div>
 
-                    {/* connector line */}
+                    {/* Connector line */}
                     {index < steps2.length - 1 && (
                       <div
                         className={`absolute top-5 left-[calc(55%+0.75rem)] w-24 h-[4px] ${
-                          currentPath > step.id
+                          currentStep > step.id
                             ? "bg-green-500"
                             : "bg-green-500"
                         }`}

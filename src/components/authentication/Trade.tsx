@@ -2,25 +2,23 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useId, useState } from "react";
+import { useId } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { CheckCircle2, CircleUserRoundIcon } from "lucide-react";
+import { CircleUserRoundIcon } from "lucide-react";
 import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 import Steps from "../shared/Steps";
 
 const Trade = () => {
-  const [currentStep, setCurrentStep] = useState(1);
   const { handleTradeOnly } = useAuth();
 
   const bussinessTypeId = useId();
   const monthyAttachmentPrefId = useId();
   const procurContractId = useId();
-  const documentId = useId();
   const router = useRouter();
 
   const { handleSubmit, register, watch, setValue } = useForm({
@@ -60,26 +58,7 @@ const Trade = () => {
     }
   };
 
-  const pathName = usePathname();
-
-  const getCurrentPath = () => {
-    if (pathName.includes("signup/billing/delivery/trade/verify")) return 5;
-    if (pathName.includes("signup/billing/delivery/trade")) return 4;
-    if (pathName.includes("signup/billing/delivery")) return 3;
-    if (pathName.includes("signup/billing")) return 2;
-    return 1;
-  };
-
-  //Top Progress Bar:
-  const steps = [
-    { id: 1, label: "Registration" },
-    { id: 2, label: "Billing" },
-    { id: 3, label: "Delivery" },
-    { id: 4, label: "Trade Only" },
-    { id: 5, label: "Verify" },
-  ];
-
-  const currentPath = getCurrentPath();
+ 
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -104,7 +83,7 @@ const Trade = () => {
                 />
               </Link>
             </div>
-            <Steps setCurrentStep={4} />
+            <Steps currentStep={4} />
 
             <form
               className="w-full max-w-[612px] mt-16"

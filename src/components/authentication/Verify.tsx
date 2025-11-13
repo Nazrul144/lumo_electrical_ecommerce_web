@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, {  } from "react";
 import Image from "next/image";
 import { useId } from "react";
 import Link from "next/link";
@@ -8,14 +8,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { CheckCircle2 } from "lucide-react";
 import { IoChevronBackOutline } from "react-icons/io5";
 import Steps from "../shared/Steps";
 
 const Verify = () => {
   const confirmPasswordId = useId();
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(1);
 
   const { register, handleSubmit } = useForm({
     mode: "onChange", // Add this for immediate validation
@@ -48,16 +46,7 @@ const Verify = () => {
     return 1;
   };
 
-  //Top Progress Bar:
-  const steps = [
-    { id: 1, label: "Registration" },
-    { id: 2, label: "Billing" },
-    { id: 3, label: "Delivery" },
-    { id: 4, label: "Trade Only" },
-    { id: 5, label: "Verify" },
-  ];
 
-  const currentPath = getCurrentPath();
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">
@@ -89,7 +78,7 @@ const Verify = () => {
             </div>
             {/*Back to login*/}
 
-            <Steps setCurrentStep={5} />
+            <Steps currentStep={5} />
 
             <form
               className="w-full max-w-[612px] mt-16"
