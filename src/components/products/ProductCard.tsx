@@ -12,7 +12,7 @@ interface primary_image {
 
 interface ProductProps {
   id?: number;
-  title?: string;
+  name?: string;
   short_description?: string;
   category_name?: string;
   category_slug?: string;
@@ -37,10 +37,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           src={product?.primary_image?.image || "/placeholder.jpg"}
           width={300}
           height={500}
-          alt={product.title || "Product image"}
+          alt={product.name || "Product image"}
           className="h-[350px] w-[250px] object-contain"
         />
-        <h1 className="text-xl font-bold mt-2 text-center">{product.title}</h1>
+        <h1 className="text-xl font-bold mt-2 text-center">{product.name}</h1>
+        <h1 className="text-lg mt-2 text-center">Product Id: {product.id}</h1>
         {/* other user info */}
       </Card>
     </Link>
