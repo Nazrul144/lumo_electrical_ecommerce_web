@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "@/components/shared/Loader";
 import { Headline } from "../shared/Headline";
 import BtnLink from "../shared/BtnLink";
+import { EmptyData } from "../shared/EmptyData";
 
 
 
@@ -54,6 +55,11 @@ const ProductsHome = () => {
 
   if(isLoading){
     return <Loader/>
+  }
+
+
+  if(products?.length === 0){
+    return <EmptyData/>
   }
 
 

@@ -1,7 +1,20 @@
+import api from "@/lib/api";
+import { Playfair_Display } from "next/font/google";
 import React, { useEffect, useState } from "react";
+import { BsFilterLeft } from "react-icons/bs";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 const Filters = () => {
     const [filter, setFilter] = useState("All");
+    const [active, setActive] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+
+    console.log(filteredData);
 
 
     const loadFilteredData = async () => {

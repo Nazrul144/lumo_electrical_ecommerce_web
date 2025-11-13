@@ -1,6 +1,6 @@
 import { LoaderIcon } from "lucide-react"
-
 import { cn } from "@/lib/utils"
+import React from "react"
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (
@@ -13,9 +13,14 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   )
 }
 
-export function Loader() {
+type LoaderProps = {
+  className?: string
+}
+
+
+export function Loader({ className = "h-screen" }: LoaderProps) {
   return (
-    <div className="flex justify-center items-center h-screen text-4xl">
+    <div className={`flex justify-center items-center text-4xl ${className}`}>
       <Spinner />
     </div>
   )

@@ -54,6 +54,7 @@ const Contact = () => {
       Swal.fire({
         title: res?.data?.message,
         icon: "error",
+        
       });
     }
   };

@@ -10,6 +10,7 @@ import Pagination from "../shared/Pagination";
 import { usePathname } from "next/navigation";
 import { Loader } from "../shared/Loader";
 import { EmptyData } from "../shared/EmptyData";
+import Swal from "sweetalert2";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,7 +30,6 @@ const Categories = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pathName = usePathname();
-  
 
   useEffect(() => {
     const fatchingProduct = async () => {
@@ -40,8 +40,15 @@ const Categories = () => {
         setCategories(response?.data?.results?.data);
         setIsLoading(false);
       } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          showConfirmButton: false,
+          timer: 500,
+        });
         console.log(error);
-      }finally{
+      } finally {
         setIsLoading(false);
       }
     };
@@ -52,10 +59,13 @@ const Categories = () => {
     setPage(selectedPage);
   };
 
-  if(categories.length === 0){
-    return  <EmptyData/>
+  if (isLoading) {
+    return <Loader />;
   }
 
+  if (categories.length === 0) {
+    return <EmptyData />;
+  }
 
   return (
     <motion.div
@@ -73,34 +83,56 @@ const Categories = () => {
       <Headline text="Explore by Category" />
       {/*------------- showing option card ----------------- */}
       <div className="container mx-auto pt-10">
-        {isLoading ? <Loader/> : <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center ">
-          {/* showing product card when selected any category  */}
-          {categories?.map((category) => (
-            <div
-              key={category?.id}
-              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
-            >
-              {/* Image */}
-              <Image
-                src={category?.image}
-                alt={category?.name}
-                fill
-                className="object-contain transition-transform duration-300 group-hover:scale-105"
-                quality={100}
-              />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center ">
+            {/* showing product card when selected any category  */}
+            {categories?.map((category) => (
+              <div
+                key={category?.id}
+                className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
+              >
+                {/* Image */}
+                <Image
+                  src={category?.image}
+                  alt={category?.name}
+                  fill
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  quality={100}
+                />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p className={`text-white text-6xl text-center ${playfair.className}}`}>
-                  {category?.name}
-                </p>
-                <BtnLink text="Explore" link={`/categories/${category?.id}`} />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
+                  <p
+                    className={`text-white text-6xl text-center ${playfair.className}}`}
+                  >
+                    {category?.name}
+                  </p>
+                  <BtnLink
+                    text="Explore"
+                    link={`/categories/${category?.id}`}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>}
+            ))}
+          </div>
+        )}
         {/* Pagination */}
-        {pathName === "/categories" ?<Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} /> : <div className="flex justify-center items-center mt-10"><BtnLink text="Explore All Categories" isIcone={true} link="/categories"/></div>}
+        {pathName === "/categories" ? (
+          <Pagination
+            totalPages={Math.ceil(totalPages / 9)}
+            onPageChange={handlePageChange}
+          />
+        ) : (
+          <div className="flex justify-center items-center mt-10">
+            <BtnLink
+              text="Explore All Categories"
+              isIcone={true}
+              link="/categories"
+            />
+          </div>
+        )}
       </div>
     </motion.div>
   );

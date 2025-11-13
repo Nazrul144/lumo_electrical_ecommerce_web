@@ -2,7 +2,6 @@
 import React from "react";
 import { Card } from "antd";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import Link from "next/link";
 
 interface primary_image {

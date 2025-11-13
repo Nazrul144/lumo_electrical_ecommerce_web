@@ -129,7 +129,6 @@ const ProductsPage = () => {
     fatchingCategories();
   }, []);
 
-  console.log("checking categoies", categories);
 
   // faching sub-categories
   useEffect(() => {

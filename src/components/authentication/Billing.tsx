@@ -50,6 +50,8 @@ const Billing = () => {
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",
+          showConfirmButton: false,
+          timer: 500
         });
       }
   };

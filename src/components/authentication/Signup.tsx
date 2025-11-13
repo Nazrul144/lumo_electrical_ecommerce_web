@@ -68,7 +68,7 @@ const Signup = () => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
-  const {handleSignUp} = useAuth();
+  const { handleSignUp } = useAuth();
 
   const {
     register,
@@ -79,12 +79,9 @@ const Signup = () => {
     mode: "onChange",
   });
 
-
-  
-
   const onSubmit = async (data: any) => {
     const res = await handleSignUp(data);
-    if(res?.status  === 201 || res?.status === 200){
+    if (res?.status === 201 || res?.status === 200) {
       Swal.fire({
         title: "Successfully submited!",
         icon: "success",
@@ -92,11 +89,16 @@ const Signup = () => {
       });
       router.push("/signup/billing");
       handleNext();
-    }else{
+    } else {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: res.response.data.data.email[0] || res.response.data.data.phone_number[0] || "Something went wrong!",
+        text:
+          res.response.data.data.email[0] ||
+          res.response.data.data.phone_number[0] ||
+          "Something went wrong!",
+        showConfirmButton: false,
+        timer: 500,
       });
     }
   };
@@ -219,8 +221,12 @@ const Signup = () => {
                     {...register("customer_type")}
                     required={true}
                   >
-                    <option disabled value="">Select type</option>
-                    <option defaultChecked value="Retail">Retail</option>
+                    <option disabled value="">
+                      Select type
+                    </option>
+                    <option defaultChecked value="Retail">
+                      Retail
+                    </option>
                     <option value="Trade">Trade</option>
                   </select>
                 </div>
