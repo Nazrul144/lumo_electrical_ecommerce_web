@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
 
-interface PersonalInfoProps {
+interface PersonalDetails {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
 }
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({
+const PersonalDetails: React.FC<PersonalDetails> = ({
   firstName,
   lastName,
   email,
@@ -104,12 +104,17 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           >
             Save Changes
           </button>
-        ) : <button onClick={toggleEdit} className=" text-white p-3 rounded-lg bg-[#00C464] cursor-pointer">
-          Edit profile
-        </button>}
+        ) : (
+          <button
+            onClick={toggleEdit}
+            className=" text-white p-3 rounded-lg bg-[#00C464] cursor-pointer"
+          >
+            Edit profile
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
-export default PersonalInfo;
+export default PersonalDetails;

@@ -1,6 +1,6 @@
 "use client";
 import BillingDetails from "@/components/profile/BillingDetails";
-import PersonalInfo from "@/components/profile/PersonalDetails";
+import PersonalDetails from "@/components/profile/PersonalDetails";
 import ProfileCard from "@/components/profile/ProfileCard";
 import Security from "@/components/profile/Security";
 import React, { useState } from "react";
@@ -44,7 +44,7 @@ const Profile = () => {
       </div>
       <div>
         {option === "personal" && (
-          <PersonalInfo
+          <PersonalDetails
             firstName="Prayas"
             lastName="Mojumder"
             email="prayasmazumder150@gmail.com"
@@ -53,10 +53,13 @@ const Profile = () => {
         )}
         {option === "billing" && (
           <BillingDetails
-            firstName="Joy"
-            lastName="Mojumder"
-            email="prayasmazumder150@gmail.com"
-            phone="12487953683"
+            companyName="xyx"
+            vatNumber=""
+            companyReg="Bangladesh"
+            city="Dhaka"
+            provine="Dhaka"
+            postCode="1207"
+            billingAddress="Uttara"
           />
         )}
         {option === "security" && (

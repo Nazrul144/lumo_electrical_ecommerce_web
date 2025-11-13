@@ -3,7 +3,9 @@ import ProductDetails from '@/components/products/ProductDetails';
 import React from 'react';
 
 
-type Props = { params: { id: number } };
+type Props = {
+  params: Promise<{ id: number }>;
+};
 
 export default async function Details({ params }: Props) {
     const { id } = await params;

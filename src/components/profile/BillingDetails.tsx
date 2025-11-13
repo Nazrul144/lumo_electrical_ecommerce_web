@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 interface PersonalInfoProps {
-  companyName: string;
+  companyName?: string;
   vatNumber: string;
   companyReg: string;
   billingAddress: string;
@@ -12,6 +12,7 @@ interface PersonalInfoProps {
 }
 
 const BillingDetails: React.FC<PersonalInfoProps> = ({
+
   companyName,
   vatNumber,
   companyReg,

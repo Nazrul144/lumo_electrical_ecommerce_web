@@ -44,12 +44,8 @@ const Login = () => {
     resolver: zodResolver(signInSchema),
     mode: "onChange", // Add this for immediate validation
     defaultValues: {
-      firstName: "",
-      lastName: "",
       email: "",
-      phoneNumber: "",
       password: "",
-      confirmPassword: "",
       rememberMe: false,
     },
   });
@@ -150,7 +146,7 @@ const Login = () => {
                     id={rememberMeId}
                     checked={rememberMe}
                     onCheckedChange={(checked) =>
-                      setValue("rememberMe", checked)
+                      setValue("rememberMe", checked === true)
                     }
                   />
                   <Label

@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 
 interface PersonalInfoProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
 }
 
 const Security: React.FC<PersonalInfoProps> = ({
