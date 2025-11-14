@@ -40,7 +40,6 @@ const Navbar = () => {
     },
   ];
 
-  setUser(false);
 
   useEffect(() => {
     if (isMenuOpen) {

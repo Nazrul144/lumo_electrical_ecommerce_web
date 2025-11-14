@@ -31,13 +31,14 @@ const Categories = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pathName = usePathname();
 
+  // Fetch categories on page change
   useEffect(() => {
     const fetchingProduct = async () => {
       try {
-        setIsLoading(true);
+        setIsLoading(true);  // Start loading
         const response = await api.get(`/products/categories?page=${page}`);
-        setTotalPages(response?.data?.count || 1);
         setCategories(response?.data?.results?.data || []);
+        setTotalPages(response?.data?.count || 1);  // Ensure correct page count
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -46,25 +47,25 @@ const Categories = () => {
           showConfirmButton: false,
           timer: 1000,
         });
-        console.log(error);
+        console.error(error);
       } finally {
-        setIsLoading(false);
+        setIsLoading(false);  // Stop loading after fetch
       }
     };
 
-    fetchingProduct();
-  }, [page]); // Only triggers when page state changes
+    fetchingProduct();  // Call fetch function
+  }, [page]);  // Dependency on page only, triggers on page change
 
   const handlePageChange = (selectedPage: number) => {
-    setPage(selectedPage);
+    setPage(selectedPage);  // Update page number
   };
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader />;  // Show loading spinner while fetching
   }
 
   if (categories.length === 0) {
-    return <EmptyData />;
+    return <EmptyData />;  // Show empty state if no categories
   }
 
   return (
@@ -81,36 +82,33 @@ const Categories = () => {
     >
       <Headline text="Explore by Category" />
       <div className="container mx-auto pt-10">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center ">
-            {categories?.map((category) => (
-              <div
-                key={category?.id}
-                className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
-              >
-                <Image
-                  src={category?.image}
-                  alt={category?.name}
-                  fill
-                  className="object-contain transition-transform duration-300 group-hover:scale-105"
-                  quality={100}
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                  <p className={`text-white text-6xl text-center ${playfair.className}}`}>
-                    {category?.name}
-                  </p>
-                  <BtnLink text="Explore" link={`/categories/${category?.id}`} />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
+            >
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+                quality={100}
+              />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
+                <p className={`text-white text-6xl text-center ${playfair.className}`}>
+                  {category.name}
+                </p>
+                <BtnLink text="Explore" link={`/categories/${category.id}`} />
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
+
         {/* Pagination */}
         {pathName === "/categories" ? (
           <Pagination
-            totalPages={Math.ceil(totalPages / 9)}
+            totalPages={Math.ceil(totalPages / 9)}  // Adjust pagination if needed
             onPageChange={handlePageChange}
           />
         ) : (
