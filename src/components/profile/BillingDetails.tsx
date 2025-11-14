@@ -13,23 +13,50 @@ interface PersonalInfoProps {
 
 const BillingDetails: React.FC<PersonalInfoProps> = ({
 
-  companyName,
-  vatNumber,
-  companyReg,
-  billingAddress,
-  city,
-  provine,
-  postCode,
+  // companyName,
+  // vatNumber,
+  // companyReg,
+  // billingAddress,
+  // city,
+  // provine,
+  // postCode,
 }) => {
+
+    const customerData = {
+     
+
+      billing_addresses: [
+        {
+          id: "a7fa254c-8a4c-4547-9214-6eb04ddf6d3b",
+          company_name: "ABC Company",
+          vat_number: "4123456789",
+          company_registration: "2021/123456/07",
+          po_number: "PO-2025-001",
+          address_line_1: "123 Main Street",
+          address_line_2: "Suite 100",
+          city: "Johannesburg",
+          postal_code: "2000",
+          province: "Gauteng",
+          created_at: "2025-11-13T23:59:35.959869Z",
+          updated_at: "2025-11-13T23:59:35.959884Z",
+        },
+      ],
+
+     
+    };
+
+    const { company_name, vat_number, company_registration, address_line_1, city, province, postal_code } =
+      customerData.billing_addresses[0];
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    companyName,
-    vatNumber,
-    companyReg,
-    billingAddress,
+    companyName: company_name,
+    vatNumber:vat_number,
+    companyReg:company_registration,
+    billingAddress: address_line_1,
     city,
-    provine,
-    postCode,
+    provine:province,
+    postCode: postal_code,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

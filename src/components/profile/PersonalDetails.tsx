@@ -9,17 +9,69 @@ interface PersonalDetails {
 }
 
 const PersonalDetails: React.FC<PersonalDetails> = ({
-  firstName,
-  lastName,
-  email,
-  phone,
+  // firstName,
+  // lastName,
+  // email,
+  // phone,
 }) => {
+    const customerData = {
+      id: "88a7ecc1-30fe-47db-981f-c04d12feca8f",
+      customer_type: "Retail",
+      first_name: "John",
+      last_name: "Doe",
+      full_name: "John Doe",
+      email: "nifeca8627@agenra.com",
+      phone_number: "+27123456789",
+      is_verified: true,
+
+      billing_addresses: [
+        {
+          id: "a7fa254c-8a4c-4547-9214-6eb04ddf6d3b",
+          company_name: "ABC Company",
+          vat_number: "4123456789",
+          company_registration: "2021/123456/07",
+          po_number: "PO-2025-001",
+          address_line_1: "123 Main Street",
+          address_line_2: "Suite 100",
+          city: "Johannesburg",
+          postal_code: "2000",
+          province: "Gauteng",
+          created_at: "2025-11-13T23:59:35.959869Z",
+          updated_at: "2025-11-13T23:59:35.959884Z",
+        },
+      ],
+
+      delivery_addresses: [
+        {
+          id: "7809f742-a4f6-412c-8189-db9a1dd78e0c",
+          company_name: "ABC Company",
+          vat_number: null,
+          company_registration: null,
+          po_number: null,
+          address_line_1: "456 Business Park",
+          address_line_2: "Building B",
+          city: "Pretoria",
+          postal_code: "0001",
+          province: "Gauteng",
+          created_at: "2025-11-14T00:00:14.741207Z",
+          updated_at: "2025-11-14T00:00:14.741224Z",
+        },
+      ],
+
+      trade_information: null,
+      created_at: "2025-11-13T23:57:57.824455Z",
+      updated_at: "2025-11-14T00:01:14.171641Z",
+    };
+
+    const { first_name, last_name, email, phone_number, customer_type } =
+      customerData;
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    firstName,
-    lastName,
+    firstName: first_name,
+    lastName: last_name,
     email,
-    phone,
+    phone: phone_number,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

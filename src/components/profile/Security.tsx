@@ -1,25 +1,23 @@
 "use client";
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-interface PersonalInfoProps {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
+interface SecurityProps {
+  // Props can be added if needed for initial values or user data
 }
 
-const Security: React.FC<PersonalInfoProps> = ({
-  firstName,
-  lastName,
-  email,
-  phone,
-}) => {
+const Security: React.FC<SecurityProps> = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    firstName,
-    lastName,
-    email,
-    phone,
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [showPasswords, setShowPasswords] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,66 +28,181 @@ const Security: React.FC<PersonalInfoProps> = ({
     }));
   };
 
+  const togglePasswordVisibility = (field: keyof typeof showPasswords) => {
+    setShowPasswords((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   const handleSave = () => {
-    // Save the changes (you can handle this by sending data to the backend or local storage)
+    // Validate passwords
+    if (formData.newPassword !== formData.confirmPassword) {
+      alert("New password and confirm password do not match!");
+      return;
+    }
+
+    if (!formData.currentPassword) {
+      alert("Please enter your current password!");
+      return;
+    }
+
+    if (formData.newPassword.length < 8) {
+      alert("New password must be at least 8 characters long!");
+      return;
+    }
+
+    // Save the changes (send data to the backend)
     setIsEditing(false);
-    console.log("Changes Saved:", formData);
+    console.log("Password Change Request:", {
+      currentPassword: formData.currentPassword,
+      newPassword: formData.newPassword,
+    });
+
+    // Reset form after save
+    setFormData({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
   };
 
   return (
     <div className="w-4xl mx-auto bg-white border p-6 rounded-lg">
+      <h2 className="text-xl font-semibold mb-6 text-gray-800">
+        Security Settings
+      </h2>
       <div className="space-y-4">
+        {/* Current Password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Current password
           </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <label className="block text-sm font-medium text-gray-700">
+          <div className="relative">
+            <input
+              type={showPasswords.currentPassword ? "text" : "password"}
+              name="currentPassword"
+              value={formData.currentPassword}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              placeholder="Enter current password"
+              className="mt-1 block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("currentPassword")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPasswords.currentPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* New Password */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             New password
           </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+          <div className="relative">
+            <input
+              type={showPasswords.newPassword ? "text" : "password"}
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              placeholder="Enter new password (min 8 characters)"
+              className="mt-1 block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("newPassword")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPasswords.newPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Confirm Password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Confirm password
           </label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+          <div className="relative">
+            <input
+              type={showPasswords.confirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              placeholder="Re-enter new password"
+              className="mt-1 block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            />
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("confirmPassword")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPasswords.confirmPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            )}
+          </div>
         </div>
-        {isEditing ? (
-          <button
-            onClick={handleSave}
-            className="mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-md hover:bg-green-600"
-          >
-            Save Changes
-          </button>
-        ) : <button onClick={toggleEdit} className=" text-white p-3 rounded-lg bg-[#00C464] cursor-pointer">
-          Edit profile
-        </button>}
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 mt-6">
+          {isEditing ? (
+            <>
+              <button
+                onClick={handleSave}
+                className="px-6 py-2 bg-[#00C464] text-white font-medium rounded-lg hover:bg-green-600 transition-colors"
+              >
+                Save Changes
+              </button>
+              <button
+                onClick={() => {
+                  setIsEditing(false);
+                  setFormData({
+                    currentPassword: "",
+                    newPassword: "",
+                    confirmPassword: "",
+                  });
+                }}
+                className="px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={toggleEdit}
+              className="px-6 py-2 text-white rounded-lg bg-[#00C464] hover:bg-green-600 transition-colors cursor-pointer"
+            >
+              Change Password
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
