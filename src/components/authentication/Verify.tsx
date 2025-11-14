@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, {  } from "react";
+import React from "react";
 import Image from "next/image";
 import { useId } from "react";
 import Link from "next/link";
@@ -10,6 +10,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { IoChevronBackOutline } from "react-icons/io5";
 import Steps from "../shared/Steps";
+import api from "@/lib/api";
+import Swal from "sweetalert2";
 
 const Verify = () => {
   const confirmPasswordId = useId();
@@ -26,27 +28,28 @@ const Verify = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      router.push("/sign-in");
-      // Handle successful submission here
+      const res = await api.post("/accounts/verify-reset-otp/", data);
+      if (res.status === 200 || res.status === 201) {
+        Swal.fire({
+          title: "Verify successfull!",
+          icon: "success",
+          draggable: true,
+          showConfirmButton: false,
+          timer: 500
+        });
+        router.push("/login");
+      }
     } catch (error) {
-      console.error("Submission error:", error);
+      Swal.fire({
+          title: "Failed to verify!",
+          icon: "error",
+          draggable: true,
+          showConfirmButton: false,
+          timer: 500
+        });
+      console.log(error);
     }
   };
-
-  const pathName = usePathname();
-
-  const getCurrentPath = () => {
-    if (pathName.includes("signup/billing/delivery/trade/verify")) return 5;
-    if (pathName.includes("signup/billing/delivery/trade")) return 4;
-    if (pathName.includes("signup/billing/delivery")) return 3;
-    if (pathName.includes("signup/billing")) return 2;
-    return 1;
-  };
-
-
 
   return (
     <div className="lg:w-7xl mx-auto mt-10">

@@ -29,7 +29,7 @@ type SaveData = {
 const Delivery = () => {
   const [isSameAs, setSameAs] = useState(false);
   const [seveData, setSaveData] = useState<SaveData | null>();
-
+  const {tradeOnly} = useAuth();
   const companyNameId = useId();
   const vatNumberId = useId();
   const registrationId = useId();
@@ -67,7 +67,11 @@ const Delivery = () => {
         icon: "success",
         draggable: false,
       });
-      router.push("/signup/billing/delivery/trade");
+      if(tradeOnly){
+        router.push("/signup/billing/delivery/trade");
+      }else{
+        router.push("/signup/billing/delivery/trade/verify");
+      }
     } else {
       Swal.fire({
         icon: "error",

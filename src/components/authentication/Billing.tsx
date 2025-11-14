@@ -43,6 +43,7 @@ const Billing = () => {
         icon: "success",
         draggable: false,
       });
+      localStorage.setItem("billing address", JSON.stringify(data));
       router.push("/signup/billing/delivery");
       }else{
         Swal.fire({
