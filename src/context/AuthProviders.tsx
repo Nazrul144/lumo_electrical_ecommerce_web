@@ -33,10 +33,7 @@ type AuthContextType = {
     data: Omit<BillingData, "email">
   ) => Promise<AxiosResponse<any>>;
   handleTradeOnly: (data: FormData) => Promise<AxiosResponse<any>>;
-  handleVerify: (data: {
-    email: string;
-    code: string;
-  }) => Promise<AxiosResponse<any>>;
+  handleVerify: (data: { email: string; otp: string }) => Promise<AxiosResponse<any>>
   handleLogin: (data: any) => Promise<AxiosResponse<any>>;
   handleLogout: (data: any) => Promise<AxiosResponse<any>>;
   handleForgotPassword: (data: any) => Promise<AxiosResponse<any>>;
@@ -125,7 +122,6 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   };
 
   const handleTradeOnly = async (data: FormData) => {
-    console.log("checking data......", Object.fromEntries(data));
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
     if (email) {
       data.append("email", email);
