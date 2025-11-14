@@ -173,6 +173,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
 
   const handleLogin = async (data: any) => {
+    console.log("checking data", data);
     try {
       // Simulate API call
       const res = await api.post("/accounts/login/", data);

@@ -10,57 +10,54 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthProviders";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-
-
-
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Login = () => {
+  const [rememberMe, setRememberMe] = useState(false);
   const emailId = useId();
   const passwordId = useId();
+  const rememberId = useId();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const {handleLogin} = useAuth();
-
-  const {
-    register,
-    handleSubmit,
-  } = useForm({
-    mode: "onChange", 
+  const { handleLogin } = useAuth();
+  const { register, handleSubmit } = useForm({
+    mode: "onChange",
   });
 
   const onSubmit = async (data: any) => {
-      try {
-        const res = await handleLogin(data);
-        console.log("checking response.....",res);
-        if (res.status === 200 || res.status === 201) {
-          Swal.fire({
-            title: "Login successfull!",
-            icon: "success",
-            draggable: true,
-            showConfirmButton: false,
-            timer: 1000,
-          });
-          router.push("/");
-        }
-      } catch (error) {
+    data.remember_me = rememberMe;
+    try {
+      const res = await handleLogin(data);
+      console.log("checking response.....", res);
+      if (res.status === 200 || res.status === 201) {
         Swal.fire({
-          title: "Failed to Login!",
-          text: error.response.data.message,
-          icon: "error",
+          title: "Login successfull!",
+          icon: "success",
           draggable: true,
           showConfirmButton: false,
           timer: 1000,
         });
-        console.log(error);
+        router.push("/");
       }
-    };
+    } catch (error) {
+      Swal.fire({
+        title: "Failed to Login!",
+        text: error.response.data.message,
+        icon: "error",
+        draggable: true,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
         <div className="lg:flex justify-center items-center gap-10 mt-5">
           <div className="flex flex-col items-center justify-center border-1 border-gray-100 rounded-lg shadow-lg w-[686px] px-20 h-[850px]">
-            <div className="w-full  flex justify-end lg:pr-16">
+            <div className="w-full flex justify-end lg:pr-16">
               <Link href={"/"}>
                 <Image
                   src="/logo/logo.png"
@@ -70,15 +67,12 @@ const Login = () => {
                 />
               </Link>
             </div>
-            <form
-              className="w-full mt-16"
-              onSubmit={handleSubmit(onSubmit)}
-            >
+            <form className="w-full mt-16" onSubmit={handleSubmit(onSubmit)}>
               <h1 className="text-[#313131] font-poppins font-semibold text-4xl">
                 Log in
               </h1>
               <p className="text-[#313131] font-poppins mt-5">
-                Login to access your travelwise  account.
+                Login to access your travelwise account.
               </p>
               <div className="flex flex-col lg:flex-row gap-4 w-full">
                 <div className="group relative mt-8 w-full">
@@ -130,8 +124,26 @@ const Login = () => {
                 </div>
               </div>
               <div className="flex justify-between py-2">
-                <div></div>
-                <Link href="/forgotpassword" className="text-[#FF8682] cursor-pointer items-center">Forgot Password</Link>
+                <div className="flex items-center gap-3">
+                  <label
+                    htmlFor={rememberId} // Linking label with checkbox
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
+                    <Checkbox
+                      id={rememberId}
+                      checked={rememberMe}
+                      onClick={() => setRememberMe(!rememberMe)}
+                      className="cursor-pointer"
+                    />
+                    <p>Remember password</p>
+                  </label>
+                </div>
+                <Link
+                  href="/forgotpassword"
+                  className="text-[#FF8682] cursor-pointer items-center"
+                >
+                  Forgot Password
+                </Link>
               </div>
               <div className="w-full mt-4">
                 <button

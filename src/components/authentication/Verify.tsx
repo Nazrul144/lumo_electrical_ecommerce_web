@@ -18,6 +18,7 @@ const Verify = () => {
   const router = useRouter();
   const {handleVerify, resendOtp} = useAuth();
 
+
   const { register, handleSubmit } = useForm({
     mode: "onChange",
   });
@@ -34,6 +35,8 @@ const Verify = () => {
           showConfirmButton: false,
           timer: 1000,
         });
+        localStorage.removeItem("billing address");
+        localStorage.removeItem("customer_info");
         router.push("/login");
       }
     } catch (error) {
@@ -51,7 +54,6 @@ const Verify = () => {
   const handleReset = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const res = await resendOtp();
-    console.log("checking response.....",res);
     if (res.status === 200 || res.status === 201) {
       Swal.fire({
         icon: "success",
