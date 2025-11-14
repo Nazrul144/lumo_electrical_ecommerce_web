@@ -43,6 +43,9 @@ type AuthContextType = {
   handleChangePassword: (data: any) => Promise<AxiosResponse<any>>;
   tradeOnly: boolean;
   setTradeOnly: React.Dispatch<React.SetStateAction<boolean>>;
+  resendOtp: () => Promise<AxiosResponse<any>>;
+  handleToggle: () => void;
+
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -80,10 +83,13 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const handleBilling = async (data: BillingData) => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
-    if (email) {      
+    if (email) {
       const payload = { ...data, email };
       try {
-        const res = await api.post("/accounts/register/billing-address/", payload);
+        const res = await api.post(
+          "/accounts/register/billing-address/",
+          payload
+        );
         if (res.status === 201 || res.status === 200) {
           localStorage.setItem(
             "billing address",
@@ -135,20 +141,45 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleVerify = async (data: { email: string; code: string }) => {
-    try {
-      // Simulate API call
-      const res = await api.post("/accounts/register/", data);
-      return res;
-    } catch (error) {
-      throw error;
+  const handleVerify = async (data: {
+    email: string;
+    otp: string;
+  }) => {
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    const payload = { otp: data.otp, email };
+    console.log("cheking payload", payload);
+    if (email) {
+      try {
+        const res = await api.post("/accounts/verify-reset-otp/", payload);
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw new Error("Email is required");
     }
   };
+
+  const resendOtp = async () => {
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    console.log("cheking email", email);
+    if (email) {
+      try {
+        const res = await api.post("/accounts/resend-otp/", {email});
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw new Error("Email is required");
+    }
+  }
+
 
   const handleLogin = async (data: any) => {
     try {
       // Simulate API call
-      const res = await api.post("/accounts/register/", data);
+      const res = await api.post("/accounts/login/", data);
       return res;
     } catch (error) {
       throw error;
@@ -196,10 +227,12 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     handleForgotPassword,
     handleChangePassword,
     tradeOnly,
+    handleToggle,
     setTradeOnly,
+    resendOtp,
   };
 
-  console.log("checking ", tradeOnly)
+  console.log("checking ", tradeOnly);
 
   return (
     <AuthContext.Provider value={methodObj}>{children}</AuthContext.Provider>

@@ -4,50 +4,70 @@ import React from "react";
 import Image from "next/image";
 import { useId } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { IoChevronBackOutline } from "react-icons/io5";
 import Steps from "../shared/Steps";
-import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { useAuth } from "@/context/AuthProviders";
 
 const Verify = () => {
-  const confirmPasswordId = useId();
+  const otpId = useId();
   const router = useRouter();
+  const {handleVerify, resendOtp} = useAuth();
 
   const { register, handleSubmit } = useForm({
-    mode: "onChange", // Add this for immediate validation
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-      agreeToTerms: false,
-    },
+    mode: "onChange",
   });
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await api.post("/accounts/verify-reset-otp/", data);
+      const res = await handleVerify(data);
+      console.log("checking response.....",res);
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "Verify successfull!",
           icon: "success",
           draggable: true,
           showConfirmButton: false,
-          timer: 500
+          timer: 1000,
         });
         router.push("/login");
       }
     } catch (error) {
       Swal.fire({
-          title: "Failed to verify!",
-          icon: "error",
-          draggable: true,
-          showConfirmButton: false,
-          timer: 500
-        });
+        title: "Failed to verify!",
+        icon: "error",
+        draggable: true,
+        showConfirmButton: false,
+        timer: 1000,
+      });
       console.log(error);
+    }
+  };
+
+  const handleReset = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const res = await resendOtp();
+    console.log("checking response.....",res);
+    if (res.status === 200 || res.status === 201) {
+      Swal.fire({
+        icon: "success",
+        title: "Successfull",
+        text: "code has been sent to your email",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }else{
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to send code",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
   };
 
@@ -96,18 +116,18 @@ const Verify = () => {
 
               <div className="group relative mt-8 w-full">
                 <label
-                  htmlFor={confirmPasswordId}
+                  htmlFor={otpId}
                   className="bg-background absolute start-1 top-0 z-10 font-poppins text-[#1C1B1F] block -translate-y-1/2 px-2 text-xs font-normal group-has-disabled:opacity-50"
                 >
                   Enter Code
                 </label>
                 <div className="relative w-full">
                   <Input
-                    id={confirmPasswordId}
+                    id={otpId}
                     className="h-10 text-[#1C1B1F] font-poppins"
                     placeholder="000000"
                     type="text"
-                    {...register("confirmPassword")}
+                    {...register("otp")}
                   />
                 </div>
               </div>
@@ -115,7 +135,9 @@ const Verify = () => {
               <div className="mt-3">
                 <span>
                   <p>Didn&apos;t receive a code?</p>
-                  <button className="text-red-500">Resend</button>
+                  <button onClick={handleReset} className="text-red-500 cursor-pointer">
+                    Resend
+                  </button>
                 </span>
               </div>
               <div className="w-full mt-4">

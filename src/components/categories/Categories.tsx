@@ -45,7 +45,7 @@ const Categories = () => {
           title: "Oops...",
           text: "Something went wrong!",
           showConfirmButton: false,
-          timer: 500,
+          timer: 1000,
         });
         console.log(error);
       } finally {

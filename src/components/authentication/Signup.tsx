@@ -96,7 +96,7 @@ const Signup = () => {
           (res as any)?.data?.data?.phone_number?.[0] ||
           "Something went wrong!",
         showConfirmButton: false,
-        timer: 500,
+        timer: 1000,
       });
     }
   };
