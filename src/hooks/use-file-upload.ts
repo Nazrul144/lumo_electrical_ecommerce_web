@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -54,7 +53,6 @@ export type FileUploadActions = {
   getInputProps: (
     props?: InputHTMLAttributes<HTMLInputElement>
   ) => InputHTMLAttributes<HTMLInputElement> & {
-    // Use `any` here to avoid cross-React ref type conflicts across packages
     ref: any;
   };
 };

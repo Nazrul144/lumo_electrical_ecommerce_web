@@ -63,7 +63,7 @@ const PersonalDetails: React.FC<PersonalDetails> = ({
       updated_at: "2025-11-14T00:01:14.171641Z",
     };
 
-    const { first_name, last_name, email, phone_number, customer_type } =
+    const { first_name, last_name, email, phone_number } =
       customerData;
 
   const [isEditing, setIsEditing] = useState(false);

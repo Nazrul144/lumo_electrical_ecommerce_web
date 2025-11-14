@@ -4,10 +4,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { Button } from "../ui/button";
 import { Navigation, Scrollbar } from "swiper/modules";
 import BestSellersCard from "./BestSellersCard";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import BtnLink from "../shared/BtnLink";
 

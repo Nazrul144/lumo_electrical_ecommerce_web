@@ -10,30 +10,26 @@ const playfair = Playfair_Display({
 });
 
 const Filters = () => {
-    const [filter, setFilter] = useState("All");
-    const [active, setActive] = useState("");
-    const [filteredData, setFilteredData] = useState([]);
+  const [filter, setFilter] = useState("All");
+  const [active, setActive] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
-    console.log(filteredData);
+  console.log(filteredData);
+  setActive("");
 
-
+  useEffect(() => {
     const loadFilteredData = async () => {
-    if (active.length > 0) {
-      const response = await api.get(`/products/categories/${active}/`);
-      setFilteredData(response?.data?.data.products);
-    } else {
-      const response = await api.get(`/products/list/`);
-      console.log("product list...", response?.data.data.results);
-      setFilteredData(response?.data.data.results);
-    }
-  };
-
-    useEffect(() => {
-        loadFilteredData();
-      }, [active]);
-
-
-
+      if (active.length > 0) {
+        const response = await api.get(`/products/categories/${active}/`);
+        setFilteredData(response?.data?.data.products);
+      } else {
+        const response = await api.get(`/products/list/`);
+        console.log("product list...", response?.data.data.results);
+        setFilteredData(response?.data.data.results);
+      }
+    };
+    loadFilteredData();
+  }, [active]);
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 w-full ">

@@ -44,18 +44,25 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: any) => {
-    const res = await api.post("/contact/", data);
-    if (res.status === 201) {
+    try {
+      const res = await api.post("/contact/", data);
+      if (res.status === 201) {
+        Swal.fire({
+          title: res?.data?.message,
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: res?.data?.message,
+          icon: "error",
+        });
+      }
+    } catch (error) {
       Swal.fire({
-        title: res?.data?.message,
-        icon: "success",
-      });
-    } else {
-      Swal.fire({
-        title: res?.data?.message,
+        title: "Oops, something went wrong!",
         icon: "error",
-        
       });
+      console.log(error);
     }
   };
 

@@ -42,6 +42,10 @@ const Delivery = () => {
   const router = useRouter();
   const { handleDelivery } = useAuth();
 
+  const { register, handleSubmit, reset } = useForm({
+    mode: "onChange",
+  });
+
   useEffect(() => {
     const handleGetData = () => {
       const dataJson = localStorage.getItem("billing address");
@@ -52,11 +56,9 @@ const Delivery = () => {
       }
     };
     handleGetData();
-  }, []);
+  }, [reset]);
 
-  const { register, handleSubmit, reset } = useForm({
-    mode: "onChange",
-  });
+  
 
   const onSubmit = async (data: any) => {
     const response = await handleDelivery(data);

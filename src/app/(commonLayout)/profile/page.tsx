@@ -63,12 +63,7 @@ const Profile = () => {
           />
         )}
         {option === "security" && (
-          <Security
-            firstName="Sagor"
-            lastName="Mojumder"
-            email="prayasmazumder150@gmail.com"
-            phone="12487953683"
-          />
+          <Security/>
         )}
       </div>
     </div>

@@ -1,69 +1,72 @@
-"use client"
+"use client";
 import Image from "next/image";
-import { useId, useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { useId, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { FiEyeOff } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Zod validation schema
-const changePasswordSchema = z.object({
-    createPassword: z.string()
-        .min(8, "Password must be at least 8 characters")
-        .regex(/(?=.*[a-z])/, "Password must contain at least one lowercase letter")
-        .regex(/(?=.*[A-Z])/, "Password must contain at least one uppercase letter")
-        .regex(/(?=.*\d)/, "Password must contain at least one number"),
-    reEnterPassword: z.string()
-}).refine((data) => data.createPassword === data.reEnterPassword, {
+const changePasswordSchema = z
+  .object({
+    createPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(
+        /(?=.*[a-z])/,
+        "Password must contain at least one lowercase letter"
+      )
+      .regex(
+        /(?=.*[A-Z])/,
+        "Password must contain at least one uppercase letter"
+      )
+      .regex(/(?=.*\d)/, "Password must contain at least one number"),
+    reEnterPassword: z.string(),
+  })
+  .refine((data) => data.createPassword === data.reEnterPassword, {
     message: "Passwords don't match",
     path: ["reEnterPassword"],
-});
-
+  });
 
 const NewPassword = () => {
-        const createPasswordId = useId();
-    const reEnterPasswordId = useId();
+  const createPasswordId = useId();
+  const reEnterPasswordId = useId();
 
-    const [showPassword1, setShowPassword1] = useState(false);
-    const [showPassword2, setShowPassword2] = useState(false);
-    const router = useRouter();
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const router = useRouter();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm({
-        resolver: zodResolver(changePasswordSchema),
-        mode: "onChange", // Add this for immediate validation
-        defaultValues: {
-            createPassword: "",
-            reEnterPassword: "",
-        }
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(changePasswordSchema),
+    mode: "onChange", // Add this for immediate validation
+  });
 
-    const onSubmit = async (data) => {
-        try {
-      
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log("Form submitted:", data);
-            router.push("");
-            // Handle successful submission here
-        } catch (error) {
-            console.error("Submission error:", error);
-        }
-    };
+  const onSubmit = async (data) => {
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("Form submitted:", data);
+      router.push("");
+      // Handle successful submission here
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
+  };
 
   return (
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
-        <div className="lg:flex gap-20">
-          <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
+        <div className="lg:flex justify-center items-center gap-10 mt-5">
+          <div className="lg:w-1/2 flex flex-col items-center justify-center border-1 border-gray-100 rounded-lg shadow-lg w-[686px] px-20 h-[850px]">
             <div className="w-full max-w-[512px]">
               <Link href={"/"}>
                 <Image
@@ -171,10 +174,10 @@ const NewPassword = () => {
             </form>
           </div>
 
-          <div className="hidden lg:block lg:w-1/2 h-[816px] relative">
+          <div className="hidden lg:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
             <Image
-              src="/auth/login.png"
-              alt="sign-in-image"
+              src="/authentication/signup.png"
+              alt="sign-up-image"
               fill
               className="rounded-3xl object-cover"
             />

@@ -214,7 +214,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const handleChangePassword = async (data: any) => {
     try {
       // Simulate API call
-      const res = await api.post("/accounts/register/", data);
+      const res = await api.post("/accounts/change-password/", data);
       return res;
     } catch (error) {
       throw error;

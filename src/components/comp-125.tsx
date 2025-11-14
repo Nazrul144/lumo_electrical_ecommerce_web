@@ -4,6 +4,7 @@ import { CircleUserRoundIcon } from "lucide-react"
 
 import { useFileUpload } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export default function Component() {
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
@@ -24,7 +25,7 @@ export default function Component() {
           }
         >
           {previewUrl ? (
-            <img
+            <Image
               className="size-full object-cover"
               src={previewUrl}
               alt="Preview of uploaded image"

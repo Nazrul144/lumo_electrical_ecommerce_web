@@ -40,6 +40,8 @@ const Navbar = () => {
     },
   ];
 
+  setUser(false);
+
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";

@@ -1,6 +1,5 @@
 "use client";
 import React, {  } from "react";
-import { custom } from "zod";
 
 interface ProfileCardProps {
   name: string;
@@ -9,9 +8,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
-  // name,
-  // email,
-  // accountType,
+
 }) => {
 
 
@@ -64,7 +61,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     updated_at: "2025-11-14T00:01:14.171641Z",
   };
 
-  const { first_name, last_name , email ,phone_number,customer_type} = customerData;
+  const { first_name, last_name , email ,customer_type} = customerData;
 
 
   return (

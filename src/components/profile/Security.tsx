@@ -2,11 +2,9 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-interface SecurityProps {
-  // Props can be added if needed for initial values or user data
-}
 
-const Security: React.FC<SecurityProps> = () => {
+
+const Security = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
