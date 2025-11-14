@@ -18,7 +18,7 @@ const playfair = Playfair_Display({
 const Navbar = () => {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
