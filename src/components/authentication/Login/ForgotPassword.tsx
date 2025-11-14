@@ -5,49 +5,52 @@ import { useId } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-
-// Zod validation schema
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
+import Swal from "sweetalert2";
+import { useAuth } from "@/context/AuthProviders";
 
 const ForgotPassword = () => {
   const emailId = useId();
   const router = useRouter();
+  const { handleForgotPassword } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(forgotPasswordSchema),
-    mode: "onChange", // Add this for immediate validation
-    defaultValues: {
-      email: "",
-    },
+  const { register, handleSubmit } = useForm({
+    mode: "onChange",
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
-      router.push("/verifycode");
-      // Handle successful submission here
+      const res = await handleForgotPassword(data);
+      console.log("checking response.....", res);
+
+      if (res.status === 200 || res.status === 201) {
+        Swal.fire({
+          title: "Verify successfull!",
+          icon: "success",
+          draggable: true,
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        router.push("/verifycode");
+      }
     } catch (error) {
-      console.error("Submission error:", error);
+      Swal.fire({
+        title: "Failed to verify!",
+        icon: "error",
+        draggable: true,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      console.log(error);
     }
   };
 
   return (
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
-        <div className="lg:flex gap-20">
-          <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
+        <div className="lg:flex justify-center items-center gap-10 mt-5">
+          <div className=" lg:w-1/2 flex flex-col items-center justify-center border-1 border-gray-100 rounded-lg shadow-lg w-[686px] px-20 h-[850px]">
             <div className="w-full max-w-[512px]">
               <Link href={"/"}>
                 <Image
@@ -88,11 +91,6 @@ const ForgotPassword = () => {
                   type="email"
                   {...register("email")}
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.email.message}
-                  </p>
-                )}
               </div>
 
               <div className="w-full mt-12">
@@ -100,18 +98,17 @@ const ForgotPassword = () => {
                   type="submit"
                   className="w-full h-10 text-[#F3F3F3] bg-linear-to-r from-[#088347]
                             to-[#C6E824] cursor-pointer font-poppins"
-                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit"}
+                  Submit
                 </Button>
               </div>
             </form>
           </div>
 
-          <div className="hidden lg:block lg:w-1/2 h-[816px] relative">
+          <div className="hidden lg:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
             <Image
-              src="/auth/login.png"
-              alt="sign-in-image"
+              src="/authentication/signup.png"
+              alt="sign-up-image"
               fill
               className="rounded-3xl object-cover"
             />

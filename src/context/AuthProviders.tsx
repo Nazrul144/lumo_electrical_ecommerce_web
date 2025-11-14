@@ -33,7 +33,10 @@ type AuthContextType = {
     data: Omit<BillingData, "email">
   ) => Promise<AxiosResponse<any>>;
   handleTradeOnly: (data: FormData) => Promise<AxiosResponse<any>>;
-  handleVerify: (data: { email: string; otp: string }) => Promise<AxiosResponse<any>>
+  handleVerify: (data: {
+    email: string;
+    otp: string;
+  }) => Promise<AxiosResponse<any>>;
   handleLogin: (data: any) => Promise<AxiosResponse<any>>;
   handleLogout: (data: any) => Promise<AxiosResponse<any>>;
   handleForgotPassword: (data: any) => Promise<AxiosResponse<any>>;
@@ -42,7 +45,6 @@ type AuthContextType = {
   setTradeOnly: React.Dispatch<React.SetStateAction<boolean>>;
   resendOtp: () => Promise<AxiosResponse<any>>;
   handleToggle: () => void;
-
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -137,10 +139,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleVerify = async (data: {
-    email: string;
-    otp: string;
-  }) => {
+  const handleVerify = async (data: { email: string; otp: string }) => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
     const payload = { otp: data.otp, email };
     console.log("cheking payload", payload);
@@ -161,7 +160,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     console.log("cheking email", email);
     if (email) {
       try {
-        const res = await api.post("/accounts/resend-otp/", {email});
+        const res = await api.post("/accounts/resend-otp/", { email });
         return res;
       } catch (error) {
         throw error;
@@ -169,8 +168,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     } else {
       throw new Error("Email is required");
     }
-  }
-
+  };
 
   const handleLogin = async (data: any) => {
     console.log("checking data", data);
@@ -193,10 +191,20 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleForgotPassword = async (data: any) => {
+  const handleForgotPassword = async (data: { email: string }) => {
+    const reserveEmail = data.email;
     try {
       // Simulate API call
-      const res = await api.post("/accounts/register/", data);
+      const res = await api.post("/accounts/forgot-password/", data);
+      const customerInfo: CustomerInfo = {
+        email: reserveEmail,
+        customer_type: "customer",
+      };
+      if (res.status === 200 || res.status === 201) {
+        console.log("checking customer info", customerInfo);
+        localStorage.setItem("checking", "true");
+        localStorage.setItem("customer_info", JSON.stringify(customerInfo));
+      }
       return res;
     } catch (error) {
       throw error;
