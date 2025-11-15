@@ -12,60 +12,18 @@ interface PersonalInfoProps {
 }
 
 const BillingDetails: React.FC<PersonalInfoProps> = ({
-
-  // companyName,
-  // vatNumber,
-  // companyReg,
-  // billingAddress,
-  // city,
-  // provine,
-  // postCode,
+  companyName,
+  vatNumber,
+  companyReg,
+  billingAddress,
+  city,
+  provine,
+  postCode,
 }) => {
 
-    const customerData = {
-     
-
-      billing_addresses: [
-        {
-          id: "a7fa254c-8a4c-4547-9214-6eb04ddf6d3b",
-          company_name: "ABC Company",
-          vat_number: "4123456789",
-          company_registration: "2021/123456/07",
-          po_number: "PO-2025-001",
-          address_line_1: "123 Main Street",
-          address_line_2: "Suite 100",
-          city: "Johannesburg",
-          postal_code: "2000",
-          province: "Gauteng",
-          created_at: "2025-11-13T23:59:35.959869Z",
-          updated_at: "2025-11-13T23:59:35.959884Z",
-        },
-      ],
-
-     
-    };
-
-    const { company_name, vat_number, company_registration, address_line_1, city, province, postal_code } =
-      customerData.billing_addresses[0];
+   
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    companyName: company_name,
-    vatNumber:vat_number,
-    companyReg:company_registration,
-    billingAddress: address_line_1,
-    city,
-    provine:province,
-    postCode: postal_code,
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
@@ -87,8 +45,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
           <input
             type="text"
             name="companyName"
-            value={formData.companyName}
-            onChange={handleInputChange}
+            value={companyName}
             disabled={!isEditing}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
@@ -101,8 +58,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
             <input
               type="text"
               name="vatNumber"
-              value={formData.vatNumber}
-              onChange={handleInputChange}
+              value={vatNumber}
               disabled={!isEditing}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -114,8 +70,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
             <input
               type="text"
               name="companyReg"
-              value={formData.companyReg}
-              onChange={handleInputChange}
+              value={companyReg}
               disabled={!isEditing}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -128,8 +83,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
           <input
             type="text"
             name="billingAddress"
-            value={formData.billingAddress}
-            onChange={handleInputChange}
+            value={billingAddress}
             disabled={!isEditing}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
@@ -141,8 +95,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
           <input
             type="text"
             name="city"
-            value={formData.city}
-            onChange={handleInputChange}
+            value={city}
             disabled={!isEditing}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
@@ -155,8 +108,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
             <input
               type="text"
               name="provine"
-              value={formData.provine}
-              onChange={handleInputChange}
+              value={provine}
               disabled={!isEditing}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -168,8 +120,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
             <input
               type="text"
               name="postCode"
-              value={formData.postCode}
-              onChange={handleInputChange}
+              value={postCode}
               disabled={!isEditing}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -181,8 +132,7 @@ const BillingDetails: React.FC<PersonalInfoProps> = ({
             <input
               type="text"
               name="billingAddress"
-              value={formData.billingAddress}
-              onChange={handleInputChange}
+              value={billingAddress}
               disabled={!isEditing}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             />

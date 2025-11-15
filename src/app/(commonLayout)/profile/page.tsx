@@ -3,17 +3,36 @@ import BillingDetails from "@/components/profile/BillingDetails";
 import PersonalDetails from "@/components/profile/PersonalDetails";
 import ProfileCard from "@/components/profile/ProfileCard";
 import Security from "@/components/profile/Security";
-import React, { useState } from "react";
+import { useAuth } from "@/context/AuthProviders";
+import React, { useEffect, useState } from "react";
 
 const Profile = () => {
   const [option, setoption] = useState("personal");
+  const [userData, setUserData] = useState(null);
+  const {handleGetUser} = useAuth();
+
+  useEffect(() => {
+    const handleUser = async () => {
+      const user = await handleGetUser();
+      if (user) {
+        setUserData(user?.data?.data);
+      } else {
+        setUserData(null);
+      }
+    };
+    handleUser();
+  }, [handleGetUser]);
+
+
+
   return (
     <div className="flex flex-col justify-center items-center w-full mt-32">
       <div>
         <ProfileCard
-          name="Piyas Mojumder"
-          email="prayasmazumder150@gmail.com"
-          accountType="Trade account"
+          firstName={userData?.first_name}
+          lastName={userData?.last_name}
+          email={userData?.email}
+          accountType={userData?.customer_type}
         />
       </div>
       <div className="flex gap-5 my-5">
@@ -45,21 +64,21 @@ const Profile = () => {
       <div>
         {option === "personal" && (
           <PersonalDetails
-            firstName="Prayas"
-            lastName="Mojumder"
-            email="prayasmazumder150@gmail.com"
-            phone="12487953683"
+            firstName={userData?.first_name}
+            lastName={userData?.last_name}
+            email={userData?.email}
+            phone={userData?.phone_number}
           />
         )}
         {option === "billing" && (
           <BillingDetails
-            companyName="xyx"
-            vatNumber=""
-            companyReg="Bangladesh"
-            city="Dhaka"
-            provine="Dhaka"
-            postCode="1207"
-            billingAddress="Uttara"
+            companyName={userData?.billing_addresses[0]?.company_name}
+            vatNumber={userData?.billing_addresses[0]?.vat_number}
+            companyReg={userData?.billing_addresses[0]?.company_registration}
+            city={userData?.billing_addresses[0]?.city}
+            provine={userData?.billing_addresses[0]?.province}
+            postCode={userData?.billing_addresses[0]?.postal_code}
+            billingAddress={userData?.billing_addresses[0]?.address_line_1}
           />
         )}
         {option === "security" && (
