@@ -100,13 +100,13 @@ const Signup = () => {
   };
 
  const handleTypeToggle = (value: string) => {
-  console.log("Selected value:", value);
+  
     if (value === "Trade") {
       setTradeOnly(true);
-      console.log("trade only set to true");
+  
     } else {
       setTradeOnly(false);
-      console.log("trade only set to false");
+ 
     }
   };
 

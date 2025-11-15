@@ -141,7 +141,7 @@ const ProductsPage = () => {
           const response = await api.get(
             `/products/categories/${lastSelectedCategory}/subcategories`
           );
-          console.log("checking subcategories...", response);
+         
           setSubCategory(response?.data?.results?.data);
         } else {
           setSubCategory([]);

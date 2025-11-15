@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 
 const VerifyCode = () => {
-  const { handleVerify, resendOtp } = useAuth();
+  const { handleVerifyOtpWhenForgot, resendOtp } = useAuth();
   const otpId = useId();
   const router = useRouter();
 
@@ -25,8 +25,7 @@ const VerifyCode = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await handleVerify(data);
-      console.log("checking response.....", res);
+      const res = await handleVerifyOtpWhenForgot(data);
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "successfull!",

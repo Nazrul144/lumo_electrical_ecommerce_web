@@ -36,9 +36,9 @@ const Trade = () => {
     if (data.documents?.[0]) {
       formData.append("documents", data.documents[0]);
     }
-    console.log("checking form data....", Object.fromEntries(formData));
+  
     const response = await handleTradeOnly(formData);
-    console.log("API Response:", response);
+   
     if (response && (response.status === 201 || response.status === 200)) {
       Swal.fire({
         title: "Successfully submited!",

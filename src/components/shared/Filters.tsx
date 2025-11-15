@@ -14,8 +14,8 @@ const Filters = () => {
   const [active, setActive] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
+ 
   console.log(filteredData);
-  setActive("");
 
   useEffect(() => {
     const loadFilteredData = async () => {
@@ -24,7 +24,7 @@ const Filters = () => {
         setFilteredData(response?.data?.data.products);
       } else {
         const response = await api.get(`/products/list/`);
-        console.log("product list...", response?.data.data.results);
+        
         setFilteredData(response?.data.data.results);
       }
     };

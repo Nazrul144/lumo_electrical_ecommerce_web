@@ -26,6 +26,8 @@ type BillingData = {
   province: string;
 };
 
+
+
 type AuthContextType = {
   handleSignUp: (data: SignUpData) => Promise<AxiosResponse<any>>;
   handleBilling: (data: BillingData) => Promise<AxiosResponse<any>>;
@@ -33,7 +35,11 @@ type AuthContextType = {
     data: Omit<BillingData, "email">
   ) => Promise<AxiosResponse<any>>;
   handleTradeOnly: (data: FormData) => Promise<AxiosResponse<any>>;
-  handleVerify: (data: {
+  handleVerifyOtp: (data: {
+    email: string;
+    otp: string;
+  }) => Promise<AxiosResponse<any>>;
+  handleVerifyOtpWhenForgot: (data: {
     email: string;
     otp: string;
   }) => Promise<AxiosResponse<any>>;
@@ -45,6 +51,7 @@ type AuthContextType = {
   setTradeOnly: React.Dispatch<React.SetStateAction<boolean>>;
   resendOtp: () => Promise<AxiosResponse<any>>;
   handleToggle: () => void;
+  handleGetUser: () => Promise<AxiosResponse<any>>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -64,7 +71,6 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const handleSignUp = async (data: SignUpData) => {
     try {
-      // Simulate API call
       const res = await api.post("/accounts/register/", data);
       if (res.status === 201) {
         const customerInfo: CustomerInfo = {
@@ -75,7 +81,6 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       }
       return res;
     } catch (error) {
-      console.log("checking error", error);
       throw error;
     }
   };
@@ -113,7 +118,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
           "/accounts/register/delivery-address/",
           payload
         );
-        console.log("checking response", res);
+     
         return res;
       } catch (error) {
         throw error;
@@ -129,7 +134,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       data.append("email", email);
       try {
         const res = await api.post("/accounts/register/trade-info/", data);
-        console.log("checking response....", res);
+     
         return res;
       } catch (error) {
         throw error;
@@ -139,13 +144,12 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleVerify = async (data: { email: string; otp: string }) => {
+  const handleVerifyOtp = async (data: { email: string; otp: string }) => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
     const payload = { otp: data.otp, email };
-    console.log("cheking payload", payload);
     if (email) {
       try {
-        const res = await api.post("/accounts/verify-reset-otp/", payload);
+        const res = await api.post("/accounts/verify-email/", payload);
         return res;
       } catch (error) {
         throw error;
@@ -154,10 +158,25 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       throw new Error("Email is required");
     }
   };
+
+  const handleVerifyOtpWhenForgot = async (data: { email: string; otp: string }) => {
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    const payload = { otp: data.otp, email };
+    if (email) {
+      try {
+        const res = await api.post("/accounts/verify-email/", payload);
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw new Error("Email is required");
+    }
+  };
+
 
   const resendOtp = async () => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
-    console.log("cheking email", email);
     if (email) {
       try {
         const res = await api.post("/accounts/resend-otp/", { email });
@@ -171,9 +190,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   };
 
   const handleLogin = async (data: any) => {
-    console.log("checking data", data);
     try {
-      // Simulate API call
       const res = await api.post("/accounts/login/", data);
       return res;
     } catch (error) {
@@ -183,8 +200,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const handleLogout = async (data: any) => {
     try {
-      // Simulate API call
-      const res = await api.post("/accounts/register/", data);
+      const res = await api.post("/accounts/logout/", data);
       return res;
     } catch (error) {
       throw error;
@@ -194,14 +210,12 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const handleForgotPassword = async (data: { email: string }) => {
     const reserveEmail = data.email;
     try {
-      // Simulate API call
       const res = await api.post("/accounts/forgot-password/", data);
       const customerInfo: CustomerInfo = {
         email: reserveEmail,
         customer_type: "customer",
       };
       if (res.status === 200 || res.status === 201) {
-        console.log("checking customer info", customerInfo);
         localStorage.setItem("checking", "true");
         localStorage.setItem("customer_info", JSON.stringify(customerInfo));
       }
@@ -213,8 +227,16 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const handleChangePassword = async (data: any) => {
     try {
-      // Simulate API call
       const res = await api.post("/accounts/change-password/", data);
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleGetUser = async () => {
+    try {
+      const res = await api.get("/accounts/profile/");
       return res;
     } catch (error) {
       throw error;
@@ -226,7 +248,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     handleBilling,
     handleDelivery,
     handleTradeOnly,
-    handleVerify,
+    handleVerifyOtp,
     handleLogin,
     handleLogout,
     handleForgotPassword,
@@ -235,9 +257,9 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     handleToggle,
     setTradeOnly,
     resendOtp,
+    handleGetUser,
+    handleVerifyOtpWhenForgot
   };
-
-  console.log("checking ", tradeOnly);
 
   return (
     <AuthContext.Provider value={methodObj}>{children}</AuthContext.Provider>

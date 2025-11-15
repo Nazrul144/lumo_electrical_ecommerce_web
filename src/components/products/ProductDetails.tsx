@@ -54,7 +54,7 @@ const ProductDetails = ({id}:{id:number}) => {
       try {
         setIsLoading(true);
         const res = await api.get(`/products/${id}/`);
-        console.log("Checking product api", res.data.data);
+       
         setProductDetails(res?.data?.data);
       } catch (error) {
         console.error("Failed to fetch product details:", error);

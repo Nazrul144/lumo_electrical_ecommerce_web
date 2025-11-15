@@ -62,7 +62,7 @@ const Delivery = () => {
 
   const onSubmit = async (data: any) => {
     const response = await handleDelivery(data);
-    console.log("API Response:", response);
+    
     if (response.status === 201 || response.status === 200) {
       Swal.fire({
         title: "Successfully submited!",

@@ -15,7 +15,7 @@ import { useAuth } from "@/context/AuthProviders";
 const Verify = () => {
   const otpId = useId();
   const router = useRouter();
-  const {handleVerify, resendOtp} = useAuth();
+  const {handleVerifyOtp, resendOtp} = useAuth();
 
 
   const { register, handleSubmit } = useForm({
@@ -24,8 +24,8 @@ const Verify = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await handleVerify(data);
-      console.log("checking response.....",res);
+      const res = await handleVerifyOtp(data);
+    
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "Verify successfull!",

@@ -5,54 +5,60 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-
-//declaration section
-let accessToken: string | null = null;
+// Declaration section
 let isRefreshing = false;
-let watingQueue: ((token: string) => void)[] = [];
-//declarating public routes
-const protectedEndPoint = ["/accounts/register/billing-address/","/accounts/refresh/"];
+let waitingQueue: ((token: string) => void)[] = [];
+// Declaring public routes
+const protectedEndPoint = ["/accounts/refresh/","/accounts/logout/","/accounts/profile/"];
 
-//creating axios instance
+// Function to get tokens from localStorage
+const getTokensFromLocalStorage = () => {
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  return {
+    accessToken: userData?.access_token || null,
+    refreshToken: userData?.refresh_token || null,
+  };
+};
+
+// Creating axios instance
 const api: AxiosInstance = axios.create({
   baseURL: "http://10.10.12.49:8000/api",
   withCredentials: true,
 });
 
+// Function to queue failed route callbacks
 const queuingFailedRoute = (callback: (token: string) => void) => {
-  watingQueue.push(callback);
+  waitingQueue.push(callback);
 };
 
+// Function to execute queued routes
 const executingRoutes = (token: string) => {
-  watingQueue.forEach((callback) => callback(token));
-  watingQueue = [];
+  waitingQueue.forEach((callback) => callback(token));
+  waitingQueue = [];
 };
 
-// attacing token in header
+// Attaching token in header
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const { accessToken } = getTokensFromLocalStorage();
     const isProtected = protectedEndPoint.some((url) =>
       config.url?.includes(url)
     );
-
     if (accessToken && isProtected) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => Promise.reject(`showing error from here ${error}`)
+  (error) => Promise.reject(`Error in request: ${error}`)
 );
 
-//handle token expaired automaticaly
-
+// Handle token expiration automatically
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error) => {
-    const originalRequest = error.config as AxiosRequestConfig & {
-      _retry: boolean;
-    };
+    const originalRequest = error.config as AxiosRequestConfig & { _retry: boolean };
 
-    //wait untill original request complete
+    // Wait until original request completes
     if (error.response.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve) => {
@@ -69,18 +75,24 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        const { refreshToken } = getTokensFromLocalStorage();
+        if (!refreshToken) {
+          throw new Error("No refresh token available");
+        }
+
         const { data } = await api.post<{ access_token: string }>(
-          "/accounts/token/refresh/"
+          "/accounts/token/refresh/",
+          { refresh_token: refreshToken }
         );
         const newToken = data.access_token;
-        accessToken = newToken;
 
+        // Update localStorage with new access token
+        const userData = JSON.parse(localStorage.getItem("user") || "{}");
+        localStorage.setItem("user", JSON.stringify({ ...userData, access_token: newToken }));
         api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
         executingRoutes(newToken);
-
         return api(originalRequest);
       } catch (refreshError) {
-        console.log("Token refresh failed", refreshError);
         window.localStorage.href = "/login";
         return Promise.reject(refreshError);
       } finally {
@@ -92,11 +104,18 @@ api.interceptors.response.use(
   }
 );
 
+// Function to set access token in localStorage
 export const setAccessToken = (token: string | null): void => {
-  accessToken = token;
+  if (token) {
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    localStorage.setItem("user", JSON.stringify({ ...userData, access_token: token }));
+  }
 };
 
-// 🔹 Optionally expose getter for debugging
-export const getAccessToken = (): string | null => accessToken;
+// Optionally expose getter for debugging
+export const getAccessToken = (): string | null => {
+  const { accessToken } = getTokensFromLocalStorage();
+  return accessToken;
+};
 
 export default api;

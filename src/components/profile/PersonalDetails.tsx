@@ -89,7 +89,7 @@ const PersonalDetails: React.FC<PersonalDetails> = ({
   const handleSave = () => {
     // Save the changes (you can handle this by sending data to the backend or local storage)
     setIsEditing(false);
-    console.log("Changes Saved:", formData);
+ 
   };
 
   return (

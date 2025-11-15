@@ -28,8 +28,14 @@ const Login = () => {
     data.remember_me = rememberMe;
     try {
       const res = await handleLogin(data);
-      console.log("checking response.....", res);
       if (res.status === 200 || res.status === 201) {
+        localStorage.clear();
+        const userData = {
+          access_token: res?.data?.data?.access,
+          refresh_token: res?.data?.data?.refresh,
+          user: res?.data?.data?.user,
+        }
+        localStorage.setItem("user", JSON.stringify(userData));
         Swal.fire({
           title: "Login successfull!",
           icon: "success",

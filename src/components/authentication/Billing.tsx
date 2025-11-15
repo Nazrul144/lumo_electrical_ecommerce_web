@@ -36,7 +36,7 @@ const Billing = () => {
 
   const onSubmit = async (data: any) => {
     const response = await handleBilling(data);
-      console.log("API Response:", response);
+     
       if(response.status === 201){
         Swal.fire({
         title: "Successfully submited!",

@@ -56,11 +56,7 @@ const Security = () => {
 
     // Save the changes (send data to the backend)
     setIsEditing(false);
-    console.log("Password Change Request:", {
-      currentPassword: formData.currentPassword,
-      newPassword: formData.newPassword,
-    });
-
+    
     // Reset form after save
     setFormData({
       currentPassword: "",

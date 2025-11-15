@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
 import BtnLink from "./BtnLink";
 import SearchPopup from "./SearchPopUp";
+import { useAuth } from "@/context/AuthProviders";
+import Swal from "sweetalert2";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -15,11 +17,19 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+type UserData = {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+};
+
 const Navbar = () => {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { handleLogout, handleGetUser } = useAuth();
 
   const navLinks = [
     {
@@ -40,6 +50,57 @@ const Navbar = () => {
     },
   ];
 
+  useEffect(() => {
+    const handleUser = async () => {
+      const user = await handleGetUser();
+      if (user) {
+        setUserData(user?.data?.data);
+      } else {
+        setUserData(null);
+      }
+    };
+    handleUser();
+  }, [handleGetUser]);
+
+  const handleSignOut = async () => {
+    try {
+      const user = localStorage.getItem("user");
+      if (!user) {
+        const userObj = JSON.parse(user);
+        const res = await handleLogout({ refresh: userObj.refresh_token });
+        if (res.status === 200) {
+          localStorage.removeItem("user");
+          Swal.fire({
+            icon: "success",
+            title: "Oops...",
+            text: "Something went wrong!",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "User is not found",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+    } catch (error) {
+      if (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Logout failed !",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      }
+    }
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -93,14 +154,26 @@ const Navbar = () => {
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-5">
-              {user ? (
+              {userData ? (
                 <div className="flex items-center space-x-5">
-                  <button onClick={() => setIsOpen(true)} className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  >
                     <Search className="h-6 w-6" />
                   </button>
-                  <Link href="/profile" className="rounded-full cursor-pointer shadow-sm text-green-600">
+                  <Link
+                    href="/profile"
+                    className="rounded-full cursor-pointer shadow-sm text-green-600"
+                  >
                     <FaCircleUser className="h-7 w-7" />
                   </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-3 py-2 rounded-lg active:scale-95 text-white cursor-pointer transition-colors duration-300 bg-green-700"
+                  >
+                    Logout
+                  </button>
                 </div>
               ) : (
                 <div className="flex gap-5">
@@ -136,7 +209,7 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-      
+
       {/* Mobile Overlay */}
       <div
         className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity md:hidden ${
@@ -196,7 +269,12 @@ const Navbar = () => {
           {/* Mobile Footer */}
           <div className="p-4 border-t border-gray-200 dark:border-gray-800">
             <a href="#" className="rounded-full shadow-sm text-green-600">
-              <FaCircleUser className="h-10 w-10" />
+              {userData && (
+                <FaCircleUser
+                  title={userData.first_name}
+                  className="h-10 w-10"
+                />
+              )}
             </a>
           </div>
         </div>

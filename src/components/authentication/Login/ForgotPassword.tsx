@@ -22,8 +22,7 @@ const ForgotPassword = () => {
   const onSubmit = async (data: any) => {
     try {
       const res = await handleForgotPassword(data);
-      console.log("checking response.....", res);
-
+     
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "Verify successfull!",

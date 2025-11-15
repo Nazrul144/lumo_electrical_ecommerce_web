@@ -92,7 +92,7 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
     };
   }, [query]);
 
-  console.log("Checking result of search",results);
+
 
   if (!isOpen) return null;
 
