@@ -50,6 +50,8 @@ const Navbar = () => {
     },
   ];
 
+  
+
   useEffect(() => {
     const handleUser = async () => {
       const user = await handleGetUser();
@@ -63,17 +65,17 @@ const Navbar = () => {
   }, [handleGetUser]);
 
   const handleSignOut = async () => {
+    const user = localStorage.getItem("user");
     try {
-      const user = localStorage.getItem("user");
-      if (!user) {
+      if (user) {
         const userObj = JSON.parse(user);
         const res = await handleLogout({ refresh: userObj.refresh_token });
         if (res.status === 200) {
           localStorage.removeItem("user");
+          setUserData(null);
           Swal.fire({
             icon: "success",
-            title: "Oops...",
-            text: "Something went wrong!",
+            title: "Logout successfull",
             showConfirmButton: false,
             timer: 1000,
           });
@@ -97,9 +99,8 @@ const Navbar = () => {
           timer: 1000,
         });
       }
+      console.log(error);
     }
-    localStorage.removeItem("user");
-    window.location.href = "/";
   };
 
   useEffect(() => {
