@@ -39,10 +39,10 @@ type AuthContextType = {
     email: string;
     otp: string;
   }) => Promise<AxiosResponse<any>>;
-  handleVerifyOtpWhenForgot: (data: {
-    email: string;
-    otp: string;
-  }) => Promise<AxiosResponse<any>>;
+  // handleVerifyOtpWhenForgot: (data: {
+  //   email: string;
+  //   otp: string;
+  // }) => Promise<AxiosResponse<any>>;
   handleLogin: (data: any) => Promise<AxiosResponse<any>>;
   handleLogout: (data: any) => Promise<AxiosResponse<any>>;
   handleForgotPassword: (data: any) => Promise<AxiosResponse<any>>;
@@ -52,6 +52,7 @@ type AuthContextType = {
   resendOtp: () => Promise<AxiosResponse<any>>;
   handleToggle: () => void;
   handleGetUser: () => Promise<AxiosResponse<any>>;
+  handleSetNewPassword: (data: any) => Promise<AxiosResponse<any>>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -159,20 +160,20 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleVerifyOtpWhenForgot = async (data: { email: string; otp: string }) => {
-    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
-    const payload = { otp: data.otp, email };
-    if (email) {
-      try {
-        const res = await api.post("/accounts/verify-email/", payload);
-        return res;
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      throw new Error("Email is required");
-    }
-  };
+  // const handleVerifyOtpWhenForgot = async (data: { email: string; otp: string }) => {
+  //   const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+  //   const payload = { otp: data.otp, email };
+  //   if (email) {
+  //     try {
+  //       const res = await api.post("/accounts/verify-email/", payload);
+  //       return res;
+  //     } catch (error) {
+  //       throw error;
+  //     }
+  //   } else {
+  //     throw new Error("Email is required");
+  //   }
+  // };
 
 
   const resendOtp = async () => {
@@ -234,6 +235,23 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handleSetNewPassword = async (data: any) => {
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    const {otp} = JSON.parse(localStorage.getItem("otp") || "{}");
+    if (otp) {
+      const payload = { email: email ,new_password: data.createPassword,confirm_password: data.reEnterPassword, otp}
+      console.log("checking payload", payload);
+      try {
+        const res = await api.post("/accounts/reset-password/", payload);
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw new Error("Email is required");
+    }
+  }
+
   const handleGetUser = async () => {
     try {
       const res = await api.get("/accounts/profile/");
@@ -258,7 +276,8 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     setTradeOnly,
     resendOtp,
     handleGetUser,
-    handleVerifyOtpWhenForgot
+    handleSetNewPassword,
+    // handleVerifyOtpWhenForgot
   };
 
   return (

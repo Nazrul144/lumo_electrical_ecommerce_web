@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthProviders";
+import Swal from "sweetalert2";
 
 // Zod validation schema
 const changePasswordSchema = z
@@ -36,7 +38,7 @@ const changePasswordSchema = z
 const NewPassword = () => {
   const createPasswordId = useId();
   const reEnterPasswordId = useId();
-
+  const { handleSetNewPassword } = useAuth();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const router = useRouter();
@@ -51,8 +53,26 @@ const NewPassword = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
-    router.push("/login");
+    const res = await handleSetNewPassword(data);
+    if (res.status === 200 || res.status === 201) {
+      Swal.fire({
+        title: "successfull!",
+        icon: "success",
+        draggable: false,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      router.push("/login");
+    }else{
+      Swal.fire({
+        title: "Failed !",
+        icon: "error",
+        draggable: false,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
+    
   };
 
   return (

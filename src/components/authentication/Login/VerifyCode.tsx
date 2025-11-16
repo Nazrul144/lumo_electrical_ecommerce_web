@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 
 const VerifyCode = () => {
-  const { handleVerifyOtpWhenForgot, resendOtp } = useAuth();
+  const { handleVerifyOtp, resendOtp } = useAuth();
   const otpId = useId();
   const router = useRouter();
 
@@ -25,7 +25,8 @@ const VerifyCode = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await handleVerifyOtpWhenForgot(data);
+      const res = await handleVerifyOtp(data);
+      localStorage.setItem("otp", JSON.stringify(data));
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "successfull!",
@@ -35,7 +36,6 @@ const VerifyCode = () => {
           timer: 1000,
         });
         localStorage.removeItem("billing address");
-        localStorage.removeItem("customer_info");
         router.push("/newpassword");
       }
     } catch (error) {
