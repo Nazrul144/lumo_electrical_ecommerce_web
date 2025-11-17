@@ -64,6 +64,8 @@ const Navbar = () => {
     handleUser();
   }, [handleGetUser]);
 
+  
+
   const handleSignOut = async () => {
     const user = localStorage.getItem("user");
     try {

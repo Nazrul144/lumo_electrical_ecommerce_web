@@ -9,7 +9,7 @@ import axios, {
 let isRefreshing = false;
 let waitingQueue: ((token: string) => void)[] = [];
 // Declaring public routes
-const protectedEndPoint = ["/accounts/refresh/","/accounts/logout/","/accounts/profile/"];
+const protectedEndPoint = ["/accounts/refresh/","/accounts/logout/","/accounts/profile/","/accounts/profile/update/","/accounts/change-password/"];
 
 // Function to get tokens from localStorage
 const getTokensFromLocalStorage = () => {

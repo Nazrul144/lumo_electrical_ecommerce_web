@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-
-
+import Swal from "sweetalert2";
+import api from "@/lib/api";
 
 const Security = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,7 +11,6 @@ const Security = () => {
     newPassword: "",
     confirmPassword: "",
   });
-
   const [showPasswords, setShowPasswords] = useState({
     currentPassword: false,
     newPassword: false,
@@ -37,36 +36,69 @@ const Security = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Validate passwords
     if (formData.newPassword !== formData.confirmPassword) {
-      alert("New password and confirm password do not match!");
+      Swal.fire({
+        icon: "error",
+        title: "Password mismatch",
+        text: "New password and confirm password do not match!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
 
     if (!formData.currentPassword) {
-      alert("Please enter your current password!");
+      Swal.fire({
+        icon: "error",
+        title: "Missing Current Password",
+        text: "Please enter your current password!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
 
     if (formData.newPassword.length < 8) {
-      alert("New password must be at least 8 characters long!");
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Password",
+        text: "New password must be at least 8 characters long!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
 
-    // Save the changes (send data to the backend)
-    setIsEditing(false);
-    
-    // Reset form after save
-    setFormData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    try {
+      const res = await api.post("/accounts/change-password/", formData);
+      if (res?.status === 200 || res?.status === 201) {
+        Swal.fire({
+          title: "Password updated successfully!",
+          icon: "success",
+          draggable: true,
+        });
+        setIsEditing(false); // Reset edit mode after successful save
+        setFormData({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error?.response?.data?.message || "Something went wrong!",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
   };
 
   return (
-    <div className="w-4xl mx-auto bg-white border p-6 rounded-lg">
+    <div className="w-full xl:w-4xl mx-auto bg-white border p-6 rounded-lg mb-5">
       <h2 className="text-xl font-semibold mb-6 text-gray-800">
         Security Settings
       </h2>
@@ -190,7 +222,10 @@ const Security = () => {
             </>
           ) : (
             <button
-              onClick={toggleEdit}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                toggleEdit();
+              }}
               className="px-6 py-2 text-white rounded-lg bg-[#00C464] hover:bg-green-600 transition-colors cursor-pointer"
             >
               Change Password

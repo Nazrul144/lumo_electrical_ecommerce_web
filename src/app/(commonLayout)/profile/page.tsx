@@ -23,7 +23,7 @@ const Profile = () => {
     handleUser();
   }, [handleGetUser]);
 
-
+  console.log("checking user data", userData);
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-32">
@@ -64,21 +64,21 @@ const Profile = () => {
       <div>
         {option === "personal" && (
           <PersonalDetails
-            firstName={userData?.first_name}
-            lastName={userData?.last_name}
+            first_name={userData?.first_name}
+            last_name={userData?.last_name}
             email={userData?.email}
-            phone={userData?.phone_number}
+            phone_number={userData?.phone_number}
           />
         )}
         {option === "billing" && (
           <BillingDetails
-            companyName={userData?.billing_addresses[0]?.company_name}
-            vatNumber={userData?.billing_addresses[0]?.vat_number}
-            companyReg={userData?.billing_addresses[0]?.company_registration}
+            company_name={userData?.billing_addresses[0]?.company_name}
+            vat_number={userData?.billing_addresses[0]?.vat_number}
+            company_registration={userData?.billing_addresses[0]?.company_registration}
             city={userData?.billing_addresses[0]?.city}
-            provine={userData?.billing_addresses[0]?.province}
-            postCode={userData?.billing_addresses[0]?.postal_code}
-            billingAddress={userData?.billing_addresses[0]?.address_line_1}
+            province={userData?.billing_addresses[0]?.province}
+            postal_code={userData?.billing_addresses[0]?.postal_code}
+            address_line_1={userData?.billing_addresses[0]?.address_line_1}
           />
         )}
         {option === "security" && (

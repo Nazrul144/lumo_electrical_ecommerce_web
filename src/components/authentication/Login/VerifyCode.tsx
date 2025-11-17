@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthProviders";
 
+
 const VerifyCode = () => {
   const { handleVerifyOtp, resendOtp } = useAuth();
   const otpId = useId();
@@ -18,7 +19,7 @@ const VerifyCode = () => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting},
   } = useForm({
     mode: "onChange",
   });
@@ -26,7 +27,6 @@ const VerifyCode = () => {
   const onSubmit = async (data: any) => {
     try {
       const res = await handleVerifyOtp(data);
-      localStorage.setItem("otp", JSON.stringify(data));
       if (res.status === 200 || res.status === 201) {
         Swal.fire({
           title: "successfull!",
@@ -35,6 +35,7 @@ const VerifyCode = () => {
           showConfirmButton: false,
           timer: 1000,
         });
+        localStorage.setItem("otp", JSON.stringify(data));
         localStorage.removeItem("billing address");
         router.push("/newpassword");
       }
@@ -50,7 +51,7 @@ const VerifyCode = () => {
     }
   };
 
-  const handleReset = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleResend = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const res = await resendOtp();
     if (res.status === 200 || res.status === 201) {
@@ -117,11 +118,10 @@ const VerifyCode = () => {
                   {...register("otp")}
                 />
               </div>
-
               <p className="mt-8 font-poppins">
                 Didn&apos;t receive a code?{" "}
                 <button
-                  onClick={handleReset}
+                  onClick={handleResend}
                   className="text-[#FF8682] cursor-pointer"
                 >
                   Resend

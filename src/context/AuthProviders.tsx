@@ -26,8 +26,6 @@ type BillingData = {
   province: string;
 };
 
-
-
 type AuthContextType = {
   handleSignUp: (data: SignUpData) => Promise<AxiosResponse<any>>;
   handleBilling: (data: BillingData) => Promise<AxiosResponse<any>>;
@@ -35,6 +33,10 @@ type AuthContextType = {
     data: Omit<BillingData, "email">
   ) => Promise<AxiosResponse<any>>;
   handleTradeOnly: (data: FormData) => Promise<AxiosResponse<any>>;
+  handleVerifyEmail: (data: {
+    email: string;
+    otp: string;
+  }) => Promise<AxiosResponse<any>>;
   handleVerifyOtp: (data: {
     email: string;
     otp: string;
@@ -119,7 +121,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
           "/accounts/register/delivery-address/",
           payload
         );
-     
+
         return res;
       } catch (error) {
         throw error;
@@ -135,7 +137,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       data.append("email", email);
       try {
         const res = await api.post("/accounts/register/trade-info/", data);
-     
+
         return res;
       } catch (error) {
         throw error;
@@ -145,7 +147,9 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleVerifyOtp = async (data: { email: string; otp: string }) => {
+  //verify email when signup
+
+  const handleVerifyEmail = async (data: { email: string; otp: string }) => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
     const payload = { otp: data.otp, email };
     if (email) {
@@ -160,20 +164,20 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // const handleVerifyOtpWhenForgot = async (data: { email: string; otp: string }) => {
-  //   const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
-  //   const payload = { otp: data.otp, email };
-  //   if (email) {
-  //     try {
-  //       const res = await api.post("/accounts/verify-email/", payload);
-  //       return res;
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   } else {
-  //     throw new Error("Email is required");
-  //   }
-  // };
+  const handleVerifyOtp = async (data: { email: string; otp: string }) => {
+    const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
+    const payload = { otp: data.otp, email };
+    if (email) {
+      try {
+        const res = await api.post("/accounts/verify-reset-otp/", payload);
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      throw new Error("Email is required");
+    }
+  };
 
 
   const resendOtp = async () => {
@@ -237,9 +241,14 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const handleSetNewPassword = async (data: any) => {
     const { email } = JSON.parse(localStorage.getItem("customer_info") || "{}");
-    const {otp} = JSON.parse(localStorage.getItem("otp") || "{}");
-    if (otp) {
-      const payload = { email: email ,new_password: data.createPassword,confirm_password: data.reEnterPassword, otp}
+    const otpData = JSON.parse(localStorage.getItem("otp") || "{}");
+    if (otpData && email) {
+      const payload = {
+        email: email,
+        new_password: data.createPassword,
+        confirm_password: data.reEnterPassword,
+        otp: otpData.otp,
+      };
       console.log("checking payload", payload);
       try {
         const res = await api.post("/accounts/reset-password/", payload);
@@ -250,7 +259,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     } else {
       throw new Error("Email is required");
     }
-  }
+  };
 
   const handleGetUser = async () => {
     try {
@@ -266,6 +275,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     handleBilling,
     handleDelivery,
     handleTradeOnly,
+    handleVerifyEmail,
     handleVerifyOtp,
     handleLogin,
     handleLogout,
