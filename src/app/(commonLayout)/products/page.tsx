@@ -179,7 +179,7 @@ const ProductsPage = () => {
           {/* randering brands  */}
           <Accordion type="single" collapsible className="w-full  rounded-lg">
             <AccordionItem value="item-3">
-              <AccordionTrigger className="bg-gray-300 px-4">
+              <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
                 Brand
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-4 text-balance  py-2 mt-2 max-h-96 overflow-y-auto">
@@ -206,7 +206,7 @@ const ProductsPage = () => {
           {/* randering categories  */}
           <Accordion type="single" collapsible className="w-full  rounded-lg">
             <AccordionItem value="item-1">
-              <AccordionTrigger className="bg-gray-300 px-4">
+              <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
                 Categories
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-4 text-balance py-2 mt-2 max-h-96 overflow-y-auto">
@@ -234,7 +234,7 @@ const ProductsPage = () => {
           {subCategory.length > 0 && (
             <Accordion type="single" collapsible className="w-full  rounded-lg">
               <AccordionItem value="item-2">
-                <AccordionTrigger className="bg-gray-300 px-4">
+                <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
                   Sub Categories
                 </AccordionTrigger>
                 <AccordionContent className="flex flex-col gap-4 text-balance px-4 py-2 border rounded-md mt-2">

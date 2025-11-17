@@ -2,21 +2,22 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Swal from "sweetalert2";
-import api from "@/lib/api";
+import api from "@/lib/api"; // Assuming 'api' is your axios instance
 
 const Security = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    old_password: "",
+    new_password: "",
+    confirm_password: "",
   });
   const [showPasswords, setShowPasswords] = useState({
-    currentPassword: false,
-    newPassword: false,
-    confirmPassword: false,
+    old_password: false,
+    new_password: false,
+    confirm_password: false,
   });
 
+  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,6 +26,7 @@ const Security = () => {
     }));
   };
 
+  // Toggle password visibility
   const togglePasswordVisibility = (field: keyof typeof showPasswords) => {
     setShowPasswords((prev) => ({
       ...prev,
@@ -32,13 +34,15 @@ const Security = () => {
     }));
   };
 
+  // Toggle edit mode
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
+  // Handle save changes
   const handleSave = async () => {
     // Validate passwords
-    if (formData.newPassword !== formData.confirmPassword) {
+    if (formData.new_password !== formData.confirm_password) {
       Swal.fire({
         icon: "error",
         title: "Password mismatch",
@@ -49,7 +53,7 @@ const Security = () => {
       return;
     }
 
-    if (!formData.currentPassword) {
+    if (!formData.old_password) {
       Swal.fire({
         icon: "error",
         title: "Missing Current Password",
@@ -60,7 +64,7 @@ const Security = () => {
       return;
     }
 
-    if (formData.newPassword.length < 8) {
+    if (formData.new_password.length < 8) {
       Swal.fire({
         icon: "error",
         title: "Invalid Password",
@@ -72,7 +76,12 @@ const Security = () => {
     }
 
     try {
-      const res = await api.post("/accounts/change-password/", formData);
+      const res = await api.post("/accounts/change-password/", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       if (res?.status === 200 || res?.status === 201) {
         Swal.fire({
           title: "Password updated successfully!",
@@ -81,9 +90,9 @@ const Security = () => {
         });
         setIsEditing(false); // Reset edit mode after successful save
         setFormData({
-          currentPassword: "",
-          newPassword: "",
-          confirmPassword: "",
+          old_password: "",
+          new_password: "",
+          confirm_password: "",
         });
       }
     } catch (error: any) {
@@ -99,9 +108,7 @@ const Security = () => {
 
   return (
     <div className="w-full xl:w-4xl mx-auto bg-white border p-6 rounded-lg mb-5">
-      <h2 className="text-xl font-semibold mb-6 text-gray-800">
-        Security Settings
-      </h2>
+      <h2 className="text-xl font-semibold mb-6 text-gray-800">Security Settings</h2>
       <div className="space-y-4">
         {/* Current Password */}
         <div>
@@ -110,9 +117,9 @@ const Security = () => {
           </label>
           <div className="relative">
             <input
-              type={showPasswords.currentPassword ? "text" : "password"}
-              name="currentPassword"
-              value={formData.currentPassword}
+              type={showPasswords.old_password ? "text" : "password"}
+              name="old_password"
+              value={formData.old_password}
               onChange={handleInputChange}
               disabled={!isEditing}
               placeholder="Enter current password"
@@ -121,10 +128,10 @@ const Security = () => {
             {isEditing && (
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("currentPassword")}
+                onClick={() => togglePasswordVisibility("old_password")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {showPasswords.currentPassword ? (
+                {showPasswords.old_password ? (
                   <EyeOff size={20} />
                 ) : (
                   <Eye size={20} />
@@ -141,9 +148,9 @@ const Security = () => {
           </label>
           <div className="relative">
             <input
-              type={showPasswords.newPassword ? "text" : "password"}
-              name="newPassword"
-              value={formData.newPassword}
+              type={showPasswords.new_password ? "text" : "password"}
+              name="new_password"
+              value={formData.new_password}
               onChange={handleInputChange}
               disabled={!isEditing}
               placeholder="Enter new password (min 8 characters)"
@@ -152,10 +159,10 @@ const Security = () => {
             {isEditing && (
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("newPassword")}
+                onClick={() => togglePasswordVisibility("new_password")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {showPasswords.newPassword ? (
+                {showPasswords.new_password ? (
                   <EyeOff size={20} />
                 ) : (
                   <Eye size={20} />
@@ -172,9 +179,9 @@ const Security = () => {
           </label>
           <div className="relative">
             <input
-              type={showPasswords.confirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              type={showPasswords.confirm_password ? "text" : "password"}
+              name="confirm_password"
+              value={formData.confirm_password}
               onChange={handleInputChange}
               disabled={!isEditing}
               placeholder="Re-enter new password"
@@ -183,10 +190,10 @@ const Security = () => {
             {isEditing && (
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
+                onClick={() => togglePasswordVisibility("confirm_password")}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {showPasswords.confirmPassword ? (
+                {showPasswords.confirm_password ? (
                   <EyeOff size={20} />
                 ) : (
                   <Eye size={20} />
@@ -210,9 +217,9 @@ const Security = () => {
                 onClick={() => {
                   setIsEditing(false);
                   setFormData({
-                    currentPassword: "",
-                    newPassword: "",
-                    confirmPassword: "",
+                    old_password: "",
+                    new_password: "",
+                    confirm_password: "",
                   });
                 }}
                 className="px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
