@@ -139,8 +139,8 @@ const Signup = () => {
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center lg:w-[940px] border-1 h-[855px] border-gray-100 rounded-lg shadow-lg py-6">
-            <div className="w-full  flex justify-end lg:pr-16">
+          <div className="flex flex-col items-center justify-center w-[440px] lg:w-[940px] border-1 h-[855px] border-gray-100 rounded-lg shadow-lg py-6">
+            <div className="w-full  flex justify-end pr-10 xl:pr-16">
               <Link href={"/"}>
                 <Image
                   src="/logo/logo.png"
