@@ -7,9 +7,9 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 const Testimonial = () => {
   return (
-    <div className="hidden md:flex">
+    <div >
       {/* Testimonials Section */}
-      <div>
+      <div className="hidden md:block">
         <h1 className="text-[#07484A] text-4xl text-center font-playFairDisplay font-bold pt-14">
           Testimonials
         </h1>

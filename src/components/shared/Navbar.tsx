@@ -186,7 +186,7 @@ const Navbar = () => {
               )}
             </div>
             <div
-              className="w-full md:hidden flex"
+              className="w-full justify-between md:hidden flex"
             >
               {/* -------------------------------------------------Mobile Menu Button -----------------------------*/}
               <div className=" ">

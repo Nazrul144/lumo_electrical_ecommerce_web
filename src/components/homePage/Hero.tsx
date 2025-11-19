@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 
 
@@ -25,12 +26,13 @@ const Hero = () => {
                 Explore different categories. Find the best deals.
               </p>
               <div className="mt-8">
-                <button
-                  className="h-10 text-white font-bold text-xl bg-linear-to-r px-3 from-[#088347]
+                <Link
+                  href="/products"
+                  className=" text-white font-bold text-xl bg-linear-to-r px-3 py-2 md:px-5 md:py-3 from-[#088347]
                             to-[#C6E824] cursor-pointer font-openSans rounded-lg "
                 >
                   Shop Now
-                </button>
+                </Link>
               </div>
             </div>
           </div>

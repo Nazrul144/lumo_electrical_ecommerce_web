@@ -65,9 +65,9 @@ export default function Footer() {
         duration: 2,
       }}
       className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30 dark:from-gray-900 dark:to-black text-gray-900
-     dark:text-white py-12 px-4"
+     dark:text-white py-12 px-4 "
     >
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center lg:grid-cols-5 gap-10 mt-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  lg:grid-cols-5 gap-5 md:gap-10 mt-10 justify-items-start  md:justify-items-center">
         <div className="lg:col-span-5">
           <Link href={"/"}>
             <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
@@ -123,8 +123,8 @@ export default function Footer() {
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             My Account
           </h3>
-          <ul className="space-y-3">
-            <li>
+          <div className="space-y-3">
+            <div>
               <Link
                 href="/login"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
@@ -132,42 +132,33 @@ export default function Footer() {
               >
                 Sign in
               </Link>
-            </li>
-            <li>
+            </div>
+            <div>
               <Link
-                href="signup"
+                href="/signup"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
               >
                 Sign up
               </Link>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Order status
-              </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
         <div className="space-y-4">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             Help
           </h3>
-          <ul className="space-y-3">
-            <li>
-              <a
-                href="#"
+          <div className="space-y-3">
+            <div>
+              <Link
+                href="/products"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
               >
                 Shipping
-              </a>
-            </li>
-            <li>
+              </Link>
+            </div>
+            <div>
               <a
                 href="#"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
@@ -175,8 +166,8 @@ export default function Footer() {
               >
                 Returns
               </a>
-            </li>
-            <li>
+            </div>
+            <div>
               <a
                 href="#"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
@@ -184,8 +175,8 @@ export default function Footer() {
               >
                 Sizing
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
         <div className="space-y-4">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
@@ -193,13 +184,13 @@ export default function Footer() {
           </h3>
           <ul className="space-y-3">
             <li>
-              <a
-                href="#"
+              <Link
+                href="/products"
                 className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
               >
                 All Products
-              </a>
+              </Link>
             </li>
             <li>
               <a
