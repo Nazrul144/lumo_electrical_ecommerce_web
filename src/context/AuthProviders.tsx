@@ -41,10 +41,6 @@ type AuthContextType = {
     email: string;
     otp: string;
   }) => Promise<AxiosResponse<any>>;
-  // handleVerifyOtpWhenForgot: (data: {
-  //   email: string;
-  //   otp: string;
-  // }) => Promise<AxiosResponse<any>>;
   handleLogin: (data: any) => Promise<AxiosResponse<any>>;
   handleLogout: (data: any) => Promise<AxiosResponse<any>>;
   handleForgotPassword: (data: any) => Promise<AxiosResponse<any>>;
@@ -287,7 +283,6 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     resendOtp,
     handleGetUser,
     handleSetNewPassword,
-    // handleVerifyOtpWhenForgot
   };
 
   return (

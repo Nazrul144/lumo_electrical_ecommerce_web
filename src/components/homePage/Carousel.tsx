@@ -6,7 +6,6 @@ import "swiper/css/scrollbar";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Navigation, Scrollbar } from "swiper/modules";
 import BestSellersCard from "./BestSellersCard";
-import { motion } from "framer-motion";
 import BtnLink from "../shared/BtnLink";
 
 const bestSellers: BestSellerItem[] = [
