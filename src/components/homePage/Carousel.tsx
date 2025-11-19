@@ -59,16 +59,7 @@ export interface BestSellerItem {
 
 const Carousel: React.FC = () => {
   return (
-    <motion.div
-      initial={{ y: 300, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: 0.3,
-        type: "keyframes",
-        stiffness: 60,
-        duration: 2,
-      }}
-      className="mt-18"
+    <div
     >
       <h1 className="text-center text-[#07484A] text-5xl font-playFairDisplay font-semibold">
         Best Sellers
@@ -119,7 +110,7 @@ const Carousel: React.FC = () => {
           <BtnLink text="Explore All Products" isIcone={true} link="/products"/>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

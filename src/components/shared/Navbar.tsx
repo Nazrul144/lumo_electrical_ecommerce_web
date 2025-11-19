@@ -50,8 +50,6 @@ const Navbar = () => {
     },
   ];
 
-  
-
   useEffect(() => {
     const handleUser = async () => {
       const user = await handleGetUser();
@@ -63,8 +61,6 @@ const Navbar = () => {
     };
     handleUser();
   }, [handleGetUser]);
-
-  
 
   const handleSignOut = async () => {
     const user = localStorage.getItem("user");
@@ -122,10 +118,10 @@ const Navbar = () => {
         className="top-0 right-2 left-2 bg-white dark:bg-gray-900/80 backdrop-blur-md border-b
         border-gray-200 dark:border-gray-800 rounded-full fixed z-50 mt-6 shadow-xl "
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+        <div className=" container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center md:justify-between">
             {/* Logo Section */}
-            <div>
+            <div className="hidden md:flex">
               <div className="flex-shrink-0">
                 <Link className="hidden lg:block" href="/">
                   <Image
@@ -145,7 +141,7 @@ const Navbar = () => {
                     pathName === navLink.path
                       ? "text-[#C6E824] underline playfair.className"
                       : ""
-                  } ${playfair.className} font-bold text-[#088347] text-xl 
+                  } ${playfair.className} font-bold text-[#088347] text-xl
                         dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-300`}
                   href={navLink.path}
                   key={navLink.path}
@@ -189,25 +185,62 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-
-            {/* -------------------------------------------------Mobile Menu Button -----------------------------*/}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
-                aria-label="Toggle menu"
-              >
-                <Menu
-                  className={`h-6 w-6 transition-transform duration-300 ${
-                    isMenuOpen ? "rotate-90 scale-0" : "rotate-0 scale-100"
-                  }`}
-                />
-                <X
+            <div
+              className="w-full md:hidden flex"
+            >
+              {/* -------------------------------------------------Mobile Menu Button -----------------------------*/}
+              <div className=" ">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100  rounded-md"
+                  aria-label="Toggle menu"
+                >
+                  <Menu
+                    className={`h-6 w-6 transition-transform duration-300 ${
+                      isMenuOpen ? "rotate-90 scale-0" : "rotate-0 scale-100"
+                    }`}
+                  />
+                  {/* <X
                   className={`h-6 w-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 ${
                     isMenuOpen ? "rotate-0 scale-100" : "-rotate-90 scale-0"
                   }`}
-                />
-              </button>
+                /> */}
+                </button>
+              </div>
+              {/* sign up, logout button for mobile  */}
+              <div className=" items-center space-x-5">
+                {userData ? (
+                  <div className="flex items-center space-x-5">
+                    <button
+                      onClick={() => setIsOpen(true)}
+                      className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      <Search className="h-6 w-6" />
+                    </button>
+                    <Link
+                      href="/profile"
+                      className="rounded-full cursor-pointer shadow-sm text-green-600"
+                    >
+                      <FaCircleUser className="h-7 w-7" />
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="px-3 py-2 rounded-lg active:scale-95 text-white cursor-pointer transition-colors duration-300 bg-green-700"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-5">
+                    <BtnLink
+                      text="Sign Up"
+                      className="border-[2px] border-solid [border-image-source:linear-gradient(90deg,#088347_0%,#C6E824_100%)] [border-image-slice:1] bg-[linear-gradient(90deg,#088347_0%,#C6E824_100%)] bg-clip-text text-transparent rounded-md"
+                      link="/signup"
+                    />
+                    <BtnLink text="Log in" link="/login" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -215,7 +248,7 @@ const Navbar = () => {
 
       {/* Mobile Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity md:hidden ${
+        className={`fixed inset-0 z-40 bg-black/70 bg-opacity-50 transition-opacity md:hidden ${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsMenuOpen(false)}
@@ -224,18 +257,18 @@ const Navbar = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-4/5 max-w-sm z-50 bg-white dark:bg-gray-900 shadow-xl transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 left-0 h-full w-4/5 max-w-sm z-50 bg-white shadow-xl transform transition-transform duration-300 ease-in-out md:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 ">
             {/* Logo Section */}
             <div className="flex-shrink-0">
               <a href="#">
                 <Image
-                  src="/sign-up-images/Logo.svg"
+                  src="/logo/logo.png"
                   alt="logo"
                   height={100}
                   width={100}
@@ -244,7 +277,7 @@ const Navbar = () => {
             </div>
             <button
               onClick={() => setIsMenuOpen(false)}
-              className="p-2 text-gray-500 dark:text-gray-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-2 text-gray-500  rounded-md hover:bg-gray-100 "
               aria-label="Close menu"
             >
               <X className="h-6 w-6" />
@@ -258,7 +291,7 @@ const Navbar = () => {
                 <Link
                   className={` ${
                     pathName === navLink.path ? "text-[#C6E824] underline" : ""
-                  } px-3 py-2 text-base font-medium text-[#088347] dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
+                  } px-3 py-2 text-base font-medium text-[#088347]  rounded-md `}
                   href={navLink.path}
                   key={navLink.path}
                   onClick={() => setIsMenuOpen(false)}
@@ -270,7 +303,7 @@ const Navbar = () => {
           </nav>
 
           {/* Mobile Footer */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+          <div className="p-4 border-t border-gray-200 ">
             <a href="#" className="rounded-full shadow-sm text-green-600">
               {userData && (
                 <FaCircleUser

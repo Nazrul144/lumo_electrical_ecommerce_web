@@ -139,8 +139,8 @@ const Signup = () => {
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center w-[440px] lg:w-[940px] border-1 h-[855px] border-gray-100 rounded-lg shadow-lg py-6">
-            <div className="w-full  flex justify-end pr-10 xl:pr-16">
+          <div className="flex flex-col items-center justify-center w-full lg:w-[940px] border-1 h-[855px] border-gray-100 rounded-lg shadow-lg py-6">
+            <div className="w-full  flex justify-end pr-5 pt-5 md:pt-0 md:pr-16 ">
               <Link href={"/"}>
                 <Image
                   src="/logo/logo.png"
@@ -154,7 +154,7 @@ const Signup = () => {
             <Steps currentStep={1} />
 
             <form
-              className="w-full max-w-[612px] mt-16"
+              className="w-full max-w-[612px] mt-16 px-5"
               onSubmit={handleSubmit(onSubmit)}
             >
               <h1 className="text-[#313131] font-poppins font-semibold text-4xl">

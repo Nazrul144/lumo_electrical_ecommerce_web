@@ -72,8 +72,8 @@ const Billing = () => {
               />
             </div>
 
-            <div className=" flex flex-col items-center justify-center lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
-              <div className="w-full flex justify-end lg:pr-16">
+            <div className=" flex flex-col items-center justify-center w-full lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
+              <div className="w-full flex justify-end lg:pr-16 pr-5 md:pr-0p">
                 <Link href={"/"}>
                   <Image
                     src="/logo/logo.png"
@@ -87,7 +87,7 @@ const Billing = () => {
               <Steps  currentStep={2} />
 
               <form
-                className="w-full max-w-[612px] mt-16"
+                className="w-full max-w-[612px] mt-16 px-5"
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <p className="text-[#313131] text-2xl font-poppins mt-5">

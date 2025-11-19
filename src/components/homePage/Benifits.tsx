@@ -1,19 +1,10 @@
 'use client'
 import Image from "next/image";
 import React from "react";
-import { motion } from "framer-motion";
 
 const Benifits = () => {
   return (
-    <motion.div
-      initial={{ y: 300, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: 0.3,
-        type: "keyframes",
-        stiffness: 60,
-        duration: 2,
-      }}
+    <div
     >
       <div className="bg-[#C6E8244D] mt-16 pb-16">
         <h1 className="text-center text-[#07484A] text-4xl font-playFairDisplay font-bold pt-16">
@@ -78,7 +69,7 @@ const Benifits = () => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

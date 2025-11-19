@@ -7,7 +7,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 const Testimonial = () => {
   return (
-    <div>
+    <div className="hidden md:flex">
       {/* Testimonials Section */}
       <div>
         <h1 className="text-[#07484A] text-4xl text-center font-playFairDisplay font-bold pt-14">
@@ -32,7 +32,7 @@ const Testimonial = () => {
             {reviews.map((item) => (
               <SwiperSlide
                 key={item.id}
-                className="pb-9 !flex !items-center !justify-center"
+                className="pb-9 !flex flex-col md:flex-row !items-center !justify-center"
               >
                 <TestimonialCard
                   imageName={item.imageName}
