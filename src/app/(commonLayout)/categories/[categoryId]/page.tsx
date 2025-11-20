@@ -82,11 +82,11 @@ const SubCategories = () => {
       <Headline text="Explore by Sub category"/>
       {/*------------- showing option card ----------------- */}
       <div className="overflow-y-auto container mx-auto pt-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-10 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-5 md:gap-8 xl:gap-10 mx-5 ">
           {/* showing product card when selected any category  */}
           {subCategories?.map((subCategory) => (<div
               key={subCategory?.id}
-              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
+              className="group relative w-[300px] h-[250px] md:w-[400px] md:h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
             >
               {/* Image */}
               <Image

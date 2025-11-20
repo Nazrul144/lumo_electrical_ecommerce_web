@@ -82,11 +82,11 @@ const Categories = () => {
     >
       <Headline text="Explore by Category" />
       <div className="container mx-auto pt-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-8 xl:gap-10 justify-items-center mx-5">
           {categories.map((category) => (
             <div
               key={category.id}
-              className="group relative w-[400px] h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
+              className="group relative w-[300px] h-[250px] md:w-[400px] md:h-[300px] rounded-lg cursor-pointer overflow-hidden border border-[#088347]"
             >
               <Image
                 src={category.image}
@@ -96,7 +96,7 @@ const Categories = () => {
                 quality={100}
               />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p className={`text-white text-6xl text-center ${playfair.className}`}>
+                <p className={`text-white text-2xl md:text-4xl xl:text-6xl text-center ${playfair.className}`}>
                   {category.name}
                 </p>
                 <BtnLink text="Explore" link={`/categories/${category.id}`} />

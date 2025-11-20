@@ -115,7 +115,7 @@ const Navbar = () => {
   return (
     <div>
       <header
-        className="top-0 w-10/12  md:w-11/12 left-3 md:left-6 xl:left-16 md:right-auto bg-white  backdrop-blur-md border-b
+        className="top-0 w-10/12  md:w-11/12 left-[4%]  xl:left-16 md:right-auto bg-white  backdrop-blur-md border-b
         border-gray-200  rounded-full fixed z-50 mt-6 shadow-xl"
       >
         <div className=" container mx-auto px-4 sm:px-6 lg:px-8">

@@ -13,6 +13,7 @@ interface primary_image {
 interface ProductProps {
   id?: number;
   name?: string;
+  code?: string;
   short_description?: string;
   category_name?: string;
   category_slug?: string;
@@ -32,16 +33,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   return (
     <Link href={`/products/${product.id}`} className="cursor-pointer mx-auto rounded-lg shadow-xl  hover:scale-105  transition-all duration-300">
-      <Card className="z-0" data-filter={selectedFilter ?? ""}>
+      <Card className="z-0 h-[480px] w-[350px] p-4" data-filter={selectedFilter ?? ""}>
         <Image
           src={product?.primary_image?.image || "/placeholder.jpg"}
           width={300}
           height={500}
-          alt={product.name || "Product image"}
-          className="h-[350px] w-[250px] object-contain"
+          alt={product?.name || "Product image"}
+          className="h-[300px] w-[250px] object-contain mx-auto"
         />
-        <h1 className="text-xl font-bold mt-2 text-center">{product.name}</h1>
-        <h1 className="text-lg mt-2 text-center">Product Id: {product.id}</h1>
+        <h1 className="text-xl font-bold mt-2 text-center overflow-hidden">{product?.name}</h1>
+        <h1 className="text-lg mt-2 text-center">Product Code: {product?.code}</h1>
         {/* other user info */}
       </Card>
     </Link>
