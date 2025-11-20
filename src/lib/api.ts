@@ -22,7 +22,7 @@ const getTokensFromLocalStorage = () => {
 
 // Creating axios instance
 const api: AxiosInstance = axios.create({
-  baseURL: "http://141.136.42.126/api",
+  baseURL: "https://lumoelectrical.co.za/api/",
   withCredentials: true,
 });
 

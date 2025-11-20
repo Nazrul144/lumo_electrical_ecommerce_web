@@ -115,8 +115,8 @@ const Navbar = () => {
   return (
     <div>
       <header
-        className="top-0 right-2 left-2 bg-white dark:bg-gray-900/80 backdrop-blur-md border-b
-        border-gray-200 dark:border-gray-800 rounded-full fixed z-50 mt-6 shadow-xl "
+        className="top-0 w-10/12  md:w-11/12 left-3 md:left-6 xl:left-16 md:right-auto bg-white  backdrop-blur-md border-b
+        border-gray-200  rounded-full fixed z-50 mt-6 shadow-xl"
       >
         <div className=" container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center md:justify-between">
@@ -153,14 +153,14 @@ const Navbar = () => {
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-5">
+              <button
+                onClick={() => setIsOpen(true)}
+                className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100  transition-colors"
+              >
+                <Search className="h-6 w-6" />
+              </button>
               {userData ? (
                 <div className="flex items-center space-x-5">
-                  <button
-                    onClick={() => setIsOpen(true)}
-                    className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    <Search className="h-6 w-6" />
-                  </button>
                   <Link
                     href="/profile"
                     className="rounded-full cursor-pointer shadow-sm text-green-600"
@@ -185,9 +185,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <div
-              className="w-full justify-between md:hidden flex"
-            >
+            <div className="w-full justify-between md:hidden flex">
               {/* -------------------------------------------------Mobile Menu Button -----------------------------*/}
               <div className=" ">
                 <button
@@ -208,7 +206,13 @@ const Navbar = () => {
                 </button>
               </div>
               {/* sign up, logout button for mobile  */}
-              <div className=" items-center space-x-5">
+              <div className="flex justify-center items-center space-x-5">
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <Search className="h-6 w-6" />
+                </button>
                 {userData ? (
                   <div className="flex items-center space-x-5">
                     <button

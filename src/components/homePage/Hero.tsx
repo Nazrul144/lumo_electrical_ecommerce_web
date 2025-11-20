@@ -13,7 +13,7 @@ const Hero = () => {
         >
           <div className="absolute w-full h-full z-10 bg-gray-900/50 rounded-b-[100px]" />{" "}
           {/*Overlay*/}
-          <div className="absolute top-44 xl:top-64 left-12 xl:left-24 z-50">
+          <div className="absolute top-44 md:top-52 xl:top-64 left-12 md:left-20 xl:left-24 z-50">
             <div
             >
               <h1 className="font-bold font-playFairDisplay text-2xl md:text-6xl text-[#FFFFFF]">

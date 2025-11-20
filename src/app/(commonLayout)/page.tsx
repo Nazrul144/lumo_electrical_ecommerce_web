@@ -7,7 +7,7 @@ import Testimonial from '@/components/homePage/testimonial/Testimonial'
 import React from 'react'
 
 export const metadata =  {
-  title: "Home",
+  title: "Lumo Electricals",
   description: "You can find each and everything about electrical realted product. just reach out our website Lumo"
 }
 
