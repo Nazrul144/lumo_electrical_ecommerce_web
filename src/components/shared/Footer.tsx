@@ -119,11 +119,11 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             My Account
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div>
               <Link
                 href="/login"
@@ -144,11 +144,11 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             Help
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div>
               <Link
                 href="/products"
@@ -178,11 +178,11 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             Shop
           </h3>
-          <ul className="space-y-3">
+          <ul className="space-y-2">
             <li>
               <Link
                 href="/products"
@@ -212,11 +212,11 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
             Legal Stuff
           </h3>
-          <ul className="space-y-3">
+          <ul className="space-y-2">
             <li>
               <a
                 href="#"
