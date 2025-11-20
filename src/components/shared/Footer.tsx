@@ -65,195 +65,196 @@ export default function Footer() {
         duration: 2,
       }}
       className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30 dark:from-gray-900 dark:to-black text-gray-900
-     dark:text-white py-12 px-4 "
+     dark:text-white py-3"
     >
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  lg:grid-cols-5 gap-5 md:gap-10 px-10 md:px-0 mt-10 justify-items-start  md:justify-items-center">
-        <div className="lg:col-span-5">
+      <div className="mt-10 flex flex-col gap-10">
+        <div className="w-full flex justify-center">
           <Link href={"/"}>
             <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
           </Link>
         </div>
-        <div className="flex flex-col space-x-5 pt-2">
-          <div className="flex space-x-5">
-            <a
-              href="#"
-              className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+        <div className="flex flex-col md:flex-row gap-3 justify-around items-start w-full mx-10 md:mx-0">
+          <div className="flex flex-col space-x-5 pt-2">
+            <div className="flex space-x-5">
+              <a
+                href="#"
+                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
                     transition-transform transform hover:scale-110"
-            >
-              <FacebookIcon size={28} />
-            </a>
-            <a
-              href="#"
-              className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+              >
+                <FacebookIcon size={28} />
+              </a>
+              <a
+                href="#"
+                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
                     transition-transform transform hover:scale-110"
-            >
-              <InstagramIcon size={28} />
-            </a>
-            <a
-              href="#"
-              className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+              >
+                <InstagramIcon size={28} />
+              </a>
+              <a
+                href="#"
+                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
                     transition-transform transform hover:scale-110"
-            >
-              <LinkedInIcon size={28} />
-            </a>
-            <a
-              href="#"
-              className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+              >
+                <LinkedInIcon size={28} />
+              </a>
+              <a
+                href="#"
+                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
                     transition-transform transform hover:scale-110"
-            >
-              <TwitterIcon size={28} />
-            </a>
+              >
+                <TwitterIcon size={28} />
+              </a>
+            </div>
+            <div className="space-y-1.5 mt-4">
+              <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+                Address
+              </h3>
+              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+                +123 654 987
+              </p>
+              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+                877 The Bronx, NY
+              </p>
+              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+                14568, USA
+              </p>
+            </div>
           </div>
-          <div className="space-y-1.5 mt-4">
+          <div className="space-y-5">
             <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
-              Address
+              My Account
             </h3>
-            <p className="font-openSans text-[#07484A] dark:text-gray-300">
-              +123 654 987
-            </p>
-            <p className="font-openSans text-[#07484A] dark:text-gray-300">
-              877 The Bronx, NY
-            </p>
-            <p className="font-openSans text-[#07484A] dark:text-gray-300">
-              14568, USA
-            </p>
-          </div>
-        </div>
-        <div className="space-y-5">
-          <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
-            My Account
-          </h3>
-          <div className="space-y-2">
-            <div>
-              <Link
-                href="/login"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+            <div className="space-y-2">
+              <div>
+                <Link
+                  href="/login"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Sign in
-              </Link>
-            </div>
-            <div>
-              <Link
-                href="/signup"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                >
+                  Sign in
+                </Link>
+              </div>
+              <div>
+                <Link
+                  href="/signup"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Sign up
-              </Link>
+                >
+                  Sign up
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="space-y-5">
-          <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
-            Help
-          </h3>
-          <div className="space-y-2">
-            <div>
-              <Link
-                href="/products"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+          <div className="space-y-5">
+            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+              Help
+            </h3>
+            <div className="space-y-2">
+              <div>
+                <Link
+                  href="/products"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Shipping
-              </Link>
-            </div>
-            <div>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                >
+                  Shipping
+                </Link>
+              </div>
+              <div>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Returns
-              </a>
-            </div>
-            <div>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                >
+                  Returns
+                </a>
+              </div>
+              <div>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
                         dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Sizing
-              </a>
+                >
+                  Sizing
+                </a>
+              </div>
             </div>
           </div>
+          <div className="space-y-5">
+            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+              Shop
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/products"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  All Products
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  Bedroom
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  Dinning Room
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-5">
+            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+              Legal Stuff
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  Shipping & Delivery
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
+                        dark:hover:text-teal-400 transition-colors duration-300"
+                >
+                  Privacy & Policy
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="space-y-5">
-          <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
-            Shop
-          </h3>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                href="/products"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                All Products
-              </Link>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Bedroom
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Dinning Room
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-5">
-          <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
-            Legal Stuff
-          </h3>
-          <ul className="space-y-2">
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Shipping & Delivery
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Terms & Conditions
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
-              >
-                Privacy & Policy
-              </a>
-            </li>
-          </ul>
-        </div>
-        <p
-          className="sm:col-span-2 font-openSans text-[#07484A] mt-8 dark:text-gray-300 hover:text-blue-600 
-              dark:hover:text-teal-400 transition-colors duration-300"
-        >
-          Copyright &copy; {new Date().getFullYear()} INWOOD. All Rights
-          Reserved
-        </p>
       </div>
+      <p
+        className="text-center font-openSans text-[#07484A] mt-8 dark:text-gray-300 hover:text-blue-600 
+              dark:hover:text-teal-400 transition-colors duration-300"
+      >
+        Copyright &copy; {new Date().getFullYear()} INWOOD. All Rights Reserved
+      </p>
     </motion.footer>
   );
 }
