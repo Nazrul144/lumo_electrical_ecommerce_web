@@ -48,8 +48,8 @@ const ForgotPassword = () => {
   return (
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
-        <div className="lg:flex justify-center items-center gap-5 md:gap-10 mt-5">
-          <div className=" lg:w-1/2 flex flex-col items-center justify-center mx-auto border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-5 md:px-20 h-[850px]">
+        <div className="lg:flex justify-center items-center gap-5 md:gap-10 mt-20">
+          <div className=" lg:w-1/2 flex flex-col items-center justify-center mx-auto xl:mx-0 border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-5 md:px-20 h-[850px]">
             <div className="w-full max-w-[512px]">
               <Link href={"/"}>
                 <Image

@@ -78,8 +78,8 @@ const NewPassword = () => {
   return (
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
-        <div className="lg:flex justify-center items-center gap-10 mt-5">
-          <div className="lg:w-1/2 flex flex-col items-center mx-auto justify-center border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-20 h-[850px]">
+        <div className="lg:flex justify-center items-center gap-10 mt-20">
+          <div className="lg:w-1/2 flex flex-col items-center mx-auto xl:mx-0 justify-center border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-20 h-[850px]">
             <div className="w-full max-w-[512px]">
               <Link href={"/"}>
                 <Image
