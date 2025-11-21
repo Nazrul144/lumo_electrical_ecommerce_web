@@ -12,6 +12,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { BsFilterLeft } from "react-icons/bs";
+import { FaArrowDownWideShort } from "react-icons/fa6";
+import { FaFilter } from "react-icons/fa6";
 import { EmptyData } from "@/components/shared/EmptyData";
 import { Loader } from "@/components/shared/Loader";
 import { FaArrowRight } from "react-icons/fa";
@@ -53,7 +55,9 @@ const ProductsPage = () => {
   const [subCategory, setSubCategory] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>(
+    []
+  );
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
@@ -70,24 +74,28 @@ const ProductsPage = () => {
     return copy;
   }, [products, selectedFilter]);
 
-
   // fatching products
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
         const params = new URLSearchParams();
-        
+
         // Join multiple values with commas instead of creating multiple parameters
-        if (selectedBrands.length) params.append('brand', selectedBrands.join(','));
-        if (selectedCategories.length) params.append('category', selectedCategories.join(','));
-        if (selectedSubCategories.length) params.append('subcategory', selectedSubCategories.join(','));
-        
-        const queryString = params.toString() ? `/products/?${params.toString()}` : '/products/';
+        if (selectedBrands.length)
+          params.append("brand", selectedBrands.join(","));
+        if (selectedCategories.length)
+          params.append("category", selectedCategories.join(","));
+        if (selectedSubCategories.length)
+          params.append("subcategory", selectedSubCategories.join(","));
+
+        const queryString = params.toString()
+          ? `/products/?${params.toString()}`
+          : "/products/";
         const response = await api.get(queryString);
         setProducts(response?.data?.results?.data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       } finally {
         setIsLoading(false);
       }
@@ -129,19 +137,19 @@ const ProductsPage = () => {
     fatchingCategories();
   }, []);
 
-
   // faching sub-categories
   useEffect(() => {
     const fatchingCategories = async () => {
       try {
         setIsLoading(true);
         // Only fetch subcategories for the last selected category
-        const lastSelectedCategory = selectedCategories[selectedCategories.length - 1];
+        const lastSelectedCategory =
+          selectedCategories[selectedCategories.length - 1];
         if (lastSelectedCategory) {
           const response = await api.get(
             `/products/categories/${lastSelectedCategory}/subcategories`
           );
-         
+
           setSubCategory(response?.data?.results?.data);
         } else {
           setSubCategory([]);
@@ -156,16 +164,13 @@ const ProductsPage = () => {
     fatchingCategories();
   }, [selectedCategories]);
 
-
-  if(isLoading){
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />;
   }
 
-
-  if(sortedProducts?.length === 0){
-    return <EmptyData/>
+  if (sortedProducts?.length === 0) {
+    return <EmptyData />;
   }
-
 
   return (
     <div className="my-32">
@@ -188,16 +193,18 @@ const ProductsPage = () => {
                     key={idx}
                     onClick={(e) => {
                       e.preventDefault();
-                      setSelectedBrands(prev => 
-                        prev.includes(brand) 
-                          ? prev.filter(b => b !== brand)
+                      setSelectedBrands((prev) =>
+                        prev.includes(brand)
+                          ? prev.filter((b) => b !== brand)
                           : [...prev, brand]
                       );
                     }}
                     className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
                   >
-                    <Label htmlFor={brand} className="text-white">{brand}</Label>
-                    <FaArrowRight className="text-white"/>
+                    <Label htmlFor={brand} className="text-white">
+                      {brand}
+                    </Label>
+                    <FaArrowRight className="text-white" />
                   </div>
                 ))}
               </AccordionContent>
@@ -215,16 +222,18 @@ const ProductsPage = () => {
                     key={category.id}
                     onClick={(e) => {
                       e.preventDefault();
-                      setSelectedCategories(prev => 
+                      setSelectedCategories((prev) =>
                         prev.includes(category.id)
-                          ? prev.filter(id => id !== category.id)
+                          ? prev.filter((id) => id !== category.id)
                           : [...prev, category.id]
                       );
                     }}
                     className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
                   >
-                    <Label htmlFor={category.name} className="text-white">{category.name}</Label>
-                    <FaArrowRight className="text-white"/>
+                    <Label htmlFor={category.name} className="text-white">
+                      {category.name}
+                    </Label>
+                    <FaArrowRight className="text-white" />
                   </div>
                 ))}
               </AccordionContent>
@@ -243,15 +252,20 @@ const ProductsPage = () => {
                       key={monoSubCategory?.id}
                       onClick={(e) => {
                         e.preventDefault();
-                        setSelectedSubCategories(prev => 
+                        setSelectedSubCategories((prev) =>
                           prev.includes(monoSubCategory.id)
-                            ? prev.filter(id => id !== monoSubCategory.id)
+                            ? prev.filter((id) => id !== monoSubCategory.id)
                             : [...prev, monoSubCategory.id]
                         );
                       }}
                       className="flex items-center gap-3"
                     >
-                      <Checkbox id={monoSubCategory.name} checked={selectedSubCategories.includes(monoSubCategory.id)} />
+                      <Checkbox
+                        id={monoSubCategory.name}
+                        checked={selectedSubCategories.includes(
+                          monoSubCategory.id
+                        )}
+                      />
                       <Label htmlFor={monoSubCategory.name}>
                         {monoSubCategory.name}
                       </Label>
@@ -264,18 +278,23 @@ const ProductsPage = () => {
         </div>
         <div>
           <div className="my-4 flex justify-between items-center">
-            <div></div>
-              <div className="flex items-center gap-2 border-2 rounded bg-[#ECEFF1] p-2">
-              <BsFilterLeft className="text-xl" />
+            <div>
+              <div className="flex gap-2 justify-center items-center border p-2 rounded bg-[#ECEFF1] cursor-pointer">
+                <FaFilter className="text-xl" />
+                <p>Filters</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 border-2 rounded bg-[#ECEFF1] p-2 ">
+              <FaArrowDownWideShort className="text-xl" />
               <select
-                name="filters"
-                id="filters"
+                name="short"
+                id="short"
                 value={selectedFilter ?? ""}
                 onChange={(e) => setSelectedFilter(e.target.value || null)}
-                className="bg-[#ECEFF1] outline-none w-28"
+                className="bg-[#ECEFF1] outline-none w-20"
               >
                 <option disabled value="">
-                  Filters
+                  Short by
                 </option>
                 <option value="A2Z">A to Z</option>
                 <option value="Z2A">Z to A</option>
@@ -284,8 +303,12 @@ const ProductsPage = () => {
           </div>
           {/* randering products  */}
           <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-6">
-            {sortedProducts?.map((product) =>(
-              <ProductCard key={product.id} product={product} selectedFilter={selectedFilter} />
+            {sortedProducts?.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                selectedFilter={selectedFilter}
+              />
             ))}
           </div>
         </div>
