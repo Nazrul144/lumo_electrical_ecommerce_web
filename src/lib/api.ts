@@ -77,7 +77,7 @@ api.interceptors.response.use(
       try {
         const { refreshToken } = getTokensFromLocalStorage();
         if (!refreshToken) {
-          throw new Error("No refresh token available");
+          return null;
         }
 
         const { data } = await api.post<{ access_token: string }>(
