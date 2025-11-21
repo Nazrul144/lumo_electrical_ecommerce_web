@@ -2,7 +2,9 @@
 @import "tw-animate-css";
 @plugin "daisyui";
 
-@custom-variant dark (&:is(.dark *));
+*{
+  background-color: white;
+}
 
 /* Custom scrollbar */
 .scrollbar-thin {

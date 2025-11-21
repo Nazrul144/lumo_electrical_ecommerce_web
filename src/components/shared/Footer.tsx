@@ -73,7 +73,7 @@ export default function Footer() {
             <Image src="/logo/logo.png" alt="logo" height={100} width={100} />
           </Link>
         </div>
-        <div className="flex flex-col md:flex-row gap-3 justify-around items-start w-full mx-10 md:mx-0">
+        <div className="flex flex-col md:flex-row gap-3 justify-around items-start w-full px-10 md:mx-0">
           <div className="flex flex-col space-x-5 pt-2">
             <div className="flex space-x-5">
               <a

@@ -176,11 +176,11 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="flex gap-5">
-                  <BtnLink
+                  {/* <BtnLink
                     text="Sign Up"
                     className="border-[2px] border-solid [border-image-source:linear-gradient(90deg,#088347_0%,#C6E824_100%)] [border-image-slice:1] bg-[linear-gradient(90deg,#088347_0%,#C6E824_100%)] bg-clip-text text-transparent rounded-md"
                     link="/signup"
-                  />
+                  /> */}
                   <BtnLink text="Log in" link="/login" />
                 </div>
               )}
@@ -236,11 +236,11 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="flex gap-5">
-                    <BtnLink
+                    {/* <BtnLink
                       text="Sign Up"
                       className="border-[2px] border-solid [border-image-source:linear-gradient(90deg,#088347_0%,#C6E824_100%)] [border-image-slice:1] bg-[linear-gradient(90deg,#088347_0%,#C6E824_100%)] bg-clip-text text-transparent rounded-md"
                       link="/signup"
-                    />
+                    /> */}
                     <BtnLink text="Log in" link="/login" />
                   </div>
                 )}

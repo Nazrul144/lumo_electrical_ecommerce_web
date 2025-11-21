@@ -71,7 +71,7 @@ const Trade = () => {
               className="rounded-3xl object-cover"
             />
           </div>
-          <div className=" flex flex-col items-center justify-center w-full lg:w-[940px] border-1 border-gray-100 rounded-lg shadow-lg py-6">
+          <div className=" flex flex-col items-center justify-center w-full lg:w-[940px] md:border-1 border-gray-100 md:rounded-lg md:shadow-lg py-6">
             <div className="w-full  flex justify-end pe-5 md:pr-0">
               <Link href={"/"}>
                 <Image

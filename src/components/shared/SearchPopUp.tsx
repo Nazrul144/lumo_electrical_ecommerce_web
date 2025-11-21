@@ -100,11 +100,11 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
 
 
   return (
-    <div className="fixed inset-0 bg-black/40 bg-opacity-60 flex items-start justify-center top-30 z-50">
+    <div className="fixed inset-0 bg-black/40 bg-opacity-60 flex items-start justify-center z-50">
       {/* Popup Box */}
       <div
         ref={popupRef}
-        className="bg-white rounded-xl shadow-lg w-[95%] max-w-lg pt-12 px-10 pb-10  relative animate-fadeIn"
+        className="bg-white rounded-xl shadow-lg w-[80%] md:w-[95%] max-w-lg mt-30 pt-12 px-5 xl:px-10 pb-10  relative animate-fadeIn"
       >
         {/* Close Button */}
         <button
@@ -112,7 +112,7 @@ export default function SearchPopup({ isOpen, setIsOpen }: SearchPopupProps) {
           aria-label="Close search"
           className="absolute top-2 right-2 text-gray-500 cursor-pointer bg-gray-300 rounded-full p-2 hover:text-red-600"
         >
-          <FaTimes size={18} />
+          <FaTimes className=" md:text-lg" />
         </button>
 
         {/* Search Bar */}
