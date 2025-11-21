@@ -99,7 +99,7 @@ const SubCategories = () => {
 
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-5 items-center justify-center">
-                <p className={`text-white text-6xl text-center ${playfair.className}}`}>
+                <p className={`text-white text-2xl md:text-4xl xl:text-6xl  text-center ${playfair.className}}`}>
                   {subCategory?.name}
                 </p>
                 <BtnLink text="Explore" link={`/categories/${categoryId}/${subCategory?.id}`} />
@@ -107,7 +107,7 @@ const SubCategories = () => {
             </div>
           ))}
         </div>
-        <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
+        <Pagination currentPage={page} totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>
     </motion.div>
   );

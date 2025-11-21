@@ -94,7 +94,7 @@ const Products = () => {
           {/* showing product card when selected any category  */}
           {products?.map((product) => (<ProductCard key={product.id} product={product} />))}
         </div>
-        <Pagination totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
+        <Pagination currentPage={page} totalPages={Math.ceil(totalPages/9)} onPageChange={handlePageChange} />
       </div>
     </motion.div>
   );

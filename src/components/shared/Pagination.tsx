@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface PaginationProps {
   totalPages: number;
+  currentPage: number;
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange }) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, currentPage }) => {
+  
 
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
     onPageChange(page);
   };
 

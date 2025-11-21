@@ -14,6 +14,7 @@ import { FaArrowDownWideShort, FaFilter, FaArrowRight } from "react-icons/fa6";
 import { EmptyData } from "@/components/shared/EmptyData";
 import { Loader } from "@/components/shared/Loader";
 import { RxCross2 } from "react-icons/rx";
+import Pagination from "@/components/shared/Pagination";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -57,6 +58,8 @@ const ProductsPage = () => {
   const [selectedBrands, setSelectedBrands] = useState<string>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const closeMobileDrawer = () => {
     if (window.innerWidth < 1280) {
@@ -77,6 +80,10 @@ const ProductsPage = () => {
     return copy;
   }, [products, selectedFilter]);
 
+  const handlePageChange = (selectedPage: number) => {
+    setPage(selectedPage);
+  };
+
   // fatching products
   useEffect(() => {
     const fetchProducts = async () => {
@@ -89,6 +96,7 @@ const ProductsPage = () => {
           params.append("category", selectedCategories.toString());
         if (selectedSubCategories)
           params.append("subcategory", selectedSubCategories.toString());
+        if (page) params.append("page", page.toString());
 
         const queryString = params.toString()
           ? `/products/?${params.toString()}`
@@ -96,6 +104,7 @@ const ProductsPage = () => {
 
         const response = await api.get(queryString);
         setProducts(response?.data?.results?.data);
+        setTotalPages(response?.data?.count || 1);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -103,7 +112,7 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-  }, [selectedBrands, selectedCategories, selectedSubCategories]);
+  }, [selectedBrands, selectedCategories, selectedSubCategories, page]);
 
   // faching brands
   useEffect(() => {
@@ -222,7 +231,11 @@ const ProductsPage = () => {
 
       {/* ----- SUBCATEGORIES ------- */}
       {subCategory.length > 0 && (
-        <Accordion type="single" collapsible className="w-full rounded-lg max-h-96 overflow-y-auto scrollbar-hidden">
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full rounded-lg max-h-96 overflow-y-auto scrollbar-hidden"
+        >
           <AccordionItem value="item-2">
             <AccordionTrigger className="bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
               Sub Categories
@@ -325,6 +338,11 @@ const ProductsPage = () => {
               />
             ))}
           </div>
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(totalPages / 9)}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </div>

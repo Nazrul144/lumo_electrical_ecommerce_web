@@ -38,7 +38,7 @@ const Categories = () => {
         setIsLoading(true);  // Start loading
         const response = await api.get(`/products/categories?page=${page}`);
         setCategories(response?.data?.results?.data || []);
-        setTotalPages(response?.data?.count || 1);  // Ensure correct page count
+        setTotalPages(response?.data?.count || 1);  
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -49,23 +49,23 @@ const Categories = () => {
         });
         console.error(error);
       } finally {
-        setIsLoading(false);  // Stop loading after fetch
+        setIsLoading(false); 
       }
     };
 
-    fetchingProduct();  // Call fetch function
-  }, [page]);  // Dependency on page only, triggers on page change
+    fetchingProduct();  
+  }, [page]);  
 
   const handlePageChange = (selectedPage: number) => {
-    setPage(selectedPage);  // Update page number
+    setPage(selectedPage);  
   };
 
   if (isLoading) {
-    return <Loader />;  // Show loading spinner while fetching
+    return <Loader />;  
   }
 
   if (categories.length === 0) {
-    return <EmptyData />;  // Show empty state if no categories
+    return <EmptyData />;  
   }
 
   return (
@@ -108,7 +108,8 @@ const Categories = () => {
         {/* Pagination */}
         {pathName === "/categories" ? (
           <Pagination
-            totalPages={Math.ceil(totalPages / 9)}  // Adjust pagination if needed
+            currentPage={page}
+            totalPages={Math.ceil(totalPages / 9)} 
             onPageChange={handlePageChange}
           />
         ) : (
