@@ -9,7 +9,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { FaArrowDownWideShort, FaFilter, FaArrowRight } from "react-icons/fa6";
 import { EmptyData } from "@/components/shared/EmptyData";
