@@ -60,8 +60,8 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen bg-[#FFFFFF]">
-      <div className="lg:flex justify-center items-center gap-10 mt-5">
-        <div className="flex flex-col items-center justify-center md:border-1 border-gray-100 rounded-lg md:shadow-lg w-full md:w-[686px] px-5 py-10 md:px-20 h-full xl:h-[850px]">
+      <div className="lg:flex justify-center items-center gap-10 mt-5 ">
+        <div className="flex flex-col items-center justify-center md:border-1 border-gray-100 rounded-lg md:shadow-lg w-full mx-auto  md:w-[686px] px-5 py-10 md:px-20 h-full xl:h-[850px]">
           <div className="w-full flex justify-end lg:pr-16">
             <Link href={"/"}>
               <Image src="/logo/logo.png" alt="logo" height={100} width={100} />

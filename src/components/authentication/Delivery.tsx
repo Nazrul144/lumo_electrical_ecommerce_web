@@ -136,10 +136,10 @@ const Delivery = () => {
 
   return (
     <div>
-      <div className="lg:w-7xl mx-auto mt-10">
+      <div className="lg:max-w-7xl mx-auto mt-10">
         <div>
           <div className="lg:flex gap-8 items-center">
-            <div className="hidden lg:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
+            <div className="hidden xl:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
               <Image
                 src="/authentication/signup.png"
                 alt="sign-up-image"
@@ -147,7 +147,7 @@ const Delivery = () => {
                 className="rounded-3xl object-cover"
               />
             </div>
-            <div className=" flex flex-col items-center justify-center w-full lg:w-[940px] md:border-1 border-gray-100 md:rounded-lg md:shadow-lg py-6">
+            <div className=" flex flex-col items-center justify-center mx-auto w-full lg:w-[940px] md:border-1 border-gray-100 md:rounded-lg md:shadow-lg py-12">
               <div className="w-full  flex justify-end lg:pr-16 pe-5 md:pr-0">
                 <Link href={"/"}>
                   <Image

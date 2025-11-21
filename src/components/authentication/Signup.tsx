@@ -127,10 +127,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="lg:w-7xl mx-auto my-10">
+    <div className="lg:max-w-7xl mx-auto my-10">
       <div>
         <div className="lg:flex gap-8 items-center">
-          <div className="hidden lg:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
+          <div className="hidden xl:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
             <Image
               src="/authentication/signup.png"
               alt="sign-up-image"
