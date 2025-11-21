@@ -77,7 +77,7 @@ const VerifyCode = () => {
     <div>
       <div className="w-full h-screen bg-[#FFFFFF]">
         <div className="lg:flex justify-center items-center gap-10 mt-5">
-          <div className=" lg:w-1/2 flex flex-col items-center justify-center border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-20 h-[850px]">
+          <div className=" lg:w-1/2 flex flex-col items-center justify-center mx-auto border-1 border-gray-100 rounded-lg shadow-lg w-full md:w-[686px] px-20 h-[850px]">
             <div className="w-full max-w-[512px]">
               <Link href={"/"}>
                 <Image
@@ -141,7 +141,7 @@ const VerifyCode = () => {
             </form>
           </div>
 
-          <div className="hidden lg:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
+          <div className="hidden xl:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
             <Image
               src="/authentication/signup.png"
               alt="sign-up-image"
