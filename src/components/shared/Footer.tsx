@@ -64,8 +64,7 @@ export default function Footer() {
         stiffness: 60,
         duration: 2,
       }}
-      className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30 dark:from-gray-900 dark:to-black text-gray-900
-     dark:text-white py-3"
+      className="bg-gradient-to-r from-[#088347]/30 to-[#C6E824]/30  text-gray-900 py-3"
     >
       <div className="mt-10 flex flex-col gap-10">
         <div className="w-full flex justify-center">
@@ -78,58 +77,58 @@ export default function Footer() {
             <div className="flex space-x-5">
               <a
                 href="#"
-                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+                className="text-[#07484A] hover:text-blue-600  
                     transition-transform transform hover:scale-110"
               >
                 <FacebookIcon size={28} />
               </a>
               <a
                 href="#"
-                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+                className="text-[#07484A] hover:text-blue-600  
                     transition-transform transform hover:scale-110"
               >
                 <InstagramIcon size={28} />
               </a>
               <a
                 href="#"
-                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+                className="text-[#07484A] hover:text-blue-600  
                     transition-transform transform hover:scale-110"
               >
                 <LinkedInIcon size={28} />
               </a>
               <a
                 href="#"
-                className="text-[#07484A] hover:text-blue-600 dark:text-gray-400 dark:hover:text-teal-400 
+                className="text-[#07484A] hover:text-blue-600  
                     transition-transform transform hover:scale-110"
               >
                 <TwitterIcon size={28} />
               </a>
             </div>
             <div className="space-y-1.5 mt-4">
-              <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+              <h3 className="font-openSans font-bold text-[#07484A]">
                 Address
               </h3>
-              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+              <p className="font-openSans text-[#07484A]">
                 +123 654 987
               </p>
-              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+              <p className="font-openSans text-[#07484A]">
                 877 The Bronx, NY
               </p>
-              <p className="font-openSans text-[#07484A] dark:text-gray-300">
+              <p className="font-openSans text-[#07484A]">
                 14568, USA
               </p>
             </div>
           </div>
           <div className="space-y-5">
-            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+            <h3 className="font-openSans font-bold text-[#07484A]">
               My Account
             </h3>
             <div className="space-y-2">
               <div>
                 <Link
                   href="/login"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Sign in
                 </Link>
@@ -137,8 +136,8 @@ export default function Footer() {
               <div>
                 <Link
                   href="/signup"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A]  hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Sign up
                 </Link>
@@ -146,15 +145,15 @@ export default function Footer() {
             </div>
           </div>
           <div className="space-y-5">
-            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+            <h3 className="font-openSans font-bold text-[#07484A] ">
               Help
             </h3>
             <div className="space-y-2">
               <div>
                 <Link
                   href="/products"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Shipping
                 </Link>
@@ -162,8 +161,8 @@ export default function Footer() {
               <div>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Returns
                 </a>
@@ -171,8 +170,8 @@ export default function Footer() {
               <div>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Sizing
                 </a>
@@ -180,15 +179,15 @@ export default function Footer() {
             </div>
           </div>
           <div className="space-y-5">
-            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+            <h3 className="font-openSans font-bold text-[#07484A] ">
               Shop
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/products"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   All Products
                 </Link>
@@ -196,8 +195,8 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Bedroom
                 </a>
@@ -205,8 +204,8 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Dinning Room
                 </a>
@@ -214,15 +213,15 @@ export default function Footer() {
             </ul>
           </div>
           <div className="space-y-5">
-            <h3 className="font-openSans font-bold text-[#07484A] dark:text-gray-100">
+            <h3 className="font-openSans font-bold text-[#07484A] ">
               Legal Stuff
             </h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Shipping & Delivery
                 </a>
@@ -230,8 +229,8 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Terms & Conditions
                 </a>
@@ -239,8 +238,8 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="font-openSans text-[#07484A] dark:text-gray-300 hover:text-blue-600 
-                        dark:hover:text-teal-400 transition-colors duration-300"
+                  className="font-openSans text-[#07484A] hover:text-blue-600 
+                         transition-colors duration-300"
                 >
                   Privacy & Policy
                 </a>
@@ -250,8 +249,8 @@ export default function Footer() {
         </div>
       </div>
       <p
-        className="text-center font-openSans text-[#07484A] mt-8 dark:text-gray-300 hover:text-blue-600 
-              dark:hover:text-teal-400 transition-colors duration-300"
+        className="text-center font-openSans text-[#07484A] mt-8 hover:text-blue-600 
+               transition-colors duration-300"
       >
         Copyright &copy; {new Date().getFullYear()} INWOOD. All Rights Reserved
       </p>

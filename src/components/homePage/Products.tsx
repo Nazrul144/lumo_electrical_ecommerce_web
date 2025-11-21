@@ -69,7 +69,7 @@ const ProductsHome = () => {
       <Headline text="Explore by Products" />
       <div className="container mx-auto z-0">
           {/* randering products  */}
-          <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
+          <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-20 gap-x-0 xl:gap-x-5 justify-items-center ">
             {products?.map((product) =>(
               <ProductCard key={product.id} product={product} />
             ))}

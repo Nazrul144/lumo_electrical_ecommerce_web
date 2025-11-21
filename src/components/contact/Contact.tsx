@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { HiOutlineArrowRight } from "react-icons/hi2";
 import { Textarea } from "../ui/textarea";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -107,25 +107,25 @@ const Contact = () => {
         </div>
 
         {/*Update Contact Us*/}
-        <section className="bg-white dark:bg-gray-900">
+        <section className="bg-white ">
           <div className="container px-6 py-12 mx-auto">
             <div className="text-center">
-              <p className="font-medium text-blue-500 dark:text-blue-400">
+              <p className="font-medium text-blue-500 ">
                 Contact us
               </p>
 
-              <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white">
+              <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl ">
                 Get in touch
               </h1>
 
-              <p className="mt-3 text-gray-500 dark:text-gray-400">
+              <p className="mt-3 text-gray-500 ">
                 Our friendly team is always here to chat.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-10">
               <div className="flex flex-col items-center justify-center text-center">
-                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 dark:bg-gray-800">
+                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -142,19 +142,19 @@ const Contact = () => {
                   </svg>
                 </span>
 
-                <h2 className="mt-4 text-lg font-medium text-gray-800 dark:text-white">
+                <h2 className="mt-4 text-lg font-medium text-gray-800 ">
                   Email
                 </h2>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">
+                <p className="mt-2 text-gray-500 ">
                   Our friendly team is here to help.
                 </p>
-                <p className="mt-2 text-blue-500 dark:text-blue-400">
+                <p className="mt-2 text-blue-500 ">
                    dylan@plumsteadelec.co.za
                 </p>
               </div>
 
               <div className="flex flex-col items-center justify-center text-center">
-                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 dark:bg-gray-800">
+                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -176,22 +176,22 @@ const Contact = () => {
                   </svg>
                 </span>
 
-                <h2 className="mt-4 text-lg font-medium text-gray-800 dark:text-white">
+                <h2 className="mt-4 text-lg font-medium text-gray-800 ">
                   Location
                 </h2>
-                <p className=" text-gray-500 dark:text-gray-400">
+                <p className=" text-gray-500 ">
                   Come say hello at our office HQ.
                 </p>
-                <p className="mt-2 text-blue-500 dark:text-blue-400">
+                <p className="mt-2 text-blue-500 ">
                   Plumstead Electrical. Tramways Village, 89 Main road
                 </p>
-                <p className="mt-2 text-blue-500 dark:text-blue-400">
+                <p className="mt-2 text-blue-500 ">
                   Diep River, Cape Town 7800, South Africa
                 </p>
               </div>
 
               <div className="flex flex-col items-center justify-center text-center">
-                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 dark:bg-gray-800">
+                <span className="p-3 text-blue-500 rounded-full bg-blue-100/80 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -208,13 +208,13 @@ const Contact = () => {
                   </svg>
                 </span>
 
-                <h2 className="mt-4 text-lg font-medium text-gray-800 dark:text-white">
+                <h2 className="mt-4 text-lg font-medium text-gray-800 ">
                   Phone
                 </h2>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">
+                <p className="mt-2 text-gray-500 ">
                   Mon-Fri from 8:00 am to 5:00 pm.
                 </p>
-                <p className="mt-2 text-blue-500 dark:text-blue-400">
+                <p className="mt-2 text-blue-500 ">
                   (021) 7153151
                 </p>
               </div>
@@ -225,7 +225,7 @@ const Contact = () => {
           {/* Form */}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full lg:w-1/2 p-2 lg:p-6"
+            className="w-full lg:w-1/2 p-6"
           >
             <div className="flex flex-col sm:flex-row gap-8 w-full mt-8">
               <div className="group relative w-full">
@@ -359,10 +359,12 @@ const Contact = () => {
             >
               <Map
                 style={{ borderRadius: "20px" }}
-                defaultZoom={13}
+                defaultZoom={14}
                 gestureHandling={"greedy"}
+                center={{ lat: 40.8448, lng: -73.8648 }}
                 disableDefaultUI
               >
+                <Marker position={{ lat: 40.8448, lng: -73.8648 }} />
               </Map>
             </APIProvider>
           </div>

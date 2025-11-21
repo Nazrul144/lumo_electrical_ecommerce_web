@@ -32,17 +32,29 @@ const ProductCard: React.FC<ProductCardProps> = ({
   selectedFilter = null,
 }) => {
   return (
-    <Link href={`/products/${product.id}`} className="cursor-pointer mx-auto rounded-lg shadow-xl  hover:scale-105  transition-all duration-300">
-      <Card className="z-0 h-[480px] w-[350px] p-4" data-filter={selectedFilter ?? ""}>
+    <Link
+      href={`/products/${product.id}`}
+      className="cursor-pointer mx-auto rounded-lg shadow-xl  hover:scale-105  transition-all duration-300"
+    >
+      <Card
+        className="z-0 h-[400px] w-[300px] "
+        data-filter={selectedFilter ?? ""}
+      >
         <Image
           src={product?.primary_image?.image || "/placeholder.jpg"}
-          width={300}
-          height={500}
+          width={200}
+          height={250}
           alt={product?.name || "Product image"}
-          className="h-[300px] w-[250px] object-contain mx-auto"
+          className="h-[250px] w-[200px] object-contain mx-auto"
         />
-        <h1 className="text-xl font-bold mt-2 text-center overflow-hidden">{product?.name}</h1>
-        <h1 className="text-lg mt-2 text-center">Product Code: {product?.code}</h1>
+        <div className="my-2 overflow-hidden">
+          <h1 className="text-lg font-bold text-center ">
+            {product?.name}
+          </h1>
+          <h1 className="text-md  text-center">
+            Product Code: {product?.code}
+          </h1>
+        </div>
         {/* other user info */}
       </Card>
     </Link>

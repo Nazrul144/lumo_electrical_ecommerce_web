@@ -19,7 +19,7 @@ const BtnLink: React.FC<BtnLinkProps> = ({
     isIcone = false,
 }) => {
     return (
-        <Link className={`active:scale-95 px-3 py-2 text-sm  md:px-5 md:py-2 rounded-lg  ${className} ${isIcone ? "flex items-center gap-2" : ""}` } href={link}>
+        <Link className={`active:scale-95 px-3 py-1 text-sm  md:px-5 md:py-2 rounded-lg  ${className} ${isIcone ? "flex items-center gap-2" : ""}` } href={link}>
             {text}
         {isIcone && <FaArrowRight />}
         </Link>

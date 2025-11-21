@@ -115,7 +115,7 @@ const Navbar = () => {
   return (
     <div>
       <header
-        className="top-0 w-10/12  md:w-11/12 left-[4%]  xl:left-16 md:right-auto bg-white  backdrop-blur-md border-b
+        className="top-0 w-10/12  md:w-11/12 left-[10%] md:left-[5%]  xl:left-16 md:right-auto bg-white   backdrop-blur-md border-b
         border-gray-200  rounded-full fixed z-50 mt-6 shadow-xl"
       >
         <div className=" container mx-auto px-4 sm:px-6 lg:px-8">
@@ -142,7 +142,7 @@ const Navbar = () => {
                       ? "text-[#C6E824] underline playfair.className"
                       : ""
                   } ${playfair.className} font-bold text-[#088347] text-xl
-                        dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-300`}
+                         hover:text-emerald-600  transition-colors duration-300`}
                   href={navLink.path}
                   key={navLink.path}
                 >
@@ -155,7 +155,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-5">
               <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100  transition-colors"
+                className="p-2 rounded-full text-green-600 cursor-pointer  hover:bg-gray-100  transition-colors"
               >
                 <Search className="h-6 w-6" />
               </button>
@@ -190,7 +190,7 @@ const Navbar = () => {
               <div className=" ">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100  rounded-md"
+                  className="p-2 text-gray-600  hover:bg-gray-100  rounded-md"
                   aria-label="Toggle menu"
                 >
                   <Menu
@@ -209,7 +209,7 @@ const Navbar = () => {
               <div className="flex justify-center items-center space-x-5">
                 <button
                   onClick={() => setIsOpen(true)}
-                  className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2 rounded-full text-green-600 cursor-pointer  hover:bg-gray-100  transition-colors"
                 >
                   <Search className="h-6 w-6" />
                 </button>
@@ -217,7 +217,7 @@ const Navbar = () => {
                   <div className="flex items-center space-x-5">
                     <button
                       onClick={() => setIsOpen(true)}
-                      className="p-2 rounded-full text-green-600 cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="p-2 rounded-full text-green-600 cursor-pointer  hover:bg-gray-100  transition-colors"
                     >
                       <Search className="h-6 w-6" />
                     </button>
