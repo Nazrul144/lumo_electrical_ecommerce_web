@@ -60,7 +60,7 @@ const Billing = () => {
 
   return (
     <div>
-      <div className="lg:max-w-7xl mx-auto mt-10">
+      <div className="lg:max-w-7xl mx-auto mt-20">
         <div>
           <div className="lg:flex gap-8 items-center">
             <div className="hidden xl:w-[686px] h-[855px] lg:flex flex-col items-center justify-center relative ">
