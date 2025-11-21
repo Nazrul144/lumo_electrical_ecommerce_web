@@ -6,6 +6,7 @@ import { ImWhatsapp } from "react-icons/im";
 import { Playfair_Display } from "next/font/google";
 import api from "@/lib/api";
 import LoadingPage from "@/app/(commonLayout)/products/loading";
+import parse from "html-react-parser";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -105,7 +106,7 @@ const ProductDetails = ({id}:{id:number}) => {
           </div>
           <div className="text-center px-3 rounded-sm lg:max-w-md xl:max-w-lg lg:text-left flex flex-col gap-4 max-h-[450px] overflow-y-auto">
             <h1
-              className={`text-3xl leading-none sm:text-4xl ${playfair.className}`}
+              className={`text-2xl font-semibold leading-none  ${playfair.className}`}
             >
               {productDetails?.name}
             </h1>
@@ -120,7 +121,7 @@ const ProductDetails = ({id}:{id:number}) => {
               </span>
             </div>
             <p className="my-2 max-h-32 overflow-y-auto text-lg text-[#686868] text-justify">
-              {productDetails?.short_description}
+              {parse(`${productDetails?.short_description}`)}
             </p>
             <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
               <a
@@ -145,7 +146,7 @@ const ProductDetails = ({id}:{id:number}) => {
             </h1>
           </div>
           <div className=" text-justify text-[#686868]">
-            {productDetails?.full_description}
+            {parse(`${productDetails?.full_description}`)}
           </div>
         </div>
       </section>
