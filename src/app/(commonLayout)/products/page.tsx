@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { BsFilterLeft } from "react-icons/bs";
-import { FaArrowDownWideShort } from "react-icons/fa6";
-import { FaFilter } from "react-icons/fa6";
+import { FaArrowDownWideShort, FaFilter, FaArrowRight } from "react-icons/fa6";
 import { EmptyData } from "@/components/shared/EmptyData";
 import { Loader } from "@/components/shared/Loader";
-import { FaArrowRight } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -54,14 +52,20 @@ const ProductsPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategory, setSubCategory] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>(
-    []
-  );
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number>(null);
+  const [selectedSubCategories, setSelectedSubCategories] =
+    useState<number>(null);
+  const [selectedBrands, setSelectedBrands] = useState<string>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  // memoized sorted products based on selectedFilter (A2Z or Z2A)
+  const closeMobileDrawer = () => {
+    if (window.innerWidth < 1280) {
+      setMobileFilterOpen(false);
+    }
+  };
+
+  // memo: sorting
   const sortedProducts = useMemo(() => {
     if (!products) return products;
     const copy = [...products];
@@ -81,17 +85,16 @@ const ProductsPage = () => {
       try {
         const params = new URLSearchParams();
 
-        // Join multiple values with commas instead of creating multiple parameters
-        if (selectedBrands.length)
-          params.append("brand", selectedBrands.join(","));
-        if (selectedCategories.length)
-          params.append("category", selectedCategories.join(","));
-        if (selectedSubCategories.length)
-          params.append("subcategory", selectedSubCategories.join(","));
+        if (selectedBrands) params.append("brand", selectedBrands);
+        if (selectedCategories)
+          params.append("category", selectedCategories.toString());
+        if (selectedSubCategories)
+          params.append("subcategory", selectedSubCategories.toString());
 
         const queryString = params.toString()
           ? `/products/?${params.toString()}`
           : "/products/";
+
         const response = await api.get(queryString);
         setProducts(response?.data?.results?.data);
       } catch (error) {
@@ -142,12 +145,9 @@ const ProductsPage = () => {
     const fatchingCategories = async () => {
       try {
         setIsLoading(true);
-        // Only fetch subcategories for the last selected category
-        const lastSelectedCategory =
-          selectedCategories[selectedCategories.length - 1];
-        if (lastSelectedCategory) {
+        if (selectedCategories) {
           const response = await api.get(
-            `/products/categories/${lastSelectedCategory}/subcategories`
+            `/products/categories/${selectedCategories}/subcategories`
           );
 
           setSubCategory(response?.data?.results?.data);
@@ -164,13 +164,90 @@ const ProductsPage = () => {
     fatchingCategories();
   }, [selectedCategories]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
+  if (sortedProducts?.length === 0) return <EmptyData />;
 
-  if (sortedProducts?.length === 0) {
-    return <EmptyData />;
-  }
+  // ============================
+  // FILTER SIDEBAR (reusable)
+  // ============================
+
+  const FiltersUI = (
+    <div className="w-60 flex flex-col gap-5 mt-18">
+      {/* ----- BRANDS ------- */}
+      <Accordion type="single" collapsible className="w-full rounded-lg">
+        <AccordionItem value="item-3">
+          <AccordionTrigger className="bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
+            Brand
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-4 py-2 mt-2 max-h-96 overflow-y-auto scrollbar-hidden">
+            {brands?.map((brand, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  setSelectedBrands(brand);
+                  closeMobileDrawer();
+                }}
+                className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
+              >
+                <Label className="text-white">{brand}</Label>
+                <FaArrowRight className="text-white" />
+              </div>
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      {/* ----- CATEGORIES ------- */}
+      <Accordion type="single" collapsible className="w-full  rounded-lg">
+        <AccordionItem value="item-1">
+          <AccordionTrigger className="bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
+            Categories
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-4 py-2 mt-2 max-h-96 overflow-y-auto scrollbar-hidden">
+            {categories?.map((category) => (
+              <div
+                key={category.id}
+                onClick={() => {
+                  setSelectedCategories(category?.id);
+                  closeMobileDrawer();
+                }}
+                className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
+              >
+                <Label className="text-white">{category.name}</Label>
+                <FaArrowRight className="text-white" />
+              </div>
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      {/* ----- SUBCATEGORIES ------- */}
+      {subCategory.length > 0 && (
+        <Accordion type="single" collapsible className="w-full rounded-lg max-h-96 overflow-y-auto scrollbar-hidden">
+          <AccordionItem value="item-2">
+            <AccordionTrigger className="bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
+              Sub Categories
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 py-2 mt-2">
+              {subCategory?.map((monoSubCategory) => (
+                <div
+                  key={monoSubCategory?.id}
+                  className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
+                  onClick={() => {
+                    setSelectedSubCategories(monoSubCategory.id);
+                    closeMobileDrawer();
+                  }}
+                >
+                  <Label>{monoSubCategory.name}</Label>
+                  <FaArrowRight className="text-white" />
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
+    </div>
+  );
 
   return (
     <div className="my-32">
@@ -179,116 +256,53 @@ const ProductsPage = () => {
       >
         All Products
       </h1>
-      <div className="flex gap-5 justify-center z-0">
-        <div className="w-60 hidden xl:flex flex-col gap-5 mt-18">
-          {/* randering brands  */}
-          <Accordion type="single" collapsible className="w-full  rounded-lg">
-            <AccordionItem value="item-3">
-              <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
-                Brand
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance  py-2 mt-2 max-h-96 overflow-y-auto">
-                {brands?.map((brand, idx) => (
-                  <div
-                    key={idx}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedBrands((prev) =>
-                        prev.includes(brand)
-                          ? prev.filter((b) => b !== brand)
-                          : [...prev, brand]
-                      );
-                    }}
-                    className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
-                  >
-                    <Label htmlFor={brand} className="text-white">
-                      {brand}
-                    </Label>
-                    <FaArrowRight className="text-white" />
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          {/* randering categories  */}
-          <Accordion type="single" collapsible className="w-full  rounded-lg">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
-                Categories
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance py-2 mt-2 max-h-96 overflow-y-auto">
-                {categories?.map((category) => (
-                  <div
-                    key={category.id}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedCategories((prev) =>
-                        prev.includes(category.id)
-                          ? prev.filter((id) => id !== category.id)
-                          : [...prev, category.id]
-                      );
-                    }}
-                    className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md "
-                  >
-                    <Label htmlFor={category.name} className="text-white">
-                      {category.name}
-                    </Label>
-                    <FaArrowRight className="text-white" />
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          {/* randering subcategories  */}
-          {subCategory.length > 0 && (
-            <Accordion type="single" collapsible className="w-full  rounded-lg">
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="bg-gray-300 bg-gradient-to-r from-[#088347] to-[#C6E824] text-white px-4">
-                  Sub Categories
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-4 text-balance px-4 py-2 border rounded-md mt-2">
-                  {subCategory?.map((monoSubCategory) => (
-                    <div
-                      key={monoSubCategory?.id}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedSubCategories((prev) =>
-                          prev.includes(monoSubCategory.id)
-                            ? prev.filter((id) => id !== monoSubCategory.id)
-                            : [...prev, monoSubCategory.id]
-                        );
-                      }}
-                      className="flex items-center gap-3"
-                    >
-                      <Checkbox
-                        id={monoSubCategory.name}
-                        checked={selectedSubCategories.includes(
-                          monoSubCategory.id
-                        )}
-                      />
-                      <Label htmlFor={monoSubCategory.name}>
-                        {monoSubCategory.name}
-                      </Label>
-                    </div>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
-        </div>
+
+      <div className="flex gap-5 justify-center">
+        {/* DESKTOP FILTER */}
+        <div className="hidden xl:block">{FiltersUI}</div>
+
+        {/* MOBILE FILTER DRAWER */}
+        {mobileFilterOpen && (
+          <div
+            className="fixed inset-0 bg-black/60 bg-opacity-40 z-50 xl:hidden"
+            onClick={closeMobileDrawer}
+          >
+            <div
+              className="w-72 bg-white h-full shadow-lg px-6 py-4 overflow-y-auto"
+              onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside drawer
+            >
+              <div className="flex justify-end">
+                <button
+                  className="border rounded-full p-2 font-bold"
+                  onClick={() => setMobileFilterOpen(false)}
+                >
+                  <RxCross2 className="text-xl" />
+                </button>
+              </div>
+              {FiltersUI}
+            </div>
+          </div>
+        )}
+
+        {/* PRODUCTS SECTION */}
         <div>
+          {/* top bar: filter + sort */}
           <div className="my-4 flex justify-between items-center">
+            {/* MOBILE FILTER TOGGLE */}
             <div>
-              <div className="flex gap-2 justify-center items-center border p-2 rounded bg-[#ECEFF1] cursor-pointer">
+              <div
+                className="flex gap-2 items-center border p-2 rounded bg-[#ECEFF1] cursor-pointer xl:hidden"
+                onClick={() => setMobileFilterOpen(true)}
+              >
                 <FaFilter className="text-xl" />
                 <p>Filters</p>
               </div>
             </div>
+
+            {/* SORTING */}
             <div className="flex items-center gap-2 border-2 rounded bg-[#ECEFF1] p-2 ">
               <FaArrowDownWideShort className="text-xl" />
               <select
-                name="short"
-                id="short"
                 value={selectedFilter ?? ""}
                 onChange={(e) => setSelectedFilter(e.target.value || null)}
                 className="bg-[#ECEFF1] outline-none w-20"
@@ -301,8 +315,9 @@ const ProductsPage = () => {
               </select>
             </div>
           </div>
-          {/* randering products  */}
-          <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-6">
+
+          {/* products grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
             {sortedProducts?.map((product) => (
               <ProductCard
                 key={product.id}

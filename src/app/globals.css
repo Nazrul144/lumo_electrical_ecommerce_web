@@ -21,6 +21,12 @@ html{
   background-color: #f3f4f6;
 }
 
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
