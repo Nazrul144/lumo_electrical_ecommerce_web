@@ -127,8 +127,8 @@ const Navbar = () => {
                   <Image
                     src="/logo/logo.png"
                     alt="logo"
-                    height={60}
-                    width={80}
+                    height={100}
+                    width={100}
                   />
                 </Link>
               </div>
@@ -209,6 +209,7 @@ const Navbar = () => {
               <div className="flex justify-center items-center space-x-5">
                 <button
                   onClick={() => setIsOpen(true)}
+                  aria-label="search"
                   className="p-2 rounded-full text-green-600 cursor-pointer  hover:bg-gray-100  transition-colors"
                 >
                   <Search className="h-6 w-6" />

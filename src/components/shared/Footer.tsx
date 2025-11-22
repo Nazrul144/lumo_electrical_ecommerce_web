@@ -28,24 +28,24 @@ export default function Footer() {
           <p className="footer-title"><Link href={"https://wa.me/+123654987877?text=Hello"} className="cursor-pointer">+ 123 654 987 877,</Link><br/>The Bronx, NY 14568, USA</p>
         </aside>
         <nav className="flex flex-col items-center">
-          <h6 className="footer-title text-center text-xl">Social</h6>
+          <h1 className="footer-title text-center text-xl">Social</h1>
           <div className="grid grid-flow-col gap-4">
-            <Link className="" href={"www.facebook.com/"}>
+            <Link className="" aria-label="Go to facebook" href={"www.facebook.com/"}>
               <FaFacebook className="text-3xl" />
             </Link>
-            <Link className="" href={"www.twitter.com/"}>
+            <Link className="" aria-label="Go to twitter" href={"www.twitter.com/"}>
               <FaTwitter className="text-3xl" />
             </Link>
-            <Link className="" href={"www.instagram.com/"}>
+            <Link className="" aria-label="Go to instagram" href={"www.instagram.com/"}>
               <FaInstagram className="text-3xl" />
             </Link>
-            <Link className="" href={"www.linkedin.com/"}>
+            <Link className="" aria-label="Go to linkedin" href={"www.linkedin.com/"}>
               <FaLinkedin className="text-3xl" />
             </Link>
           </div>
         </nav>
         <nav className="flex flex-col items-center">
-          <h6 className="footer-title text-center text-xl">Quick Links</h6>
+          <h1 className="footer-title text-center text-xl">Quick Links</h1>
           <div className="grid grid-cols-3 gap-x-5">
             <Link className=" footer-title " href={"/login"}>
               Login

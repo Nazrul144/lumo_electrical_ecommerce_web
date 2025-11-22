@@ -8,7 +8,7 @@ const Hero = () => {
     <div>
       <div className="bg-[#FDFBF8] mb-24">
         <div
-          className="relative w-full h-[750px] bg-[url(/home/hero.png)]
+          className="relative w-full h-[750px] bg-[url(/home/hero.webp)]
                     bg-cover bg-center rounded-b-[100px] z-30"
         >
           <div className="absolute w-full h-full z-10 bg-gray-900/50 rounded-b-[100px]" />{" "}

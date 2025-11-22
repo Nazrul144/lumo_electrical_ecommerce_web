@@ -195,6 +195,7 @@ const ProductsPage = () => {
                   setSelectedBrands(brand);
                   closeMobileDrawer();
                 }}
+                aria-label="right arrow"
                 className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
               >
                 <Label className="text-white">{brand}</Label>
@@ -219,6 +220,7 @@ const ProductsPage = () => {
                   setSelectedCategories(category?.id);
                   closeMobileDrawer();
                 }}
+                aria-label="right arrow"
                 className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
               >
                 <Label className="text-white">{category.name}</Label>
@@ -245,6 +247,7 @@ const ProductsPage = () => {
                 <div
                   key={monoSubCategory?.id}
                   className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
+                  aria-label="right arrow"
                   onClick={() => {
                     setSelectedSubCategories(monoSubCategory.id);
                     closeMobileDrawer();
@@ -312,7 +315,7 @@ const ProductsPage = () => {
             </div>
 
             {/* SORTING */}
-            <div className="flex items-center gap-2 border-2 rounded bg-[#ECEFF1] p-2 ">
+            <div aria-label="short" className="flex items-center gap-2 border-2 rounded bg-[#ECEFF1] p-2 ">
               <FaArrowDownWideShort className="text-xl" />
               <select
                 value={selectedFilter ?? ""}

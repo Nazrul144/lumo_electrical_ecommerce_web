@@ -36,8 +36,8 @@ const Benifits = () => {
             <Image
               src="/logo/icon/return.png"
               alt="hand"
-              width={80}
-              height={80}
+              width={100}
+              height={100}
             />
             <h1 className="text-[#07484A] text-xl font-playFairDisplay font-semibold">
               Return policy
