@@ -77,9 +77,9 @@ const ProductDetails = ({id}:{id:number}) => {
   return (
     <div className="my-12 lg:px-20">
       <section>
-        <div className="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:gap-28 ">
-          <div className="flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 ">
-            <div className="flex flex-col max-h-[450px] overflow-y-auto">
+        <div className="container flex flex-col justify-center items-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:gap-28 ">
+          <div className="flex flex-col-reverse xl:flex-row items-center justify-center gap-5 p-6  mt-8 ">
+            <div className="flex flex-col max-h-[450px] scrollbar-hidden  xl:overflow-y-auto">
               {productDetails?.images?.map((image, idx) => (
                 <Image
                   key={image.id}
@@ -90,7 +90,7 @@ const ProductDetails = ({id}:{id:number}) => {
                   alt={image?.alt_text || "Product Image"}
                   width={100}
                   height={100}
-                  className="object-contain w-28 h-auto border-8 cursor-pointer"
+                  className="object-contain w-20 md:w-28 h-auto border-3 xl:border-8 cursor-pointer"
                 />
               ))}
             </div>
@@ -100,7 +100,7 @@ const ProductDetails = ({id}:{id:number}) => {
                 alt={productDetails.images[imageId]?.alt_text || "Product Image"}
                 width={500}
                 height={500}
-                className="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
+                className="object-contain w-[420px] h-auto"
               />
             )}
           </div>
@@ -120,7 +120,7 @@ const ProductDetails = ({id}:{id:number}) => {
                 4.5 {"(212 reviews)"}
               </span>
             </div>
-            <p className="my-2 max-h-32 overflow-y-auto text-lg text-[#686868] text-justify">
+            <p className="my-2 text-lg text-[#686868] text-justify">
               {parse(`${productDetails?.short_description}`)}
             </p>
             <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
