@@ -215,7 +215,7 @@ const ProductsPage = () => {
           <AccordionContent className="flex flex-col gap-4 py-2 mt-2 max-h-96 overflow-y-auto scrollbar-hidden">
             {categories?.map((category) => (
               <div
-                key={category.id}
+                key={category?.id}
                 onClick={() => {
                   setSelectedCategories(category?.id);
                   closeMobileDrawer();
@@ -223,7 +223,7 @@ const ProductsPage = () => {
                 aria-label="right arrow"
                 className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
               >
-                <Label className="text-white">{category.name}</Label>
+                <Label className="text-white">{category?.name}</Label>
                 <FaArrowRight className="text-white" />
               </div>
             ))}
@@ -232,7 +232,7 @@ const ProductsPage = () => {
       </Accordion>
 
       {/* ----- SUBCATEGORIES ------- */}
-      {subCategory.length > 0 && (
+      {subCategory?.length > 0 && (
         <Accordion
           type="single"
           collapsible
@@ -249,11 +249,11 @@ const ProductsPage = () => {
                   className="flex justify-between items-center gap-3 bg-gradient-to-r from-[#088347] to-[#C6E824] p-3 rounded-md cursor-pointer"
                   aria-label="right arrow"
                   onClick={() => {
-                    setSelectedSubCategories(monoSubCategory.id);
+                    setSelectedSubCategories(monoSubCategory?.id);
                     closeMobileDrawer();
                   }}
                 >
-                  <Label>{monoSubCategory.name}</Label>
+                  <Label>{monoSubCategory?.name}</Label>
                   <FaArrowRight className="text-white" />
                 </div>
               ))}
@@ -335,7 +335,7 @@ const ProductsPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
             {sortedProducts?.map((product) => (
               <ProductCard
-                key={product.id}
+                key={product?.id}
                 product={product}
                 selectedFilter={selectedFilter}
               />
